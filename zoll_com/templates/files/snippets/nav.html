@@ -1,0 +1,10 @@
+<ul class="nav nav-pills nav-stacked">
+  <li {% if active_nav == 'home' %}class="active"{% endif %}><a href="{% url 'files.views.index' %}"><i class="icon-home"></i> Home</a></li>
+  <li {% if active_nav == 'public' %}class="active"{% endif %}><a href="{% url 'files.views._list' group='public' %}"><i class="icon-file"></i> Public Files</a></li>
+  <li {% if user.is_authenticated %}{% if active_nav == 'private' %}class="active"{% endif %}{% else %}class="disabled"{% endif %}><a href="{% if user.is_authenticated %}{% url 'files.views._list' group='private' %}{% else %}#{% endif %}"><i class="icon-user"></i> My Private Files</a></li>
+  {% if nav_group_entries %}
+    {% for group in nav_group_entries %}
+      <li {% if active_nav == group %}class="active"{% endif %}><a href="{% url 'files.views._list' group=group %}"><i class="icon-share"></i> {{ group }} Files</a></li>
+    {% endfor %}
+  {% endif %}  
+</ul>

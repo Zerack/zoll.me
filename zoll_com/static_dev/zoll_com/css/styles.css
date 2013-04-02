@@ -1,0 +1,36 @@
+/*
+ * Styles for the main zoll_com application framework. This stuff is included in _every_
+ * page load, so be gentle.
+ */
+body {
+  padding-top: 60px;
+  padding-bottom: 40px;
+}
+
+.user-welcome {
+  line-height: 20px;
+  display: inline-block;
+  margin-top: 5px;
+  padding: 4px 12px 4px 0px;
+  vertical-align: middle;
+  color: #999999;
+}
+
+.page-header h1 img {
+  width: 40px;
+  height: 40px;
+  vertical-align: bottom;
+}
+
+footer a {
+  color: #999999;
+  text-decoration: underline;
+}
+
+footer a:hover {
+  color: #999999;
+}
+
+.monospace {
+	font-family: monospace;
+}

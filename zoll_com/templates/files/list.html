@@ -1,0 +1,60 @@
+{% extends 'files/base_files.html' %}
+
+{% load files_extras %}
+
+{% block container_files %}
+  <div class="row">
+    <div class="span9">
+      <h4 style="margin-bottom: 6px;"class="section-header">{{ header }} Files</h4>
+      <p style="line-height: 26px;" class="pull-left">{{ info }}</p>
+      <p class="pull-right"><a href="{% url 'files.views.add' group=active_nav %}" class="btn btn-small btn-primary"><i class="icon-upload icon-white"></i> Add a File</a></p>
+    </div>
+  </div>
+  {% if messages %}
+    <div class="row">
+      <div class="span9">
+          {% for message in messages %}
+            <div class="alert alert-{{ message.tags }}">
+              <button type="button" class="close" data-dismiss="alert">&times;</button>
+              <strong>{{ message.tags|capfirst }}.</strong> {{ message }}
+            </div>
+          {% endfor %}
+      </div>
+    </div>  
+  {% endif %}
+  <div class="row">
+    <div class="span9">
+      {% if list|length == 0 %}
+        <p class="muted">There are no files in this category.</p>
+      {% else %}
+        <table class="table table-striped table-condensed">
+          <tbody>
+            {% for offset, type, object in list %}
+              <tr>
+                {% if type == 'd' %}
+                  <td colspan="4" class="line-height-22" style="padding-left: {{ offset|add:'5'}}px;">
+                    <i class="icon-folder-open"></i> <strong>{{ object }}</strong>
+                  </td>
+                {% else %}
+                  <td class="line-height-22" style="padding-left: {{ offset|add:'5' }}px;"><i class="icon-file"></i> <a href="{% url 'files.views.get' file_id=object.id %}">{{ object.uploaded_file.name|basename}}</a></td>
+                  <td class="line-height-22">{{ object.uploaded_file.size|filesizeformat }}</td>
+                  <td class="line-height-22">{{ object.user.username }}</td>
+                  <td class="text-right"><div style="line-height: 22px; display: inline-block;">{{ object.date|date:'Y.m.d' }}</div>{% if object.user == request.user %} <a href="{% url 'files.views.delete' file_id=object.id %}" data-toggle="tooltip" title="You uploaded this file. Click to remove it." class="remove-link btn btn-mini btn-danger"><i class="icon-remove icon-white"></i></a>{% endif %}</td>
+                {% endif %}
+              </tr>
+            {% endfor %}
+          </tbody>
+        </table>
+      {% endif %}
+    </div>
+  </div>
+{% endblock %}
+
+{% block scripts_files %}
+  <script type="text/javascript">
+  	$(document).ready(function() {
+  		// Place tooltips on any remove buttons that exist.
+  		$('.remove-link').tooltip({placement: 'right'});
+  	});
+  </script>
+{% endblock %}

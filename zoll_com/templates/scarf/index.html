@@ -1,0 +1,428 @@
+{% extends 'scarf/base_scarf.html' %}
+
+{% block styles_scarf %}
+  <!-- Stylesheet for the Farbtastic color picker -->
+  <link rel="stylesheet" type="text/css" href="{{ STATIC_URL }}farbtastic/farbtastic.css">
+  
+  <!-- Stylesheet for enchanced modal dialog for bootstrap -->
+  <link rel="stylesheet" type="text/css" href="{{ STATIC_URL }}bootstrap_modal/css/bootstrap-modal.css">
+{% endblock %}
+
+{% block container_scarf %}
+  <p>Use the controls below to choose your location, colors, and temperatures to get started on your very own scarf.</p>
+  <form class="form-inline">
+    <fieldset>
+      <legend>Choose Your Data</legend>
+      <select id="inputCity">
+        {% for city in cities %}
+          <option value="{{city}}" {% if city == city_selected %}selected{% endif %}>{{ city }}</option>
+        {% endfor %}
+      </select>
+      <select id="inputYear">
+        {% for year in years %}
+          <option value="{{ year }}" {% if year == year_selected %}selected{% endif %}>{{ year }}</option>
+        {% endfor %}
+      </select>  
+    </fieldset>
+  </form>
+  <form id="numColorsForm" class="form-inline">
+    <fieldset>
+      <legend>Pick Some Colors</legend>
+      <input id="inputNumColors" type="text" placeholder="How Many Colors?" autocomplete="off">
+      <button type="submit" class="btn">Update</button>
+    </fieldset>
+  </form>
+  <div id="errorNumColors" class="alert alert-error alert-none">
+    <strong>That Won't Work.</strong> Please enter a number between {{ min_colors }} and {{ max_colors }}.
+  </div>
+  <form id="scarfForm">
+    <fieldset>
+      <p>Click or tap a color to change it. Use the text inputs to enter the temperature limits.</p>
+      <div class="well well-colors well-entry">
+        <div class="row-fluid unselectable cursor-default">
+          <div class="span12">
+            <p class="muted pull-left">Coolest</p>
+            <p class="pull-right muted">Warmest</p>
+          </div>
+        </div>
+        <div class="progress progress-clickable unselectable">
+            {% for c, cd, cl, tcc in colors %}
+              <a href="#colorPickerModal" id="colorBar{{ forloop.counter0 }}" data-toggle="modal" class="bar {{ tcc }}" data-index="{{ forloop.counter0 }}"
+                 style="width: {{ color_length }}%;
+                 background-color: #{{ c }};
+                 background-image: -moz-linear-gradient(top, #{{ c }}, #{{ cd }});
+                 background-image: -webkit-gradient(linear, 0 0, 0 100%, from(#{{ c }}), to(#{{ cd }}));
+                 background-image: -webkit-linear-gradient(top, #{{ c }}, #{{ cd }});
+                 background-image: -o-linear-gradient(top, #{{ c }}, #{{ cd }});
+                 background-image: linear-gradient(to bottom, #{{ c }}, #{{ cd }});
+                 background-repeat: repeat-x;
+                 filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#ff{{ c }}', endColorstr='#ff{{ cd }}', GradientType=0);">
+                <span id="labelSpan{{ forloop.counter0 }}" class="hidden-phone">{{ cl|default_if_none:'' }}</span>
+                <input type="hidden" id="inputColor{{ forloop.counter0 }}" class="scarf-color" value="#{{ c }}" autocomplete="off">
+                <input type="hidden" id="inputLabel{{ forloop.counter0 }}" class="scarf-label" value ="{{ cl|default_if_none:'' }}" autocomplete="off">
+              </a>
+            {% endfor %}
+        </div>
+        <div class="temperatures">
+          {% for t, tp in temps %}
+            <input type="text"  style="left: {{ tp }}%;" id="inputTemperature{{ forloop.counter0 }}" class="scarf-temperature" value="{{ t }}&#xb0;" placeholder="0&#xb0;" autocomplete="off">
+          {% endfor %}
+        </div>
+      </div>
+    </fieldset>
+    {% if message %}
+      <div class="alert alert-{{ message.0 }}">
+        <button type="button" class="close" data-dismiss="alert">&times;</button>
+        <strong>{{ message.1 }}</strong> {{ message.2 }}
+      </div>
+    {% endif %}
+    <div id="temperatureValidationAlert" style="display: none;" class="alert alert-error">
+      <strong>Arg!</strong> Temperatures must be numbers between {{ min_temperature }}&deg; and {{ max_temperature }}&deg;, and they must always increase going from left to right.
+    </div>
+    <button type="submit" class="btn btn-primary">Generate Scarf</button>
+    <a href="{% url 'scarf.views.index' %}" class="btn">Reset</a>
+  </form>
+  <!-- Color Name / Picker Dialog -->
+  <div id="colorPickerModal" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="colorPickerModalLabel" aria-hidden="true" data-width="225">
+    <div class="modal-header">
+      <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+      <h3 id="colorPickerModalLabel">Choose Color</h3>
+    </div>
+    <form id="colorModalForm" style="margin-bottom: 0px;">
+      <div class="modal-body">
+          <p class="muted">Click a color or enter the hex.</p>
+          <div class="row-fluid">
+            <div class="span12">
+              <div id="colorPicker"></div>
+            </div>
+          </div>
+          <div class="row-fluid">
+            <div class="span12">
+              <input id="modalInputColor" type="text" name="color" value="#000000"  autocomplete="off">
+            </div>
+          </div>
+          <div class="row-fluid">
+            <div class="span12">
+              <input id="modalInputLabel" type="text" name="colorlabel" placeholder="Pick a name for this color"  autocomplete="off">
+            </div>
+          </div>
+          <div id="modalValidationAlert" class="alert alert-error alert-no-close alert-no-bottom-margin"><strong>Eep!</strong> Invalid color or label.</div>
+          <input id="modalInputIndex" type="hidden" value="" name="index"  autocomplete="off">
+      </div>
+      <div class="modal-footer">
+        <button type="submit" class="btn btn-primary">OK</button>
+        <a class="btn" data-dismiss="modal" aria-hidden="true">Cancel</a>
+      </div>
+    </form>
+  </div>
+{% endblock %}
+
+{% block scripts_scarf %}
+  <script type="text/javascript" src="{{ STATIC_URL }}farbtastic/farbtastic.js"></script>
+  <script type="text/javascript" src="{{ STATIC_URL }}bootstrap_modal/js/bootstrap-modalmanager.js"></script>
+  <script type="text/javascript" src="{{ STATIC_URL }}bootstrap_modal/js/bootstrap-modal.js"></script>
+  <script type="text/javascript">
+  	$(document).ready(function() {
+		// Initialize the color picker. Farbtastic.js plugin.
+		var colorPicker = $.farbtastic('#colorPicker','#modalInputColor');
+		
+		// Hook up the submit event to the scarf-form form. When submitted, we
+		// validate entries. If anything is invalid, show a message.
+		$('#scarfForm').submit(function() {
+			
+  			// Grab the city and year that are currently selected. These don't need validation as 
+  			// the only way they are bad is if the user is mucking in the code.
+  			var city = $('#inputCity').val();
+  			var year = $('#inputYear').val();
+  			
+  			// Grab the colors and color labels. Again, no validation is required here as the only way they
+  			// are bad is if the user is mucking around in the code. We have previously validated the label
+  			// when it was created in the modal.
+  			var colors = $.makeArray($('.scarf-color').map(function() {
+  				return $(this).val().substring(1);
+  			}));
+  			var labels = $.makeArray($('.scarf-label').map(function() {
+  				return $(this).val();
+  			}));
+  			
+  			var urlColors = [];
+  			var len = colors.length;
+  			for (var i = 0; i < len; i++) {
+  				urlColors.push(colors[i] + '-' + labels[i]);
+  			}
+  			
+  			// Grab the temperatures. These need to be validated. The text field may or may
+  			// not have a degree symbol on the end. Other than that, they need to be numeric
+  			// and be in ascending order.
+  			var validationError = false;
+  			var temperatures = $.makeArray($('.scarf-temperature').map(function() {
+  				var fieldValue = $(this).val();
+  				if (fieldValue.substring(fieldValue.length - 1) == '\u00B0') { // Degree symbol
+  					fieldValue = fieldValue.substring(0, fieldValue.length - 1);
+  				}
+				return ($.isNumeric(fieldValue) && fieldValue.match(/^-?\d+(\.\d+)?$/g)) ? parseFloat(fieldValue) : '';
+  			}));
+  			if ($.inArray('', temperatures) != -1) {
+  				validationError = true;
+  			}
+  			var numTemps = temperatures.length;
+  			for (var i = 0; i < numTemps; i++) {
+  				if (temperatures[i] < {{ min_temperature }} || temperatures[i] > {{ max_temperature }}) {
+  					validationError = true;
+  				}
+  				if (i > 0 && temperatures[i] <= temperatures[i-1]) {
+  					validationError = true;
+  				}
+  			}
+  			
+  			// If an error was found, we show the alert that explains temperatures.  			
+  			if (validationError) {
+  				$('#temperatureValidationAlert').css('display', '');
+  				return false;
+  			}
+  			
+  			// Since all is well, sail forward with our faked "submission"
+  			var baseUrl = '{% url 'scarf.views.results' %}';
+  			var targetUrl = baseUrl + [city, year].join('/');
+  			
+  			var targetUrl = targetUrl + '/' + urlColors[0];
+  			for(var i = 0; i < numTemps; i++) {
+  				targetUrl = targetUrl + '/' + temperatures[i] + '/' + urlColors[i+1];
+  			}
+  			
+  			window.location.href = targetUrl;			
+  			return false;
+  		});		
+		
+		// Hook up some additional onclick for the progress bars that trigger the modal. Since
+		// twitter bootstrap doesn't expose event source on modal.show(), we have to capture it here.
+		// This logic populates fields appropriately.
+		var hookUpBarClick = function() {
+			$('.bar').unbind('click').click(function() {
+				var indexString = $(this).data('index');
+				
+				var curColor = $('#inputColor' + indexString).val();
+				var curLabel = $('#inputLabel' + indexString).val();
+				
+				$('#modalValidationAlert').css('display','none');
+				
+				$('#modalInputIndex').val(indexString);
+				$('#modalInputLabel').val(curLabel);
+				colorPicker.setColor(curColor);			
+			});	
+		};
+		hookUpBarClick();		
+		
+		// Hook up the submission logic for the color picker form. This validates the entries and spits
+		// an error if stuff is wrong. If values are correct, it will use the "index" input to replace the styles
+		// and values of the progress bar with the appropriate index.
+		var getBarStyle = function(color, numColors) {
+			var colorHex = color.substring(0,1) == '#' ? color.substring(1) : color;			
+			var darkColorHex = darkenColorHex(colorHex);			
+			var style = 'width: ' + (100.0 / numColors) + '%;';
+			style += 'background-color: #' + colorHex + ';';
+            style += 'background-image: -moz-linear-gradient(top, #' + colorHex + ', #' + darkColorHex + ');';
+           	style += 'background-image: -webkit-gradient(linear, 0 0, 0 100%, from(#' + colorHex + '), to(#' + darkColorHex + '));';
+            style += 'background-image: -webkit-linear-gradient(top, #' + colorHex + ', #' + darkColorHex + ');';
+            style += 'background-image: -o-linear-gradient(top, #' + colorHex + ', #' + darkColorHex + ');';
+            style += 'background-image: linear-gradient(to bottom, #' + colorHex + ', #' + darkColorHex + ');';
+            style += 'background-repeat: repeat-x;';
+            style += 'filter: progid:DXImageTransform.Microsoft.gradient(startColorstr=\'#ff' + colorHex + '\', endColorstr=\'#ff' + darkColorHex + '\', GradientType=0);';
+			return style;
+		};
+		
+		$('#colorModalForm').submit(function() {
+			// When this form is submitted, we check two things. First, the color
+			// input must be in the format /^#[0-9a-f]{6}$/i or we throw a color validation error.
+			// Second, the label must be in the format /^[a-z0-9 ]*$/i
+			var newColor = $('#modalInputColor').val();
+			var newLabel = $('#modalInputLabel').val();
+			var indexString = $('#modalInputIndex').val();
+			
+			var validationError = false;
+			if (!(newColor.match(/^#[0-9a-f]{6}$/i))) {
+				validationError = true;
+			}
+			if (!(newLabel.match(/^[a-z0-9 ]*$/i))) {
+				validationError = true;
+			}
+			if (validationError) {
+				$('#modalValidationAlert').css('display','');
+				return false;
+			}			
+			
+			var barStyle = getBarStyle(newColor, $('.bar').length);
+			$('#inputColor' + indexString).val(newColor);
+			$('#inputLabel' + indexString).val(newLabel);
+			$('#labelSpan' + indexString).html(newLabel);
+			$('#colorBar' + indexString).attr('style', barStyle);
+			
+			// We can sneakily use the foreground color of the #inputColor to determine
+			// if we should use white or black text in our progress bars, since the
+			// farbtastic plugin changes the foreground color automatically. We have to do
+			// this awful regular expression matching since the format of the color value is not
+			// normalized on many older browsers.
+			var foregroundColor = $('#modalInputColor').css('color');
+			var whiteClass = '{{ text_color_class_white }}';
+			var blackClass = '{{ text_color_class_black }}';
+			if( foregroundColor.match(/^(?:white|#fff(?:fff)?|rgba?\(\s*255\s*,\s*255\s*,\s*255\s*(,\s*1\s*)?\))$/i)) {
+				$('#colorBar' + indexString).removeClass(blackClass).addClass(whiteClass);
+			} else {
+				$('#colorBar' + indexString).removeClass(whiteClass).addClass(blackClass);
+			}
+			
+			$('#colorPickerModal').modal('hide');
+			
+			return false;
+		});
+		
+		// The final thing to hook up is the button to update the number of displayed colors.
+		// We do this by grabbing the current length, and that adding or removing a set of DOM nodes as required,
+		// as well as updating the various stored variables. We use javascript to do this all, since the DOM isn't 
+		// overcomplicated.
+		$('#numColorsForm').submit(function() {
+			// First, input validation.
+			var newNumColors = $('#inputNumColors').val();
+			var validationError = false;
+			if (!(newNumColors.match(/^\d+$/g))) {
+				validationError = true;
+			}
+			newNumColors = parseInt(newNumColors);
+			if (newNumColors < {{ min_colors }} || newNumColors > {{ max_colors }}){
+				validationError = true;
+			}
+			
+			if (validationError) {
+				$('#errorNumColors').removeClass('alert-none');
+				return false;
+			} else {
+				$('#errorNumColors').addClass('alert-none');
+			}
+			
+			// The new number is valid, so add / subtract as necessary.
+			var colorBars = $('.bar');
+			var temperatureInputs = $('.scarf-temperature');
+			var curNumColors = colorBars.length;
+			
+			if (newNumColors == curNumColors) {
+				// Nothing needs to be done here, but document this code path
+				// for clarity.
+				return false;
+			} else {
+				var newBarWidth = 100.0 / newNumColors;
+				if (newNumColors < curNumColors) {
+					// Remove extra bars, and then re-size all existing bars.
+					for (var i = curNumColors - 1; i >= 0; i--) {
+						if (i > newNumColors - 1) {
+							$(colorBars[i]).remove();
+							$(temperatureInputs[i-1]).remove();
+						} else {
+							$(colorBars[i]).css('width', newBarWidth + '%');
+							if (i > 0) {
+								$(temperatureInputs[i-1]).css('left', (newBarWidth * i) + '%');
+							}
+						}
+					}
+				} else {
+					// Add new bar(s) and input(s), and then resize all existing bars
+					// and reposition all inputs. We will instantiate stuff at the old
+					// bar widths and lefts to make the animations work nicely (I hope).
+					var progress = $('.progress');
+					var temperatures = $('.temperatures');
+					for (var i = curNumColors; i < newNumColors; i++) {
+						var colorHex = getNextColor();
+						progress.append('<a href="#colorPickerModal" id="colorBar' + i + '" data-toggle="modal" class="bar" data-index="' + i + '"' +
+             								'style="' + getBarStyle(colorHex, curNumColors) + '">' +
+            								'<span id="labelSpan' + i + '" class="hidden-phone"></span>' +
+            								'<input type="hidden" id="inputColor' + i + '" class="scarf-color" value="#' + colorHex + '" autocomplete="off">' +
+            								'<input type="hidden" id="inputLabel' + i + '" class="scarf-label" value ="" autocomplete="off">' +
+           								'</a>');
+           				temperatures.append('<input type="text"  style="left: ' + (100.0 / curNumColors * i) + '%;" id="inputTemperature' + i + '"' +
+           									'class="scarf-temperature" value="" placeholder="0&#xb0;" autocomplete="off">');
+					}
+					
+					// Re-initialize variables that hold arrays and re-bind click events as necessary.
+					hookUpBarClick();
+					
+					// Now that it all exists, do a 10ms delay timeout so that the DOM forces a redraw, which will then trigger our CSS animations
+					// when we change the left and width properties. Remember to re-query bars and inputs, since we have added to them.
+					setTimeout(function() {
+						$('.bar').each(function() {
+							$(this).css('width', newBarWidth + '%');
+						});
+						$('.scarf-temperature').each(function(index) {
+							$(this).css('left', (newBarWidth * (index + 1)) + '%');
+						});
+					},10);
+				}
+			}
+			
+			return false;
+		});
+		
+		/*
+		 * Now we'll define a few helper functions for colors. Basically, we need to be able to do two things with
+		 * colors in javascript. We need to be able to generate new colors according to the golden ratio (for pleasing colors),
+		 * and we need to be able to take hex colors and darken them.
+		 */
+		var goldenRatioConjugate = {{ golden_ratio_conjugate }};
+		var curH = Math.random();
+		var getNextColor = function() {
+			curH += goldenRatioConjugate;
+			curH %= 1;
+			
+			// HSV color conversion shamelessly stolen from http://www.csgnetwork.com/csgcolorsel4.html
+			var h = curH;
+			var s = 0.35;
+			var v = 0.95;
+			
+			var var_h = h * 6;
+			var var_i = Math.floor(var_h);
+			var var_1 = v * (1 - s);
+			var var_2 = v * (1 - s * (var_h - var_i));
+			var var_3 = v * (1 - s * (1 - (var_h - var_i)));
+			
+			var var_r = null;
+			var var_g = null;
+			var var_b = null;
+			
+			if (var_i == 0) {var_r = v; var_g = var_3; var_b = var_1}
+			else if (var_i == 1) {var_r = var_2; var_g = v; var_b = var_1}
+			else if (var_i == 2) {var_r = var_1; var_g = v; var_b = var_3}
+			else if (var_i == 3) {var_r = var_1; var_g = var_2; var_b = v}
+			else if (var_i == 4) {var_r = var_3; var_g = var_1; var_b = v}
+			else {var_r = v; var_g = var_1; var_b = var_2};
+			
+			var_r *= 255;
+			var_g *= 255;
+			var_b *= 255;
+			
+			var colorRGB = [var_r, var_g, var_b];
+			var colorHex = '';
+			
+			for (var i = 0; i < 3; i++) {
+				var t = Math.floor(colorRGB[i] * (1.0 - darkenFactor));
+				t = t.toString(16);
+				t = t.length == 1 ? '0' + t : t;
+				colorHex += t;
+			}
+			
+			return colorHex;
+		}
+		
+		var darkenFactor = {{ darken_factor }};
+		var darkenColorHex = function(colorHex) {
+			var colorRGB = [parseInt(colorHex.substring(0,2),16),parseInt(colorHex.substring(2,4),16),parseInt(colorHex.substring(4,6),16)];
+			var darkColorHex = '';
+			
+			for (var i = 0; i < 3; i++) {
+				var t = Math.floor(colorRGB[i] * (1.0 - darkenFactor));
+				t = t.toString(16);
+				t = t.length == 1 ? '0' + t : t;
+				darkColorHex += t;
+			}
+			return darkColorHex;
+		}		
+  	});
+  </script>
+{% endblock %}

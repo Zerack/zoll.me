@@ -1,0 +1,121 @@
+{% extends 'xbmc_photos/base_xbmc.html'  %}
+
+{% block styles_xbmc %}
+  <link rel="stylesheet" type="text/css" href="{{ STATIC_URL }}jquery_imgareaselect/css/imgareaselect-default.css">
+{% endblock %}
+
+{% block container_xbmc %}
+  {% if invalid_id %}
+    <div class="row">
+      <div class="span9">
+        <div class="alert alert-error">
+          <strong>Are You Sure?</strong> The photo you specified doesn't seem to exist. Check the address and try again, maybe?
+        </div>
+      </div>
+    </div>
+  {% else %}
+    <form id="editForm" method="POST" action="">
+      {% csrf_token %}
+      <input type="hidden" id="x1Input" name="crop_x1" value="{{ photo.crop_x }}">
+      <input type="hidden" id="y1Input" name="crop_y1" value="{{ photo.crop_y }}">
+      <input type="hidden" id="x2Input" name="crop_x2" value="{{ photo.crop_x|add:photo.crop_w }}">
+      <input type="hidden" id="y2Input" name="crop_y2" value="{{ photo.crop_y|add:photo.crop_h }}">
+      <div class="row">
+        <div class="span4">
+          <input id="titleInput" maxlength="25" type="text" name="title" value="{{ photo.title }}" placeholder="Photograph Title">
+        </div>
+        <div class="span5 text-right"> 
+          <a id="deleteButton" href="{% url 'xbmc_photos.views.delete' photo_id=photo.id %}" class="btn btn-danger"><i class="icon-trash icon-white"></i> Delete Photo</a>
+        </div>
+      </div>
+      <div class="row">
+        <div class="span9">
+            <div class="img-polaroid">
+              <img id="photo" src="{{ photo.file_original.url }}" alt>
+            </div>
+        </div>
+      </div>
+      <div class="row">
+        <div class="span9">
+          <input id="descriptionInput" type="text" maxlength="1000" name="description" class="input-block-level" value="{{ photo.description }}" placeholder="Photograph Description">
+        </div>
+      </div>
+      <div class="alert alert-error" id="validationAlert" style="display: none;">
+        <strong>Negatory.</strong> All fields are required. Make sure you have entered a title / description before submitting.
+      </div>
+      {% if flash %}
+        <div class="alert alert-{{ flash.0 }}">
+          <button type="button" class="close" data-dismiss="alert">&times;</button>
+          <strong>{{ flash.1 }}</strong> {{ flash.2 }}
+        </div>
+      {% endif %}
+      <div class="row">
+        <div class="span9">
+          <button type="submit" class="btn btn-primary">Update</button>
+          <a href="{{ cancel_url }}" class="btn">Cancel</a>
+        </div>
+      </div>
+    </form>
+  {% endif %}
+{% endblock %}
+
+{% block scripts_xbmc %}
+  <script type="text/javascript" src="{{ STATIC_URL }}jquery_imgareaselect/scripts/jquery.imgareaselect.js"></script>  
+  <script type="text/javascript">
+  	$(document).ready(function () {
+  		// We initialize the crop tool with the dimensions
+  		// of the existing crop, and prohibit it from dropping
+  		// below the minimum required size, which at this time is 
+  		// "half" of 1080p.
+		$('img#photo').imgAreaSelect({
+	        aspectRatio: '16:9',
+	        handles: true,
+	        imageHeight: {{ photo.height }},
+	        imageWidth: {{ photo.width }},
+	        minHeight: {{ min_height }},
+	        minWidth: {{ min_width }},
+	        persistent: true,
+	        x1: {{ photo.crop_x }},
+	        y1: {{ photo.crop_y }},
+	        x2: {{ photo.crop_x|add:photo.crop_w }},
+	        y2: {{ photo.crop_y|add:photo.crop_h }},
+	        show: true,
+	        onSelectEnd: function(img, selection) {
+	        	// This plugin has a bug where if the selection is
+	        	// at minimum dimension in one direction, it is possible
+	        	// because of rounding for the integer coordinates of
+	        	// the crop to result in 1 pixel too few. Check for that
+	        	// and adjust larger as needed.
+	        	if (selection.x2 - selection.x1 == {{ min_width }} - 1) {
+	        		if (selection.x2 + 1 < {{ photo.width }}) {
+	        			selection.x2 += 1;
+	        		} else {
+	        			selection.x1 -= 1;
+	        		}
+	        	}
+	        	if (selection.y2 - selection.y1 == {{ min_height }} - 1) {
+	        		if (selection.y2 + 1 < {{ photo.height }}) {
+	        			selection.y2 += 1;
+	        		} else {
+	        			selection.y1 -= 1;
+	        		}
+	        	}
+	        	$('#x1Input').val(selection.x1);
+	        	$('#y1Input').val(selection.y1);
+	        	$('#x2Input').val(selection.x2);
+	        	$('#y2Input').val(selection.y2);
+	        }
+	    });
+  		
+  		// Hook the form submission. All we're doing here is a bit of validation. The crop tool is
+  		// (ostensibly) not capable of going into an invalid state, so we'll just make sure that the
+  		// title and description are valid.
+  		$('#editForm').submit(function() {
+  			if ($('#titleInput').val() == '' || $('#descriptionInput').val() == '') {
+  				$('#validationAlert').css('display','');
+  				return false;
+  			}
+  		});
+	});
+  </script>
+{% endblock %}

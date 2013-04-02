@@ -1,0 +1,7 @@
+<div style="margin-top: 0" class="pagination pagination-right">
+  <ul>
+    {% for label, href, class in config %}
+      <li class="{{ class|default_if_none:'' }}"><a href="{{ href|default_if_none:'#' }}">{{ label }}</a></li>
+    {% endfor %}
+  </ul>
+</div>

@@ -1,0 +1,114 @@
+{% extends 'scarf/base_scarf.html' %}
+
+{% block styles_scarf %}
+  <!-- Defining gradient colors and styles for the colors that have been selected. -->
+  {% for c, cd, cl in colors %}
+    <style type="text/css">
+      .progress .bar-{{ c }} {
+         background-color: #{{ c }};
+         background-image: -moz-linear-gradient(top, #{{ c }}, #{{ cd }});
+         background-image: -webkit-gradient(linear, 0 0, 0 100%, from(#{{ c }}), to(#{{ cd }}));
+         background-image: -webkit-linear-gradient(top, #{{ c }}, #{{ cd }});
+         background-image: -o-linear-gradient(top, #{{ c }}, #{{ cd }});
+         background-image: linear-gradient(to bottom, #{{ c }}, #{{ cd }});
+         background-repeat: repeat-x;
+         filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#ff{{ c }}', endColorstr='#ff{{ cd }}', GradientType=0);
+      }
+    </style>
+  {% endfor %}
+{% endblock %}
+
+{% block container_scarf %}
+  {% if not valid %}
+    <div class="alert alert-{{ message.0 }}">
+        <strong>{{ message.1 }}</strong> {{ message.2 }}
+    </div>
+    <a href="{% url 'scarf.views.index' %}" class="btn btn-primary">Start Over &raquo;</a>
+  {% else %}
+    {% if no_data %}
+      <div class="alert alert-warning">
+        <strong>Hmmm&hellip;</strong> There doesn't seem to be any data available for {{ param_city }} in {{ param_year }}. This is probably due to the incompleteness of our data set or a year that is too far in the past.
+      </div> 
+    {% else %}
+      <p>Using <strong>{{ param_city }}</strong> temperature data from <strong>{{ data_start|date:'F j' }}<sup>{{ data_start|date:'S' }}</sup>, {{data_start|date:'Y' }}</strong> through <strong>{{ data_end|date:'F j' }}<sup>{{ data_end|date:'S' }}</sup>, {{data_end|date:'Y' }}</strong> and the colors you selected, your scarf was created. To save your design, <strong>bookmark</strong> this page.</p>
+    {% endif %}    
+    <div class="well well-colors well-legend unselectable cursor-default">
+      <div class="row-fluid">
+        <div class="span12">
+          <p class="muted pull-left">Coolest</p>
+          <p class="pull-right muted">Warmest</p>
+        </div>
+      </div>
+      <div class="progress">
+        {% for c, cd, cl, tcc in colors %}
+          <div class="bar bar-{{ c }} {{ tcc }}" style="width: {{ color_length }}%;">
+            <span class="hidden-phone">{{ cl|default_if_none:'' }}</span>
+          </div>
+        {% endfor %}
+      </div>
+      <div class="temperatures">
+        {% for t, tp in temperatures %}
+          <p style="left: {{ tp }}%;">{{ t }}&#xb0;</p>
+        {% endfor %}
+      </div>
+    </div>
+    {% if missing_labels %}
+    <div class="alert alert-info">
+      <button type="button" class="close" data-dismiss="alert">&times;</button>
+      <strong>Hey!</strong> You haven't given names to all of your colors. This will make your scarf harder to read! Remember to name your colors while choosing them on the selection page.
+    </div>    
+    {% endif %}
+    <a href="{% url 'scarf.views.index' city=param_city year=param_year temperature_config=param_temperature_config %}" class="btn margin-bottom-20">Edit Design &raquo;</a>
+    {% if not no_data %}
+      <form>
+        <legend>Start Knitting Here!</legend>
+        <p>Click or tap a row to mark your progress.</p>
+          {% for m, d in scarf_data %}
+          <div class="well well-month unselectable">
+            <h5 class="cursor-default">{{ m }}</h5>
+            {% for dt, t, c, cl, tcc, i in d %}
+              <div class="progress progress-day progress-clickable" data-index="{{ i }}" >
+                <div class="bar bar-{{ c }} bar-day {{ tcc }}">
+                  <!-- <div class="pull-left day-check day-check-hidden">&#x2713;</div>-->
+                  <div class="pull-left day-check {% if i < checked_row_index %}day-check-hidden{% endif %}"><i class="icon-ok {% if tcc = 'text-color-white' %}icon-white{% endif %}"></i></div>
+                  <div class="pull-left day-date">{{ dt|date:'j' }}<sup>{{ dt|date:'S' }}</sup></div>
+                  <div class="pull-left day-temp">({{ t }}&deg;)</div>
+                  <div class="pull-right day-label">{{ cl }}</div>
+                </div>
+              </div>
+            {% endfor %}
+          </div>
+        {% endfor %}
+      </form>
+    {% endif %}
+  {% endif %}
+{% endblock %}
+
+{% block scripts_scarf %}
+  <script src="{{ STATIC_URL }}jquery_cookie/jquery.cookie.js"></script>
+  <script type="text/javascript">
+  	$(document).ready(function() {
+
+  		var dayChecks = $('.day-check');
+  		var progresses = $('.well-month .progress-day');
+		var l = progresses.length;
+  		
+		progresses.click(function () {
+			// Grab the index of the click in the set, so we can determine what to show and hide.
+  			var clickIndex = parseInt($(this).data('index'));
+			
+  			// Mark the rows appropriately. We do this by changing CSS classes, which will trigger transitions.
+  			for (var i = 0; i < l; i++) {
+  				if (i < clickIndex) {
+  					$(dayChecks[i]).addClass('day-check-hidden');
+  				} else {
+  					$(dayChecks[i]).removeClass('day-check-hidden');
+  				}	
+  			}
+  			
+  			// Update the stored cookie for these settings, storing the number of rows completed.
+  			$.cookie('{{ checked_row_count_cookie }}', l - clickIndex, {expires: 365});
+		});
+  	});
+  </script>
+{% endblock %}

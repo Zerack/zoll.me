@@ -1,0 +1,35 @@
+{% extends 'xbmc_photos/base_xbmc.html'  %}
+
+{% block container_xbmc %}
+  {% if invalid_id %}
+    <div class="row">
+      <div class="span9">
+        <h4 class="section-header">Delete Photo</h4>
+        <p>There doesn't seem to be anything here. Please check the URL and try again.</p>
+      </div>
+    </div>
+  {% else %}
+    <div class="row">
+      <div class="span9">
+        <h4 class="section-header">Delete Photo</h4>
+        <p>Are you sure you want to delete this photo? This action cannot be undone.
+      </div>
+    </div>
+    <div class="row">
+      <div class="span9">
+        <div class="img-polaroid">
+          <img src="{{ photo.file_original.url }}" alt="">
+        </div>
+      </div>
+    </div>
+    <div class="row">
+      <div class="span9">
+        <form method="POST" action="">
+          {% csrf_token  %}
+          <button type="submit" class="btn btn-primary">Delete</button>
+          <a href="{% url 'xbmc_photos.views.edit' photo_id=photo.id %}" class="btn">Wait!</a>
+        </form>
+      </div>
+    </div>
+  {% endif %}
+{% endblock %}

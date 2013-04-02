@@ -1,0 +1,47 @@
+{% extends 'files/base_files.html' %}
+
+{% load files_extras %}
+
+{% block container_files %}
+  <div class="row">
+    <div class="span9">
+      <h4 class="section-header">Welcome!</h4>
+      <p>Welcome to the File Upload / Download application. You can browse everyone's public files by clicking Public Files in the navigation bar to the left, or work on your own private files using the My Private Files link.</p>
+    </div>
+  </div>
+  <div class="row">
+    <div class="span9">
+      <h4>Recent Uploads</h4>
+      <p>These files have recently been uploaded and are available to download.</p>
+      {% if recent_files|length == 0 %}
+        <p class="muted">There are no files available.</p>
+      {% else %}        
+        <table class="table table-striped table-condensed">
+          <tbody>
+            {% for recent_file in recent_files %}
+              <tr>
+                <td class="line-height-22"><i class="icon-file"></i> <a href="{% url 'files.views.get' file_id=recent_file.id %}">{{ recent_file.uploaded_file.name|basename }}</a></td>
+                <td class="line-height-22">{{ recent_file.uploaded_file.size|filesizeformat }}</td>
+                <td class="line-height-22">{{ recent_file.group.group|capfirst }}</td>
+                <td class="text-right line-height-22">{{ recent_file.date|date:'Y.m.d' }}</td>
+              </tr>
+            {% endfor %}
+          </tbody>
+        </table>
+      {% endif %}
+    </div>
+  </div>
+  {% if user.is_authenticated %}
+    <div class="row">
+      <div class="span9">
+        <h4 class="section-header">My Stats</h4>
+        <p>You currently have <strong>{{ public_count }}</strong> public file{{ public_count|pluralize }}, <strong>{{ private_count }}</strong> private file{{ private_count|pluralize }}, and <strong>{{ group_count }}</strong> file{{ group_count|pluralize }} in your groups.</p>
+        {% if user_groups|length > 0 %}
+          <p>You are a member of the following group(s): {% for group in user_groups %}<strong>{{ group.group }}</strong>{% if forloop.revcounter0 != 0 %}, {% endif%}{% endfor %}</p>
+        {% else %}
+          <p>You are not a member of any groups.</p>
+        {% endif %} 
+      </div>
+    </div>
+  {% endif %}
+{% endblock %}

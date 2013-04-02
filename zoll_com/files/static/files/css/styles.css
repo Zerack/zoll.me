@@ -1,0 +1,22 @@
+h4.section-header {
+	margin-top: 0px;
+}
+
+/*
+ * This line height is used to center text vertically
+ * in rows with btn-mini in it, and also to make other rows 
+ * have consistent styling across the application.
+ */
+td.line-height-22 {
+	line-height: 22px;
+}
+
+/*
+ * We have to override the bootstrap styles here,
+ * as their td selector is more specific than the
+ * text-right class built in, and so it doesn't
+ * work correctly.
+ */
+td.text-right {
+	text-align: right;
+}

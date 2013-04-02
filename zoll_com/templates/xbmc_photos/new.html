@@ -1,0 +1,141 @@
+{% extends 'xbmc_photos/base_xbmc.html'  %}
+
+{% block styles_xbmc %}
+  <link rel="stylesheet" type="text/css" href="{{ STATIC_URL }}bootstrap_fileupload/bootstrap-fileupload.css">
+{% endblock %}
+
+{% block container_xbmc %}
+  <div class="row">
+    <div class="span9">
+      <h4 class="section-header">New Photograph</h4>
+    </div>
+  </div>
+  <div class="row">
+    <div class="span9">
+      <form id="newForm" method="post" action="{% url 'xbmc_photos.views.new' %}" enctype="multipart/form-data">
+        {% csrf_token %}
+        <fieldset>
+          <label>Choose an image file to upload, and give it a title and description.</label>
+          <div class="row">
+            <div class="span4">
+              <input id="titleInput" type="text" name="title" maxlength="25" placeholder="Photograph Title">
+            </div>
+            <div class="span5 text-right">
+              <div class="fileupload fileupload-new" data-provides="fileupload" style="margin-bottom: 0px;">
+                <div class="input-append">
+                  <div class="uneditable-input span3"><i class="icon-file fileupload-exists"></i> <span class="fileupload-preview"></span></div><span class="btn btn-file"><span class="fileupload-new">Select file</span><span class="fileupload-exists">Change</span><input id="imageInput" type="file" name="image" autocomplete="off"/></span><a href="#" class="btn fileupload-exists" data-dismiss="fileupload">Remove</a>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div id="badFileTypeRow" class="row" style="display: none;">
+            <div class="span9">
+              <div class="alert alert-error" style="margin-bottom: 10px;">
+                <strong>Negative.</strong> That doesn't seem to be an image file. Please choose another file.
+              </div>
+            </div>
+          </div>
+          <div class="row">
+            <div class="span9">
+              <div id="previewContainer" class="img-polaroid img-preview">
+                <div class="preview-holder">Image Preview</div>
+                <div class="preview-error">Your Browser Does Not Support Image Preview</div>
+                <img id="previewImage" class="preview-img" style="filter: progid:DXImageTransform.Microsoft.AlphaImageLoader(sizingMethod=scale);">
+              </div>
+            </div>
+          </div>
+          <input id="descriptionInput" class="input-block-level" type="text" name="description" maxlength="1000" placeholder="Photograph Description">
+          <span class="help-block">You can crop your photo from the Edit Photos page after uploading.</span>
+            {% if error %}
+              <div class="alert alert-error">
+                <button type="button" class="close" data-dismiss="alert">&times;</button>
+                <strong>&lt;Explosion Noise&gt;</strong> That request made a mess in our server closet! Give it another try, and contact us if that doesn't work.
+              </div>
+            {% endif %}
+            {% if bad_image %}
+              <div class="alert alert-error">
+                <button type="button" class="close" data-dismiss="alert">&times;</button>
+                <strong>Not So Fast!</strong> The file you uploaded doesn't seem to be an image file. Please use another file.
+              </div>
+            {% endif %}
+            {% if bad_res %}
+              <div class="alert alert-error">
+                <button type="button" class="close" data-dismiss="alert">&times;</button>
+                <strong>So Close&hellip;</strong> The image file that you uploaded is too small. Images must have resolution of at least {{ min_width|floatformat:'0' }}x{{ min_height|floatformat:'0' }}.
+              </div>
+            {% endif %}
+            {% if success %}
+              <div class="alert alert-success">
+                <button type="button" class="close" data-dismiss="alert">&times;</button>
+                <strong>Victory!</strong> You image was successfully updated. View / Edit it by clicking <a href="{% url 'xbmc_photos.views.view' photo_id=photo.id %}">here</a>, or upload another photo.
+              </div>
+            {% endif %}
+            <div class="alert alert-error" id="validationAlert" style="display: none;">
+                <strong>Bad!</strong> All fields are required. Make sure you have selected an image and entered a title / description before submitting.
+            </div>
+          <button class="btn btn-primary" type="submit">Upload</button>
+          <a href="{% url 'xbmc_photos.views.index' %}" class="btn">Cancel</a>
+        </fieldset>
+      </form>
+    </div>
+  </div>
+{% endblock %}
+
+{% block scripts_xbmc %}
+  <script type="text/javascript" src="{{ STATIC_URL }}bootstrap_fileupload/bootstrap-fileupload.js"></script>
+  <script type="text/javascript">
+  	$(document).ready(function() {
+  		// Regular expression to recognize image files. Courtesy of mdn.mozillademos.org.
+  		var imgRegExp = /^(?:image\/bmp|image\/cis\-cod|image\/gif|image\/ief|image\/jpeg|image\/jpeg|image\/jpeg|image\/pipeg|image\/png|image\/svg\+xml|image\/tiff|image\/x\-cmu\-raster|image\/x\-cmx|image\/x\-icon|image\/x\-portable\-anymap|image\/x\-portable\-bitmap|image\/x\-portable\-graymap|image\/x\-portable\-pixmap|image\/x\-rgb|image\/x\-xbitmap|image\/x\-xpixmap|image\/x\-xwindowdump)$/i;
+  		
+  		// Validation flag indicating whether or not we have a valid selected image. Used for form submission. Easier to track here
+  		// since we're doing independent validation when the form changes.
+  		var validImageFile = false;
+  		
+  		// When the image input changes, we'll attempt to display a preview. If this succeeds, then we have a valid image file
+  		// and we'll show the preview, hiding all errors. If it fails (for any reason), show the appropriate image and flag that
+  		// we have an invalid image file.
+  		$('#imageInput').on('change', function(evt) {
+  			var file = evt.target.files !== undefined ? evt.target.files[0] : (evt.target.value ? { name: evt.target.value.replace(/^.+\\/, '') } : null);
+  			if (file) {
+  				if (!imgRegExp.test(file.type)) {
+  	  				$('#badFileTypeRow').css('display', '');
+  	  				$('#previewContainer').removeClass('img-preview-exists').removeClass('img-preview-error');
+  	  				validImageFile = false;
+  	  			} else {
+  					// File Reader may or may not exist, depending on browser. 
+  					// If it doesn't, just show the non-supported message.
+  					$('#badFileTypeRow').css('display', 'none');
+  					try {
+  						var reader = new FileReader();
+  						reader.onloadend = function(e) {
+  							$('#previewContainer').addClass('img-preview-exists').removeClass('img-preview-error');
+  							$('#previewImage').attr('src', e.target.result);
+  						}
+  						reader.readAsDataURL(file);
+  						validImageFile = true;
+  					} catch (error) {
+  						$('#previewContainer').addClass('img-preview-error');
+  						validImageFile = false;
+  					}
+  	  			}
+  			} else {
+  				// In this case, no file could be found.
+  				$('#previewContainer').removeClass('img-preview-exists').removeClass('img-preview-error');
+  				$('#badFileTypeRow').css('display', 'none');
+  				validImageFile = false;;
+  			}
+  		});
+  		
+  		// Hook the submit of the new form, and cancel submission if anything is invalid.
+  		// If everything passes, we let it go, and the default POST behavior will take
+  		// care of what we need.
+  		$('#newForm').submit(function() {
+  			if ($('#titleInput').val() == '' || $('#descriptionInput').val() == '' || !validImageFile) {
+  				$('#validationAlert').css('display','');	
+  				return false;
+  			}
+  		});
+  	});
+  </script>
+{% endblock %}

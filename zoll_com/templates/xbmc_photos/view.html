@@ -1,0 +1,39 @@
+{% extends 'xbmc_photos/base_xbmc.html'  %}
+
+{% block container_xbmc %}
+  {% if invalid_id %}
+    <div class="row">
+      <div class="span9">
+        <div class="alert alert-error">
+          <strong>Are You Sure?</strong> The photo you specified doesn't seem to exist. Check the address and try again, maybe?
+        </div>
+      </div>
+    </div>
+  {% else %}
+    <div class="row">
+      <div class="span5">
+        <h4 style="display: inline;">{{ photo.title }}</h4>{% if show_edit %} <a href="{% url 'xbmc_photos.views.edit' photo_id=photo.id %}?prev=view">Edit &raquo;</a>{% endif %}
+      </div>
+      <div class="span4">
+        <p class="text-right muted">{{ photo.date|date:'Y.m.d' }} - {{ photo.user }}</p>
+      </div>
+    </div>
+    <div class="row">
+      <div class="span9">
+        <div class="img-polaroid">
+          <img src="{{ photo.file_cropped.url }}?{{photo.edit_date|date:'YmdHis'}}" alt>
+        </div>
+      </div>
+    </div>
+    <div class="row">
+      <div class="span9">
+        <h4>About This Photo</h4>
+      </div>
+    </div>
+    <div class="row">
+      <div class="span9">
+        <p>{{ photo.description }}{% if show_edit %} <a href="{% url 'xbmc_photos.views.edit' photo_id=photo.id %}?prev=view">Edit &raquo;</a></p>{% endif %}
+      </div>
+    </div>
+   {% endif %}
+{% endblock %}

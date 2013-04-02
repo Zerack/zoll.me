@@ -1,0 +1,22 @@
+{% extends "base.html" %}
+
+{% block styles %}
+
+{% endblock %}
+
+{% block container %}
+  <div class='hero-unit'>
+    <h1>I'm Jim.</h1>
+    <p>Software Development is my passion, and I've collected some of my completed projects here. My resume is available as well, so please take a look around; I'm always looking for comments!</p>
+    <p><a href="{% url 'zoll_com.views.projects' %}" class="btn btn-primary btn-large">See All Projects &raquo;</a></p>
+  </div>
+  <div class="row">
+    {% for app in apps|slice:apps_slice %}
+    <div class="span4">
+      <h2>{{ app.name }}</h2>
+      <p>{{ app.description }}</p>
+      <p><a class="btn" href="{% url app.default_view %}">{{ app.button_label|default:'View Project'}} &raquo;</a></p>
+    </div>
+    {% endfor %}
+  </div>
+{% endblock %}

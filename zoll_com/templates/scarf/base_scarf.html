@@ -1,0 +1,21 @@
+{% extends 'base.html' %}
+
+{% block styles %}
+  <!-- Local stylesheet(s) -->
+  <link rel="stylesheet" type="text/css" href="{{ STATIC_URL }}scarf/css/styles.css">
+  
+  {% block styles_scarf %}{% endblock%}
+{% endblock %}
+
+{% block container %}
+  <div class="page-header">
+    <h1><img src="{{ STATIC_URL}}scarf/img/ravelry.png"> My Year In Temperatures</h1>
+  </div>
+  {% block container_scarf %}{% endblock %}
+{% endblock %}
+
+{% block scripts %}
+  {% block scripts_scarf %}{% endblock%}
+{% endblock %}
+
+{% block footer_right %}<a target="_blank" href="http://academic.udayton.edu/kissock/http/Weather/citylistUS.htm">Univ. of Dayton Temperature Data</a> | <a href="http://www.ravelry.com/patterns/library/my-year-in-temperatures--scarf-" target="_blank">Original Pattern (Kristen Cooper)</a> |{% endblock %}

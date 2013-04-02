@@ -1,0 +1,18 @@
+{% extends 'base_form.html' %}
+
+{% block form %}
+  <form class="form-simple" method="post" action="{% url 'django.contrib.auth.views.login' %}">
+    {% csrf_token %}
+    <h2 class="form-simple-heading">Please sign in</h2>
+    <input type="text" name="username" class="input-block-level" placeholder="Email">
+    <input type="password" name="password" class="input-block-level" placeholder="Password">
+    {% if form.errors %}
+    <div class="form-simple-error">
+      <div>Invalid email / password.</div>
+      <a href="/account/password_reset" class="pull-right">Forgot?</a>
+    </div>
+    {% endif %}
+    <button class="btn btn-large btn-primary" type="submit">Sign in</button>
+    <input type="hidden" name="next" value="{{ next|default:'/' }}" />
+  </form>
+{% endblock %}

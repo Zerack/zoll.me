@@ -1,0 +1,22 @@
+{% extends 'base.html'  %}
+
+{% block styles %}
+  <link rel="stylesheet" type="text/css" href="{{ STATIC_URL }}xbmc_photos/css/styles.css">
+  
+  
+  {% block styles_xbmc %}{% endblock %}
+{% endblock %}
+
+{% block container %}
+  <div class="page-header">
+    <h1><img src="{{ STATIC_URL }}xbmc_photos/img/xbmc_logo.png" alt=""> XBMC Photos</h1>
+  </div>
+  <div class="row">
+    <div class="span3">{% include 'xbmc_photos/snippets/nav.html'%}</div>
+    <div class="span9">{% block container_xbmc %}{% endblock %}</div>
+  </div>
+{% endblock %}
+
+{% block scripts %}
+  {% block scripts_xbmc %}{% endblock %}
+{% endblock %}

@@ -1,0 +1,39 @@
+{% extends 'xbmc_photos/base_xbmc.html'  %}
+
+{% block container_xbmc %}
+  <div class="row">
+    <div class="span9">
+      <h4 class="section-header section-header-pagination">{% if role == 'view' %}View All{% else %}Edit My{% endif%} Photos</h4>
+    </div>
+  </div>
+  {% if photos|length > 0 %}
+    <div class="row">
+      <div class="span4">
+        <p class="padding-top-5">{% if role == 'view' %}Click a photo for details and the full size version.{% else %}Click a photo to edit or delete it.{% endif %}</p>
+      </div>
+      <div class="span5">{% include 'xbmc_photos/snippets/pagination.html' with config=pagination only %}</div>
+    </div>
+    <div class="row">
+      <div class="span9">
+        <ul class="thumbnails">
+          {% for photo in photos %}
+            <li class="span3">
+              <a href="{% if role == 'view' %}{% url 'xbmc_photos.views.view' photo_id=photo.id %}{% else %}{% url 'xbmc_photos.views.edit' photo_id=photo.id %}?prev=edit&page={{ page }}{% endif %}" class="thumbnail">
+                <img src="{{ photo.file_thumb.url }}?{{photo.edit_date|date:'YmdHis'}}" alt>
+              </a>
+            </li>
+          {% endfor %}        
+        </ul>
+      </div>
+    </div>
+    <div class="row">
+      <div class="span9">{% include 'xbmc_photos/snippets/pagination.html' with config=pagination only %}</div>
+    </div>
+  {% else %}
+    <div class="row">
+      <div class="span9">
+        <p class="muted">There doesn't seem to be anything here.</p>
+      </div>
+    </div>
+  {% endif %}
+{% endblock %}

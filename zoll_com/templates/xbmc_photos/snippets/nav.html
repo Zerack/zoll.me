@@ -1,0 +1,6 @@
+<ul class="nav nav-pills nav-stacked">
+  <li {% if active_nav == 'home' %}class="active"{% endif %}><a href="{% url 'xbmc_photos.views.index' %}"><i class="icon-home"></i> Home</a></li>
+  <li {% if active_nav == 'view' %}class="active"{% endif %}><a href="{% url 'xbmc_photos.views.view_all' page='1' %}"><i class="icon-list"></i> View Photos</a></li>
+  <li {% if perms.xbmc_photos.change_photo %}{% if active_nav == 'edit' %}class="active"{% endif %}{% else %}class="disabled"{% endif %}><a href="{% if perms.xbmc_photos.change_photo %}{% url 'xbmc_photos.views.edit_all' page='1'%}{% else %}#{% endif %}"><i class="icon-edit"></i> Edit Photos</a></li>
+  <li {% if perms.xbmc_photos.add_photo %}{% if active_nav == 'new' %}class="active"{% endif %}{% else %}class="disabled"{% endif %}><a href="{% if perms.xbmc_photos.add_photo %}{% url 'xbmc_photos.views.new' %}{% else %}#{% endif %}"><i class="icon-plus"></i> New Photo</a></li>
+</ul>

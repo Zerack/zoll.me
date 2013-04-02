@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="en">
+  <!-- This document is a heavily edited version of one of Twitter Bootstrap's templates. -->
+  <head>
+    <meta charset="utf-8">
+    <title>James Zoll - WebDev</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="I'm Jim, and I write web applications. Here's some of my stuff.">
+    <meta name="author" content="James Zoll">
+    <meta name=”robots” content=”index,follow” />
+
+    <!-- CSS Styles. A few of these are here since they are only used by the main template, and
+         having them here reduces the number of requests that need to be made. -->
+    <link href="{{ STATIC_URL }}bootstrap/css/bootstrap.css" rel="stylesheet">
+    <link href="{{ STATIC_URL }}bootstrap/css/bootstrap-responsive.css" rel="stylesheet">
+    <link href="{{ STATIC_URL }}zoll_com/css/styles.css" rel="stylesheet">
+    {% block styles %}{% endblock %}
+
+    <!-- HTML5 shim, for IE6-8 support of HTML5 elements -->
+    <!--[if lt IE 9]>
+      <script src="//html5shim.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+
+    <!-- Fav and touch icons -->
+    <link rel="shortcut icon" href="{{ STATIC_URL }}favicon.ico">
+    <link rel="apple-touch-icon-precomposed" sizes="144x144" href="{{ STATIC_URL}}apple-touch-icon-144-precomposed.png">
+    <link rel="apple-touch-icon-precomposed" sizes="114x114" href="{{ STATIC_URL}}apple-touch-icon-114-precomposed.png">
+    <link rel="apple-touch-icon-precomposed" sizes="72x72" href="{{ STATIC_URL}}apple-touch-icon-72-precomposed.png">
+    <link rel="apple-touch-icon-precomposed" href="{{ STATIC_URL}}apple-touch-icon-57-precomposed.png">
+  </head>
+
+  <body>
+
+    <div class="navbar navbar-inverse navbar-fixed-top">
+      <div class="navbar-inner">
+        <div class="container">
+          <button type="button" class="btn btn-navbar" data-toggle="collapse" data-target=".nav-collapse">
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+          </button>
+          <a class="brand" href="{% url 'zoll_com.views.index' %}">James Zoll</a>
+          <div class="nav-collapse collapse">
+            <ul class="nav">
+              <li {% if active_nav == 'index' %}class="active"{% endif %}><a href="{% url 'zoll_com.views.index' %}">Home</a></li>
+              <li {% if active_nav == 'resume' %}class="active"{% endif %}><a href="{% url 'zoll_com.views.resume' %}">Resume</a></li>
+              <li {% if active_nav == 'about' %}class="active"{% endif %}><a href="{% url 'zoll_com.views.about' %}">About Me</a></li>
+              <li class="dropdown{% if active_nav == 'projects' %} active{% endif %}">
+                <a href="#" class="dropdown-toggle" data-toggle="dropdown">My Projects <b class="caret"></b></a>
+                <ul class="dropdown-menu">
+                  <li><a href="{% url 'zoll_com.views.projects' %}">All Projects</a></li>
+                  <li class="divider"></li>
+                  {% for app in apps %}
+                    <li><a href="{% url app.default_view %}">{{ app.name }}</a></li>
+                  {% endfor %}
+                </ul>
+              </li>
+            </ul>
+            {% if user.is_authenticated %}
+            <form method="post" action="{% url 'django.contrib.auth.views.logout' %}" class="navbar-form pull-right">
+              {% csrf_token %}
+              <div class="user-welcome">Welcome, <b>{{ user.username }}</b></div>
+              <a class="btn" href="{% url 'django.contrib.auth.views.password_change' %}">Account</a>
+              <button type="submit" class="btn">Sign out</button>
+              <input type="hidden" name="next" value="{{ request.get_full_path }}">
+            </form>
+            {% else %}
+            <form method="post" action="{% url 'django.contrib.auth.views.login' %}" class="navbar-form pull-right">
+              {% csrf_token %}
+              <input class="span2" name="username" type="text" placeholder="Email">
+              <input class="span2" name="password" type="password" placeholder="Password">
+              <button type="submit" class="btn">Sign in</button>
+              <input type="hidden" name="next" value="{{ request.get_full_path }}">
+            </form>
+            {% endif %}
+          </div><!--/.nav-collapse -->
+        </div>
+      </div>
+    </div>
+
+    <div class="container">
+      {% block container %}{% endblock %}            
+      <hr>
+      <footer>
+          <div class="row muted">
+            <div class="span6">
+              <p><span>&copy; James D. Zoll {% now "Y" %} </span>{% block footer_left %}{% endblock %}</p>
+            </div>
+            <div class="span6 text-right">
+              <p>{% block footer_right %}{% endblock %}<span> Icons by <a href="http://www.glyphicons.com">Glyphicons</a></span></p>
+            </div>
+          </div>
+      </footer>
+
+    </div> <!-- /container -->
+
+    <!-- Script elements go at the end so that the DOM can load more quickly -->
+    <script src="//code.jquery.com/jquery-1.9.1.min.js"></script>
+    <script src="{{ STATIC_URL }}bootstrap/js/bootstrap.min.js"></script>
+    {% block scripts %}{% endblock %}
+  </body>
+</html>

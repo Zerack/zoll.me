@@ -1,0 +1,13 @@
+{% extends "rss/base_rss.html" %}
+
+{% block container_rss %}
+  <div class="row">
+    {% for feed in feeds %}
+      <div class="span4">
+        <h4>{{ feed.label }}</h4>
+        <p>{{ feed.description }}</p>
+        <p><a class="btn" href="{% url 'rss.views.feed' feed_name=feed.name %}">View Feed &raquo;</a></p>
+      </div>
+    {% endfor %}
+  </div>
+{% endblock %}

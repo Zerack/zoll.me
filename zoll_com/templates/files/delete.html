@@ -1,0 +1,33 @@
+{% extends 'files/base_files.html' %}
+
+{% load files_extras %}
+
+{% block styles_files %}
+  <link rel="stylesheet" type="text/css" href="{{ STATIC_URL }}bootstrap_fileupload/bootstrap-fileupload.css">
+{% endblock %}
+
+{% block container_files %}
+  <div class="row">
+    <div class="span9">
+      <h4 class="section-header">Delete {{ active_nav|capfirst }} File</h4>
+      <p>Deleting this file will remove it permanently. This action cannot be undone.</p>
+      <table class="table table-striped table-condensed">
+        <tbody>
+          <tr>
+            <td class="line-height-22"><i class="icon-file"></i> {{ db_file.uploaded_file.name|basename}}</a></td>
+            <td class="line-height-22">{{ db_file.uploaded_file.size|filesizeformat }}</td>
+            <td class="line-height-22">{{ db_file.user.username }}</td>
+            <td  class="line-height-22 text-right">{{ db_file.date|date:'Y.m.d' }}</td>
+          </tr>
+        </tbody>
+      </table>
+      <form method="POST" action="" enctype="multipart/form-data">
+        <fieldset>
+          {% csrf_token %}
+          <button type="submit" class="btn btn-primary"><i class="icon-remove icon-white"></i> Delete</button>
+          <a href="{% url 'files.views._list' group=db_file.group.group %}" class="btn">Cancel</a>
+        </fieldset>
+      </form>
+    </div>
+  </div>
+{% endblock %}

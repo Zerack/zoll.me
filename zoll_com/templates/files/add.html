@@ -1,0 +1,105 @@
+{% extends 'files/base_files.html' %}
+
+{% block styles_files %}
+  <link rel="stylesheet" type="text/css" href="{{ STATIC_URL }}bootstrap_fileupload/bootstrap-fileupload.css">
+{% endblock %}
+
+{% block container_files %}
+  <div class="row">
+    <div class="span9">
+      <h4 class="section-header">Add {{ active_nav|capfirst }} File</h4>
+      <p>Select a directory path and a file to upload below. {% if active_nav == 'public' %}This file will be publicly available to all users.{% elif active_nav == 'private' %}This file will be available only to you.{% else %}This file will be available to all users in the <strong>{{ active_nav }}</strong> group.{% endif %}</p>
+      <form id="formAdd" method="POST" action="" enctype="multipart/form-data">
+        {% csrf_token %}
+        <fieldset>
+          <legend></legend>
+          <div id="groupFilePath" style="margin-top: 0px;" class="control-group">
+            <label for="inputFilePath">Where should the file go? <span class="muted">Leave this field blank to put the file at the highest level.</span></label>
+            <input id="inputFilePath" class="input-xxlarge" name="file_path" type="text" placeholder="Ex: 'My Pictures/Vacation/Water Park'">
+            <div id="helpFilePath" style="display: none" class="help-block">Use "/" to separate directories. Paths cannot include the characters <span class="monospace">\?*:|"&lt;&gt;.\'</span></div>
+          </div>
+          <div id="groupNewFile" style="margin-top: 0px;" class="control-group">
+            <div style="margin-bottom: 0px;" class="fileupload fileupload-new" data-provides="fileupload">
+              <div class="input-append">
+                <div class="uneditable-input span3"><i class="icon-file fileupload-exists"></i> <span class="fileupload-preview"></span></div><span class="btn btn-file"><span class="fileupload-new">Select file</span><span class="fileupload-exists">Change</span><input id="inputNewFile" type="file" name="new_file" autocomplete="off"/></span><a href="#" class="btn fileupload-exists" data-dismiss="fileupload">Remove</a>
+              </div>
+            </div>
+            <div id="helpNewFile" style="display: none" class="help-block">Please choose a file.</div>
+          </div>
+          <button type="submit" class="btn btn-primary"><i class="icon-upload icon-white"></i> Upload File</button>
+          <a href="{% url 'files.views._list' group=active_nav %}" class="btn">Cancel</a>
+        </fieldset>
+      </form>
+    </div>
+  </div>
+{% endblock %}
+
+{% block scripts_files %}
+    <script type="text/javascript" src="{{ STATIC_URL }}bootstrap_fileupload/bootstrap-fileupload.js"></script>
+    <script type="text/javascript">
+    	$(document).ready(function() {
+    		// Hook up the submit event on the form. If the path appears invalid or the file
+    		// hasn't been selected, don't submit and display appropriate error messages to
+    		// the user.
+    		$('#formAdd').submit(function() {
+    			var pathInvalid = false;
+    			var fileInvalid = false;
+    			var filePath = $('#inputFilePath').val().trim();
+    			if (!(filePath === '')) {
+    				// The filepath cannot contain characters that can
+    				// cause problems on some systems.
+    				if (filePath.match(/[\\?*:|"<>.\']/) !== null) {
+    					pathInvalid = true;
+    				}
+    				filePath = filePath.split('/');
+    				var l = filePath.length;
+    				for (var i = 0; i < l; i++) {
+    					if (filePath[i] !== filePath[i].trim()) {
+    						pathInvalid = true;
+    					}
+    					if (filePath[i] === '') {
+    						pathInvalid = true;
+    					}
+    				}
+    			}
+    			// File path checking is done. Show the correct filepath status.
+    			showPathStatus(pathInvalid);
+    			
+    			var fileInput = $('#inputNewFile').val(); 
+    			if (fileInput === '') {
+    				fileInvalid = true;
+    			}
+    			// File checking is done. Show the correct file status.
+    			showFileStatus(fileInvalid);
+    			
+    			// Everything is done. If both inputs are valid, we can submit.
+    			// Otherwise, we don't submit.
+    			return !(pathInvalid || fileInvalid);
+    		});
+    		
+    		var showPathStatus = function(invalid) {
+    			// If the area is invalid, set classes and show the help. 
+    			// Otherwise, the opposite.
+    			if (invalid) {
+    				$('#groupFilePath').addClass('error');
+    				$('#helpFilePath').css('display','');
+    			} else {
+    				$('#groupFilePath').removeClass('error');
+    				$('#helpFilePath').css('display','none');
+    			}
+    		};
+    		
+    		var showFileStatus = function(invalid) {
+    			// If the area is invalid, set classes and show the help. 
+    			// Otherwise, the opposite.
+    			if (invalid) {
+    				$('#groupNewFile').addClass('error');
+    				$('#helpNewFile').css('display','');
+    			} else {
+    				$('#groupNewFile').removeClass('error');
+    				$('#helpNewFile').css('display','none');
+    			}
+    		};
+    	});
+    </script>
+{% endblock %}

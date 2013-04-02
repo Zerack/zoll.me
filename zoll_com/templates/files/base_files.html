@@ -1,0 +1,21 @@
+{% extends 'base.html'  %}
+
+{% block styles %}
+  <link rel="stylesheet" type="text/css" href="{{ STATIC_URL }}files/css/styles.css">  
+  
+  {% block styles_files %}{% endblock %}
+{% endblock %}
+
+{% block container %}
+  <div class="page-header">
+    <h1><img src="{{ STATIC_URL }}files/img/files_logo.png" alt=""> File Upload / Download</h1>
+  </div>
+  <div class="row">
+    <div class="span3">{% include 'files/snippets/nav.html'%}</div>
+    <div class="span9">{% block container_files %}{% endblock %}</div>
+  </div>
+{% endblock %}
+
+{% block scripts %}
+  {% block scripts_files %}{% endblock %}
+{% endblock %}

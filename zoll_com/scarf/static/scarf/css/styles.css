@@ -1,0 +1,182 @@
+/*
+ * Styles common to both the selection and results page.
+ */
+  
+.well-colors .row-fluid .span12 {
+	min-height: auto;
+}
+ 
+.well-colors .row-fluid .span12 p {
+	margin: 0;
+}
+
+.well-colors .progress {
+	margin-bottom: 0;
+}
+
+.well-colors .progress .bar {
+	font-weight: bold;
+}
+
+.well-colors .temperatures {
+	position: relative;
+}
+
+.progress .text-color-white {
+	color: #FFFFFF;
+	text-shadow: 0px -1px 0px rgba(0, 0, 0, 0.25)
+}
+
+.progress .text-color-black {
+	color: #333333;
+	text-shadow: 0px -1px 0px rgba(255, 255, 255, 0.25)
+}
+
+.progress-clickable {
+	cursor: pointer;
+}
+
+.progress-clickable .bar:hover {
+	-webkit-box-shadow: inset 0 0px 3px 3px rgba(0, 0, 0, 0.15);
+       -moz-box-shadow: inset 0 0px 3px 3px rgba(0, 0, 0, 0.15);
+            box-shadow: inset 0 0px 3px 3px rgba(0, 0, 0, 0.15);
+}
+
+.unselectable {
+	-webkit-user-select: none;
+	   -moz-user-select: none;
+	    -ms-user-select: none;
+	        user-select: none;
+}
+
+.cursor-default {
+	cursor: default;
+}
+ 
+/*
+ * Styles for the selection page only.
+ */
+.alert-inline {
+	display: inline-block;
+	margin: 0;
+}
+
+.alert-none {
+	display: none;
+}
+
+.alert-no-close {
+	padding-right: 14px;
+}
+
+.alert-no-bottom-margin {
+	margin-bottom: 0px;
+}
+
+.well-entry .progress {
+	margin-bottom: 3px;
+}
+
+.well-entry .progress a:hover, .well-entry .progress a:active, .well-entry .progress a:visited, .well-entry .progress a:focus {
+	text-decoration: none;
+	outline: none;
+}
+
+.well-entry .temperatures {
+	height: 30px;
+	overflow: hidden;
+}
+
+.well-entry .temperatures input {
+	position: absolute;
+	display: block;
+	width: 44px;
+	text-align: center;
+	margin: 0px 0px 0px -29px;
+	-webkit-transition: left 0.6s ease;
+	   -moz-transition: left 0.6s ease;
+		 -o-transition: left 0.6s ease;
+			transition: left 0.6s ease;
+}
+ 
+#colorPickerModal #colorPicker {
+	margin-bottom: 20px;
+}
+
+#colorPickerModal #modalInputColor {
+	width: 60px;
+}
+
+#colorPickerModal #modalInputLabel {
+	width: 181px;
+}
+
+#temperatureValidationAlertContainer {
+	display: none;
+}
+
+/*
+ * Styles for the results page only.
+ */
+.well-legend .temperatures {
+	height: 20px;	
+	position: relative;
+}
+
+.well-legend .temperatures p {
+	position: absolute;
+	display: block;
+	width: 50px;
+	text-align: center;
+	margin: 0px 0px 0px -25px;
+	font-weight: bold;
+}
+
+.well-month h5 {
+	margin-top: 0;
+}
+
+.well-month .progress-day {
+	margin: 0 0 3px 0;
+}
+
+.well-month .progress-day .bar-day {
+	width: 100%;
+	font-weight: bold;
+	text-align: left;
+}
+
+.well-month .progress-day .bar-day .day-check {
+	width: 30px;
+	text-align: center;
+}
+
+.progress .text-color-white .day-check {
+	text-shadow: 1px 1px 0px rgba(0, 0, 0, 0.25),
+				 1px -1px 0px rgba(0, 0, 0, 0.25),
+				 -1px 1px 0px rgba(0, 0, 0, 0.25),
+				 -1px -1px 0px rgba(0, 0, 0, 0.25);
+}
+
+.progress .text-color-black .day-check {
+	text-shadow: 1px 1px 0px rgba(255, 255, 255, 0.25),
+				 1px -1px 0px rgba(255, 255, 255, 0.25),
+				 -1px 1px 0px rgba(255, 255, 255, 0.25),
+				 -1px -1px 0px rgba(255, 255, 255, 0.25);
+}
+
+.well-month .progress-day .bar-day .day-check-hidden {
+	visibility: hidden;
+}
+
+.well-month .progress-day .bar-day .day-date {
+	width: 30px;
+}
+
+.well-month .progress-day .bar-day .day-label {
+	margin-right: 30px;
+}
+
+.margin-bottom-20 {
+	margin-bottom: 20px;
+}
