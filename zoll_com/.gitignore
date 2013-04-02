@@ -2,3 +2,4 @@
 .pydevproject
 zoll_com/settings.py
 media_dev/
+*.pyc
