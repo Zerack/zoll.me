@@ -1,5 +1,5 @@
 .project
 .pydevproject
-zoll_com/settings.py
+zoll_com/local_settings.py
 media_dev/
 *.pyc
