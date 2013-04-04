@@ -20,8 +20,10 @@
     </div>
     <div class="row">
       <div class="span9">
-        <div class="img-polaroid">
+        <div class="img-polaroid" style="position: relative;">
           <img src="{{ photo.file_cropped.url }}?{{photo.edit_date|date:'YmdHis'}}" alt>
+          {% if prev_photo %}<a class="carousel-control left" href="{% url 'xbmc_photos.views.view' photo_id=prev_photo.id %}" style="top: 50%;">&lsaquo;</a>{% endif %}
+          {% if next_photo %}<a class="carousel-control right" href="{% url 'xbmc_photos.views.view' photo_id=next_photo.id %}" style="top: 50%;">&rsaquo;</a>{% endif %}
         </div>
       </div>
     </div>

@@ -80,6 +80,24 @@ def view(request, photo_id):
     except Photo.DoesNotExist:
         # An invalid ID was given. Replace all photo view content with an error message.
         td['invalid_id'] = True
+        
+    # Now, determine where the PREV and NEXT links should go. We just need the IDs of the 
+    # previously and next uploaded file. In the case of the first / last image, we loop.
+    try:
+        td['next_photo'] = Photo.objects.filter(date__gt=td['photo'].date).order_by('date').all()[0]
+    except IndexError:
+        try:
+            td['next_photo'] = Photo.objects.order_by('date').all()[0]
+        except IndexError:
+            td['next_photo'] = None
+            
+    try:
+        td['prev_photo'] = Photo.objects.filter(date__lt=td['photo'].date).order_by('-date').all()[0]
+    except IndexError:
+        try:
+            td['prev_photo'] = Photo.objects.order_by('-date').all()[0]
+        except IndexError:
+            td['prev_photo'] = None
     
     return render_to_response('xbmc_photos/view.html', td, context_instance = RequestContext(request))
 
