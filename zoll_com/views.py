@@ -20,7 +20,7 @@ from django.template import RequestContext
 INDEX_NUM_APPS = 3
 
 def index(request):
-    return render_to_response('zoll_com/index.html', {'active_nav':'index', 'apps_slice': ':{0}'.format(INDEX_NUM_APPS)}, context_instance = RequestContext(request))
+    return render_to_response('zoll_com/index.html', {'active_nav':'index', 'apps_slice': '1:{0}'.format(INDEX_NUM_APPS + 1)}, context_instance = RequestContext(request))
 
 def resume(request):
     return render_to_response('zoll_com/resume.html', {'active_nav':'resume'}, context_instance = RequestContext(request))

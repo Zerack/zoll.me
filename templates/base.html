@@ -44,7 +44,7 @@
             <span class="icon-bar"></span>
             <span class="icon-bar"></span>
           </button>
-          <a class="brand" href="{% url 'zoll_com.views.index' %}">James Zoll</a>
+          <a class="brand" href="{% url 'zoll_com.views.index' %}" style="padding-top: 5px; padding-bottom: 5px; padding-right: 10px;"><img style="height: 30px; width: 30px;" src="{{ STATIC_URL }}zoll_com/img/logo.png" /></a>
           <div class="nav-collapse collapse">
             <ul class="nav">
               <li {% if active_nav == 'index' %}class="active"{% endif %}><a href="{% url 'zoll_com.views.index' %}">Home</a></li>

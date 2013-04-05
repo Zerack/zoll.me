@@ -1,22 +1,146 @@
 {% extends "base.html" %}
 
 {% block styles %}
-
+  <style type="text/css">
+    #personalInfoWell {
+    }
+    
+    #personalInfoWell .name-title {
+      margin-top: 10px;
+      padding-left: 63px;
+      background-image: url('{{ STATIC_URL }}zoll_com/img/logo.png');
+      background-repeat: no-repeat;
+      background-position: 0px 0px;
+      
+    }
+    
+    #personalInfoWell .name-title h2 {
+      margin: 0px;
+      line-height: 40px;
+      font-size: 31.5px;
+    }
+    
+    #personalInfoWell .name-title p {
+      line-height: 14px;
+      font-size: 14px;
+      padding-bottom: 4px;
+    }
+    
+    #personalInfoWell .email, #personalInfoWell .github {
+      margin-bottom: 5px;
+    }
+    
+    #personalInfoWell .resume {
+      margin-bottom: 20px;
+    }
+    
+    #personalInfoWell .email .label-container, #personalInfoWell .github .label-container, #personalInfoWell .resume .label-container{
+      display: inline-block;
+      width: 58px;
+      margin-right: 5px;
+    }
+    
+    #personalInfoWell .email .label, #personalInfoWell .github .label, #personalInfoWell .resume .label {
+      width: 50px;
+    }
+    
+    #personalInfoWell .welcome {
+    }
+    
+    /*
+     * Styles for the Software Projects index page of the main application.
+     */
+     
+    .project-header img {
+      vertical-align: bottom;
+      height: 20px;
+      width: 20px;
+    }
+    
+    
+    /*
+     * These media queries keep things lined up nicely in widths where
+     * there is more than one project per line.
+     */
+    .project-uses {
+      margin-left: 44px;
+      text-indent: -44px;
+      min-height: 60px;
+    }
+    
+    @media (min-width: 1200px) {
+      .project-uses {
+        min-height: 40px;
+      }
+    }
+    
+    @media (min-width: 768px) and (max-width: 979px) {
+      .project-uses {
+        min-height: 80px;
+      }
+    }
+    
+    @media (max-width: 767px) {
+      .project-uses {
+        min-height: 0px;
+      }
+    }
+    
+  </style>
 {% endblock %}
 
 {% block container %}
-  <div class='hero-unit'>
-    <h1>I'm Jim.</h1>
-    <p>Software Development is my passion, and I've collected some of my completed projects here. My resume is available as well, so please take a look around; I'm always looking for comments!</p>
-    <p><a href="{% url 'zoll_com.views.projects' %}" class="btn btn-primary btn-large">See All Projects &raquo;</a></p>
+  <div class="row">
+    <div class="span3">
+      <div id="personalInfoWell" class="well well-small">
+        <div class="name-title">
+          <h2>James Zoll</h2>
+          <p>Software Engineer</p>
+        </div>
+        <div class="email"><span class="label-container"><span class="label">Email:</span></span><a href="#">zolljd@gmail.com</a></div>
+        <div class="github"><span class="label-container"><span class="label">Code:</span></span><a href="#">github.com/Zerack</a></div>
+        <div class="resume"><span class="label-container"><span class="label">Resume:</span></span><a href="{% url 'zoll_com.views.resume' %}">Online</a>&nbsp;|&nbsp;<a class="btn btn-mini" href="#"><i class="icon-download"></i> Download</a></div>
+        <p class="text-center welcome"><strong>Welcome! Take a look around.</strong></p>
+      </div>
+      <div id="recentPhoto" class="hidden-phone well well-small" style="margin-top: 10px; margin-bottom: 0px;">
+        <h4 style="display: inline">Newest XBMC Photo</h4> <a href="{% url 'xbmc_photos.views.view_all' page='1' %}">more &raquo;</a>
+        <a href="#" style="display: block;" class="img-polaroid">
+          <div style="position: relative;">
+            <img src="http://fc03.deviantart.net/fs70/f/2012/170/d/1/asdf_by_coronel_tengu-d5414vi.jpg" />
+            <div class="carousel-caption" style="padding: 5px;">
+              <h5 style="color: #ffffff; margin: 0px">Pooping</h5>
+            </div>
+          </div>
+        </a>
+      </div>
+    </div>
+    <div class="span9">
+      <h3 style="margin-top: 0px;">Temperature Scarf - Project Spotlight</h3>
+      <div class="img-polaroid" style="margin-bottom: 10px;">
+        <img src="http://www.placehold.it/800x50" style="width: 100%"/>
+      </div>
+      <p style="text-align: justify"><!-- <img style="margin-left: 10px; height: 60px" align="right" src="{{ STATIC_URL }}zoll_com/img/spotlight/ravelry.png" />-->The <a href="#">Temperature Scarf</a> project (also known as <em>My Year In Temperatures</em>) is a knitting aid designed to help with a scarf pattern from the knitting / crocheting site <a href="#">Ravelry</a>. First posted by Kristen Cooper, the idea is to use local daily average temperatures as a color key, producing a scarf that reads like daily thermometer of your hometown.</p>
+      <p  style="text-align: justify">I saw the opportunity to create an application that could automatically display the correct temperatures and colors for each day. With this functionality, the user no longer has to manually look up temperatures and find the correct color manually.</p>
+      <img style="margin: 0 auto; display: block;" src="{{ STATIC_URL }}zoll_com/img/spotlight/scarf_blank_example.png" />
+      <p class="text-center muted" style="line-height: 15px; font-size: 11px;">A simple color configuration</p>
+      <p style="text-align: justify">After picking colors and assigning them names for easy identification, the user can generate a scarf using automatically updated data for his or her hometown. Progress is tracked with a simple click or tap, and remembered between sessions. Updated data from <a href="#">Dayton University</a> is automatically added to the display when available, and the user can always tweak their configuration.</p>
+      <p><a class="btn" href="#">Check It Out! &raquo;</a></p>
+    </div>
+  </div>
+  <hr />
+  <div class="row">
+    <div class="span12">
+      <p class="muted"> Looking for more? Check out these projects or browse a listing of <a href="#">All Projects &raquo;</a></p>
+    </div>
   </div>
   <div class="row">
     {% for app in apps|slice:apps_slice %}
-    <div class="span4">
-      <h2>{{ app.name }}</h2>
-      <p>{{ app.description }}</p>
-      <p><a class="btn" href="{% url app.default_view %}">{{ app.button_label|default:'View Project'}} &raquo;</a></p>
-    </div>
+      <div class="span4" style="margin-bottom: 20px;">
+        <h4 class="project-header"><img src="{{ STATIC_URL }}{{ app.icon }}"/> {{ app.name }}</h4>
+        <p class="project-description">{{ app.description|slice:':150' }}</p>
+        <!-- <p class="project-uses"><strong>Uses:</strong> {% for name, href in app.uses %}<a href="{{ href }}">{{ name.split|join:'&nbsp;' }}</a>{% if not forloop.revcounter0 == 0 %}, {% endif %}{% endfor %}</p>-->   
+        <p class="project-view"><a class="btn" href="{% url app.default_view %}">{{ app.button_label }} &raquo;</a></p>
+      </div>
     {% endfor %}
   </div>
 {% endblock %}
