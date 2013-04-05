@@ -1,0 +1,25 @@
+{% extends 'base.html'  %}
+
+{% block styles %}
+  <link rel="stylesheet" type="text/css" href="{{ STATIC_URL }}leapday/css/styles.css">
+  <link rel="stylesheet" type="text/css" href="{{ STATIC_URL }}leapday/css/leapday-goods-icon.css">
+  <link rel="stylesheet" type="text/css" href="{{ STATIC_URL }}leapday/css/leapday-goods-icon-ffffff.css">
+  <link rel="stylesheet" type="text/css" href="{{ STATIC_URL }}leapday/css/leapday-goods-icon-f9f9f9.css">
+  
+  {% block styles_leapday %}{% endblock %}
+{% endblock %}
+
+{% block container %}
+  <div class="page-header">
+    <h1><img src="{{ STATIC_URL }}leapday/img/logo.png" alt=""> Leap Day Recipedia</h1>
+  </div>
+  <div class="row">
+    <div class="span12">
+      {% block container_leapday %}{% endblock %}
+    </div>
+  </div>
+{% endblock %}
+
+{% block scripts %}
+  {% block scripts_leapday %}{% endblock %}
+{% endblock %}

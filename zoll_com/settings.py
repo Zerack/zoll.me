@@ -110,6 +110,7 @@ INSTALLED_APPS = (
     'rss',
     'files',
     'xbmc_photos',
+    'leapday',
 )
 
 LOGGING = {
