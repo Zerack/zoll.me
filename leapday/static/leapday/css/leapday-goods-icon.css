@@ -1,3 +1,17 @@
+.leapday-goods-icon {
+  display: inline-block;
+  background-image: url('../img/leapday-goods-icon-ffffff.png');
+  background-repeat: no-repeat;
+  height: 54px;
+  width: 45px;
+  vertical-align: bottom;
+}
+
+.table-striped tbody > tr:nth-child(odd) > td .leapday-goods-icon,
+.table-striped tbody > tr:nth-child(odd) > th .leapday-goods-icon {
+    background-image: url('../img/leapday-goods-icon-f9f9f9.png');
+}
+
 .leapday-goods-icon-black-heart {
   background-position: -0px -0px;
 }
@@ -430,7 +444,7 @@
   background-position: -495px -432px;
 }
 
-.leapday-goods-icon-diamond {
+.leapday-goods-icon-diamond, .leapday-goods-icon-crystal {
   background-position: -0px -486px;
 }
 

@@ -3,8 +3,6 @@
 {% block styles %}
   <link rel="stylesheet" type="text/css" href="{{ STATIC_URL }}leapday/css/styles.css">
   <link rel="stylesheet" type="text/css" href="{{ STATIC_URL }}leapday/css/leapday-goods-icon.css">
-  <link rel="stylesheet" type="text/css" href="{{ STATIC_URL }}leapday/css/leapday-goods-icon-ffffff.css">
-  <link rel="stylesheet" type="text/css" href="{{ STATIC_URL }}leapday/css/leapday-goods-icon-f9f9f9.css">
   
   {% block styles_leapday %}{% endblock %}
 {% endblock %}
@@ -23,3 +21,5 @@
 {% block scripts %}
   {% block scripts_leapday %}{% endblock %}
 {% endblock %}
+
+{% block footer_right %}Leap Day by <a href="http://www.spryfox.com">Spryfox</a> | {% endblock %}

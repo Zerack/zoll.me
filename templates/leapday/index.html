@@ -1,1 +1,43 @@
 {% extends 'leapday/base_leapday.html' %}
+
+{% load leapday_extras %}
+{% load humanize %}
+
+{% block container_leapday %}
+  <p>Every item in Leap Day is visible here to browse. If you'd like to see more detail about a specific item or recipe, just click the row or icon that you are interested in. Can't find what you're looking for? Use the search box to limit your results.</p>
+  <form class="form-search text-right">
+    <div class="input-append">
+      <input type="text" class="span2 search-query">
+      <button type="submit" class="btn"><i class="icon icon-search"></i> Search</button>
+    </div>
+  </form>
+  <table class="table table-condensed table-striped table-bordered">
+    <thead>
+      <tr>
+        <th>Item</th>
+        <th>Value</th>
+        <th>Recipe</th>
+        <th>Base Materials <span class="muted">(Click to Filter)</span></th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for good in goods %}
+        <tr>
+          <td><a href="#"><i class="leapday-goods-icon leapday-goods-icon-{{ good|good_css_name }}"></i></a><h4 style="display: inline-block; margin: 0px; padding-bottom: 5px;">&nbsp;{{ good.display_name }}</h4></td>
+          <td style="vertical-align: bottom; width:75px;"><span style="display: inline-block; padding-bottom: 5px;">{{ good.value|intcomma }}</span></td>
+          <td style="width: 235px; text-align: center; vertical-align: bottom">{% if good.good_type == 'goodtype_crafted' and good.key != 'goodtype_crystal' %}{% for i in good.recipe_ingredients.all %}<a href="#"><i data-toggle="tooltip" title="{{ i.ingredient.display_name }}" class="tooltip-icon leapday-goods-icon leapday-goods-icon-{{ i.ingredient|good_css_name }}"></i></a>{% endfor %}{% else  %}<span style="display: inline-block; padding-bottom: 5px;" class="muted">None</span>{% endif %}</td>
+          <td style="width: 456px; vertical-align: bottom;">{% for base_good in good|base_goods_ordered_set %}<i class="leapday-goods-icon leapday-goods-icon-{{ base_good.ingredient|good_css_name }}"{% if base_good.quantity == 0 %} style="opacity: 0.1;"{% endif %}></i><span style="display: inline-block; width: 34px; padding-bottom: 5px; margin-left: -3px;{% if base_good.quantity == 0 %} opacity: 0.1;{% endif %}"><span style="font-size: 0.7em">x</span>{{ base_good.quantity }}</span>{% endfor %}</td>
+        </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+{% endblock %}
+
+{% block scripts_leapday %}
+  <script type="text/javascript">
+    $(document).ready(function() {
+      // Place tooltips on any remove buttons that exist.
+      $('.tooltip-icon').tooltip({placement: 'top'});
+    });
+  </script>
+{% endblock %}
