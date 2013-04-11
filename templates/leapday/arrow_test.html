@@ -1,0 +1,55 @@
+{% extends 'leapday/base_leapday.html' %}
+
+{% block container_leapday %}
+  <div style="width: 300px; position: relative; height: 120px;">
+    <div style="width: 40px; height: 40px; background-color: green; position: absolute; top: 0; left: 50%; margin-left: -20px;"></div>
+    <canvas id="test_canvas" style="position: absolute; top: 40px;"" width="300" height="40"></canvas>
+    <div style="width: 40px; height: 40px; background-color: blue; position: absolute; top: 80px; left: 0px;"></div>
+    <div style="width: 40px; height: 40px; background-color: red; position: absolute; top: 80px; left: 50%; margin-left: -20px;"></div>
+    <div style="width: 40px; height: 40px; background-color: yellow; position: absolute; top: 80px; right: 0px; "></div> 
+  </div>
+{% endblock %}
+
+{% block scripts_leapday %}
+  <script type="text/javascript">
+    $(document).ready(function() {
+    	var can = document.getElementById('test_canvas');
+    	var ctx = can.getContext('2d');
+    	    
+
+    	// returns radians
+    	function findAngle(sx, sy, ex, ey) {
+    	    // make sx and sy at the zero point
+    	    return Math.atan((ey - sy) / (ex - sx));
+    	}
+
+    	var sx = 150;
+    	var sy = 20;
+    	var ex = 150;
+    	var ey = 37;
+
+    	ctx.beginPath();
+    	ctx.strokeStyle = "rgba(200,200,200,1)";
+    	ctx.lineWidth = 3;
+    	ctx.lineCap = 'round';
+    	ctx.moveTo(150,3);
+    	ctx.quadraticCurveTo(sx, sy, ex, ey);
+    	ctx.stroke();
+    	
+    	
+    	var sx2 = 56;
+    	var sx1 = 93;
+    	var sy2 = 14;
+    	var sy1 = 26;
+    	var ex = 20;
+    	var ey = 37;
+
+    	ctx.beginPath();
+    	ctx.moveTo(130,3);
+    	ctx.bezierCurveTo(sx1, sy1, sx2, sy2, ex, ey);
+    	ctx.stroke();
+    	
+    	
+    });
+  </script>
+{% endblock %}

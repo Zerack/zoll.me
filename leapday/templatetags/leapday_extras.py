@@ -22,3 +22,7 @@ def base_goods_ordered_set(value):
     ret = sorted(value.base_ingredients.all(), key=lambda x: x.ingredient.value)
     ret = ret[1:] + [ret[0]]
     return ret
+
+@register.filter()
+def unique_products(value):
+    return sorted(filter(lambda x: x.num_ingredients <= 5, list(set([x.product for x in value.recipes.all()]))), key=lambda x: x.value)

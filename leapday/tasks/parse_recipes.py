@@ -29,7 +29,7 @@ def parse_good(g):
     
     d = {}
     d['good_type'] = g.find(u'type')['value']
-    d['key'] = g.find(u'key')['value']
+    d['key'] = g.find(u'key')['value'].lower()
     d['display_name'] = g.find(u'displayname')['value']
     d['tier'] = int(g.find(u'tier')['value'])
     try:
@@ -122,7 +122,8 @@ while len(goods) > 0:
     elif cg['key'] == u'goodtype_crystal':
         # If we detected the goodtype_crystal unique case, it's mostly the same,
         # except that we populate the base goodtype_crystal variable.
-        print 'GOODTYPE_CRYSTAL detected. Adding Good object.'  
+        print 'GOODTYPE_CRYSTAL detected. Adding Good object.'
+        cg['description'] = 'Crystals used to craft shiny objects. Recipes requiring Crystal are only satisfied if each crystal is a different type.'  
         goodtype_crystal = Good(**cg)
         goodtype_crystal.save()
         

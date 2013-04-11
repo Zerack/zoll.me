@@ -12,7 +12,10 @@ class Good(models.Model):
     recipe_value_multiplier = models.FloatField()
     value = models.IntegerField()
     description = models.CharField(max_length=1000)
-
+    
+    def __unicode__(self):
+        return '{0}'.format(self.key)
+    
 class Recipe_Item(models.Model):
     product = models.ForeignKey(Good, related_name='recipe_ingredients')
     ingredient = models.ForeignKey(Good, related_name='recipes')

@@ -1,0 +1,94 @@
+{% extends 'leapday/base_leapday.html' %}
+
+{% load leapday_extras %}
+{% load humanize %}
+
+{% block container_leapday %}
+  <div class="row">
+    <div class="span12" style="position: relative;">
+      <i style="display: inline-block" class="leapday-goods-icon leapday-goods-icon-{{ good|good_css_name }}"></i>&nbsp;<h4 style="display: inline-block; margin: 0px; padding-bottom: 5px;">{{ good.display_name }}</h4>
+      <p style="margin-left: 45px; margin-bottom: 0px; position: absolute; top: 0px; left: 0px;">&nbsp;<a href="{% url 'leapday.views.index' %}">&laquo; Recipe Index</a>
+    </div>
+  </div>
+  <div class="row">
+    <div class="span12">
+      <div style="margin-left: 45px;">
+        <p>&nbsp;<em>{{ good.description }}</em></p>
+        {% if good.recipe_ingredients.all|length > 0 %}
+          <p>{% for i in good.recipe_ingredients.all %}<a href="{% url 'leapday.views.good' key=i.ingredient.key %}"><i data-toggle="tooltip" title="{{ i.ingredient.display_name }}" class="tooltip-icon leapday-goods-icon leapday-goods-icon-{{ i.ingredient|good_css_name }}"></i></a>{% endfor %}</p>
+        {% endif %}
+        <p style="margin-bottom: 0px; "class="muted">&nbsp;Value</p>
+        <p>&nbsp;{{ good.value|intcomma }} Gold</p>
+        <p style="margin-bottom: 0px; "class="muted">&nbsp;Recipe Multiplier</p>
+        <p>&nbsp;<span style="font-size: 0.7em">x</span>{{ good.recipe_value_multiplier|floatformat:1 }}</p>
+        <div class="base-materials-container" style="position: relative; margin-bottom: 10px;">
+          <p style="margin-top: 13px;">{% for base_good in good|base_goods_ordered_set %}<i class="leapday-goods-icon leapday-goods-icon-{{ base_good.ingredient|good_css_name }}"{% if base_good.quantity == 0 %} style="opacity: 0.1;"{% endif %}></i><span style="vertical-align: bottom; display: inline-block; width: 34px; padding-bottom: 5px; margin-left: -3px;{% if base_good.quantity == 0 %} opacity: 0.1;{% endif %}"><span style="font-size: 0.7em">x</span>{{ base_good.quantity }}</span>{% endfor %}</p>
+          <p style="position: absolute; top: -3px; left: 0px;" class="muted">&nbsp;Base Materials</p>
+        </div>
+        <p class="muted" style="margin-bottom: 0px;">&nbsp;Used To Craft</p>
+        {% if good.recipes.all|length > 0 %}
+          <p>{% for p in good|unique_products %}<a href="{% url 'leapday.views.good' key=p.key %}"><i data-toggle="tooltip" title="{{ p.display_name }}" class="tooltip-icon leapday-goods-icon leapday-goods-icon-{{ p|good_css_name }}"></i></a>{% endfor %}</p>
+        {% else %}
+          <p><em>&nbsp;None</em></p>
+        {% endif %}
+        <p class="muted" style="margin-bottom: 0px;">&nbsp;Production</p>
+        <div class="recipe-container" style="position: relative;">
+          <div class="recipe-tree" style="width: {{ recipe_width }}px; height: {{ recipe_height }}px; position: relative;">
+            {% for r in recipe_list %}
+              {% for e in r %}
+                {% if e.good %}
+                  <i style="position:absolute; left: {{ e.left }}px; top: {{ e.top }}px" class="leapday-goods-icon leapday-goods-icon-{{ e.good|good_css_name }}"></i>
+                {% endif %}
+              {% endfor %}
+            {% endfor %}
+          </div>
+          <canvas id="recipeCanvas" height="{{ recipe_height }}" width="{{ recipe_width }}" class="recipe-canvas" style="position: absolute; top: 0px; left: 0px; width: {{ recipe_width }}px; height: {{ recipe_height }}px;"></canvas>
+          {% if recipe_mults|length > 0 %}
+            {% for mult in recipe_mults %}
+              <div style="position: absolute; left: {{ mult.position.0 }}px; top: {{ mult.position.1 }}px; width: 16px; margin-top: -1px; margin-left: -8px; line-height: 14px; text-align: center; text-shadow: -0px -1px 0px rgba(255, 255, 0, 1.0); background-color: rgba(255,255,255,1);"><span style="font-size: 0.7em">x</span>{{ mult.mult }}</div>
+            {% endfor %}
+          {% endif %}
+          <div class="recipe-tree-tooltips" style="width: {{ recipe_width }}px; height: {{ recipe_height }}px; position: absolute; top:0px; left: 0px;">
+            {% for r in recipe_list %}
+              {% for e in r %}
+                {% if e.good %}
+                  <a href="{% url 'leapday.views.good' key=e.good.key %}"><i style="position:absolute; left: {{ e.left }}px; top: {{ e.top }}px" data-toggle="tooltip" title="{{ e.good.display_name }}" class="tooltip-icon leapday-goods-icon leapday-goods-icon-placeholder"></i></a>
+                {% endif %}
+              {% endfor %}
+            {% endfor %}
+          </div>
+        </div>
+        
+        
+      </div>      
+    </div>
+  </div>
+{% endblock %}
+
+{% block scripts_leapday %}
+  <script type="text/javascript">
+    $(document).ready(function() {
+      // Place tooltips on any remove buttons that exist.
+      $('.tooltip-icon').tooltip({placement: 'top'});
+      
+      var recipeBeziers = [{% for rb in recipe_beziers %}[{% for x in rb %}{{ x }}{% if forloop.revcounter0 != 0 %}, {% endif %}{% endfor %}]{% if forloop.revcounter0 != 0 %}, {% endif %}{% endfor %}];
+      var bezierCount = recipeBeziers.length;
+      
+      var canvas = $('#recipeCanvas')[0];
+      var context = canvas.getContext('2d');
+      
+      context.strokeStyle = 'rgba(220,220,220,1)';
+      context.lineWidth = 2;
+      context.lineCap = 'round';
+      
+      for (var i = 0; i < bezierCount; i++) {
+    	var t = recipeBeziers[i];
+	    context.beginPath();
+	    context.moveTo(t[0],t[1]);
+	    context.bezierCurveTo(t[2],t[3],t[4],t[5],t[6],t[7]);
+	    context.stroke();
+      }      
+      
+    });
+  </script>
+{% endblock %}

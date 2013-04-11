@@ -7,6 +7,10 @@
   vertical-align: bottom;
 }
 
+.leapday-goods-icon-placeholder {
+	background-image: none;
+}
+
 .table-striped tbody > tr:nth-child(odd) > td .leapday-goods-icon,
 .table-striped tbody > tr:nth-child(odd) > th .leapday-goods-icon {
     background-image: url('../img/leapday-goods-icon-f9f9f9.png');
