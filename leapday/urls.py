@@ -14,7 +14,6 @@ from django.conf.urls import patterns, url
 
 # Setup the list views and generic views.
 urlpatterns = patterns('leapday.views',
-                       url(r'^$', 'index'),
-                       url(r'^arrow_test$', 'arrow_test'),                       
+                       url(r'^$', 'index'),               
                        url(r'^(?P<key>[a-zA-Z_]+)$', 'good'),
                        )

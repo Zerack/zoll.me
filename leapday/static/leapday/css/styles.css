@@ -1,0 +1,158 @@
+/*
+ * Styles for both Leap Day pages.
+ */
+ 
+.leapday-goods-icon-translucent, .base-materials-count-translucent {
+	opacity: 0.1;
+}
+ 
+.mult-indicator{
+	font-size: 0.7em;
+	line-height: 0.7em;
+}
+
+.margin-bottom-0 {
+	margin-bottom: 0px;
+}
+
+/*
+ * Styles for just the index page.
+ */
+ul.typeahead.dropdown-menu {
+      width: 184px;
+    }
+     
+.popover {
+  max-width: none;
+}
+
+.popover label {
+	text-align: center; 
+	margin-top: 6px; 
+	margin-right: 23px; 
+}
+
+.popover div.label-container label:last-child {
+	margin-right: 0px;
+}
+
+.popover label input {
+	display: inline-block; 
+	margin-top: -6px; 
+}
+
+.popover .popover-content p {
+	font-weight: normal;
+}
+
+table.recipe-table thead th span {
+	line-height: 22px;
+}
+
+table.recipe-table tbody tr td {
+	vertical-align: bottom;
+}
+
+table.recipe-table tbody tr td.item-column a.good-detail-link {
+	color: #333333; 
+	text-decoration: none;
+}
+
+table.recipe-table tbody tr td.item-column a.good-detail-link h4 {
+	 display: inline-block;
+	 margin: 0px; 
+	 padding-bottom: 5px;
+}
+
+table.recipe-table tbody tr td.value-column {
+	width:75px;
+}
+
+table.recipe-table tbody tr td.recipe-column {
+	 width: 235px;
+	 text-align: center;
+}
+
+table.recipe-table tbody tr td.base-materials-column {
+	width: 456px;
+}
+
+table.recipe-table tbody tr td > span {
+	display: inline-block;
+	padding-bottom: 5px;
+}
+ 
+table.recipe-table tbody tr td span.base-materials-count {
+	width: 34px; 
+	margin-left: -3px;
+}
+
+table thead th.sorting-desc span.caret-after:after {
+	content: ' \25bc';
+}
+
+table thead th.sorting-asc span.caret-after:after {
+	content: ' \25b2';
+}
+
+table thead th.hand {
+	cursor: pointer;
+}
+ 
+/*
+ * Styles for just the goods detail page.
+ */
+h4.item-title {
+	display: inline-block; 
+	margin: 0px; 
+	padding-bottom: 5px;
+}
+
+p.recipe-index-link {
+	margin-left: 45px; 
+	margin-bottom: 0px; 
+	position: absolute; 
+	top: 0px; 
+	left: 0px;
+}
+     
+div.base-materials-container {
+	position: relative; 
+	margin-bottom: 10px;
+}
+
+p.base-materials-icons {
+	margin-top: 13px;
+}
+
+p.base-materials-label {
+	 position: absolute; 
+	 top: -3px; 
+	 left: 0px; 
+}
+
+.production-container {
+	position: relative; 
+	overflow: auto;
+}
+
+.production-tree {
+	position: relative;	
+}
+
+.production-tree-mults, production-tree-tooltips, canvas#productionCanvas {
+	position: absolute;
+	top: 0px;
+	left: 0px;
+}
+
+.production-tree-mult {
+	position: absolute;  
+	width: 16px; 
+	margin-top: -1px; 
+	margin-left: -8px; 
+	line-height: 14px; 
+	text-align: center; 
+	text-shadow: -0px -1px 0px rgba(255, 255, 0, 1.0); 
+	background-color: #ffffff;
+}

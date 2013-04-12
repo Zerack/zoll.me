@@ -21,7 +21,10 @@ from leapday.models import Good
 
 def index(request):
     goods = Good.objects.filter(num_ingredients__lte=5).exclude(key='good_other').order_by('-value').all()
-    return render_to_response('leapday/index.html', {'goods': goods}, context_instance = RequestContext(request))
+    basic_goods = list(Good.objects.filter(good_type='goodtype_basic').order_by('value').all())
+    basic_goods.append(Good.objects.filter(key='goodtype_crystal').get())
+    basic_goods = basic_goods[1:]
+    return render_to_response('leapday/index.html', {'goods': goods, 'basic_goods': basic_goods}, context_instance = RequestContext(request))
 
 def good(request, key):
 
@@ -160,6 +163,3 @@ def good(request, key):
           'recipe_mults': recipe_mults}
     
     return render_to_response('leapday/good.html', td, context_instance = RequestContext(request))
-
-def arrow_test(request):
-    return render_to_response('leapday/arrow_test.html', context_instance = RequestContext(request))
