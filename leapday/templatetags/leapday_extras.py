@@ -18,9 +18,5 @@ def base_goods_ordered_set(value):
     return ret
 
 @register.filter()
-def base_goods_total(value):
-    return sum(map(lambda x: x.quantity, value.base_ingredients.all()))
-
-@register.filter()
 def unique_products(value):
     return sorted(filter(lambda x: x.num_ingredients <= 5, list(set([x.product for x in value.recipes.all()]))), key=lambda x: x.value)

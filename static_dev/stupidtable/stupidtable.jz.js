@@ -87,7 +87,7 @@
         });
 
         // Determine (and/or reverse) sorting direction, default `asc`
-        var sort_dir = $this.data("sort-dir") === dir.ASC ? dir.DESC : dir.ASC;
+        var sort_dir = $this.data("sort-dir") === dir.DESC ? dir.ASC : dir.DESC;
 
         // Choose appropriate sorting function. If we're sorting descending, check
         // for a `data-sort-desc` attribute.

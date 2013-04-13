@@ -16,6 +16,10 @@
     background-image: url('../img/leapday-goods-icon-f9f9f9.png');
 }
 
+.table-hover tbody > tr:hover > td .leapday-goods-icon {
+	background-image: url('../img/leapday-goods-icon-ffffcc.png');
+}
+
 .leapday-goods-icon-black-heart {
   background-position: -0px -0px;
 }

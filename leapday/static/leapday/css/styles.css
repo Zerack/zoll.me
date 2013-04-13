@@ -45,8 +45,12 @@ ul.typeahead.dropdown-menu {
 	font-weight: normal;
 }
 
-table.recipe-table thead th span {
-	line-height: 22px;
+.table-hover tbody tr:hover > td {
+	background-color: #FFFFCC;
+}
+
+table td.no-border-left, table th.no-border-left {
+	border-left: none;
 }
 
 table.recipe-table tbody tr td {
@@ -64,17 +68,35 @@ table.recipe-table tbody tr td.item-column a.good-detail-link h4 {
 	 padding-bottom: 5px;
 }
 
-table.recipe-table tbody tr td.value-column {
+table.recipe-table tbody tr td.value-column, table.recipe-table thead tr th.value-column {
 	width:75px;
 }
 
-table.recipe-table tbody tr td.recipe-column {
+table.recipe-table tbody tr td.recipe-column, table.recipe-table thead tr th.recipe-column {
 	 width: 235px;
+}
+
+table.recipe-table tbody tr td.recipe-column {
 	 text-align: center;
 }
 
-table.recipe-table tbody tr td.base-materials-column {
-	width: 456px;
+table.recipe-table tbody tr td.base-material-column, table.recipe-table thead tr th.base-material-column {
+	width: 76px;
+}
+
+table.recipe-table tbody tr td.base-material-column {
+	border-left: none;
+	padding-left: 0px;
+	padding-right: 0px;
+}
+
+table.recipe-table tbody tr td.base-material-column:last-child; {
+	padding-right: 5px;
+}
+
+table.recipe-table tbody tr td.base-material-column.first-base-material-column {
+	border-left: 1px solid #DDDDDD;
+	padding-left: 5px;
 }
 
 table.recipe-table tbody tr td > span {
@@ -97,6 +119,21 @@ table thead th.sorting-asc span.caret-after:after {
 
 table thead th.hand {
 	cursor: pointer;
+}
+
+.icon-nosort {
+	background-image: url('../img/icon_sortnone.png');
+	background-position: 0px 0px;
+}
+
+.icon-descsort {
+	background-image: url('../img/icon_sortdesc.png');
+	background-position: 0px 0px;	
+}
+
+.icon-ascsort {
+	background-image: url('../img/icon_sortasc.png');
+	background-position: 0px 0px;
 }
  
 /*
@@ -140,7 +177,7 @@ p.base-materials-label {
 	position: relative;	
 }
 
-.production-tree-mults, production-tree-tooltips, canvas#productionCanvas {
+.production-tree-mults, .production-tree-tooltips, canvas#productionCanvas {
 	position: absolute;
 	top: 0px;
 	left: 0px;
