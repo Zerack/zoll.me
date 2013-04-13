@@ -20,13 +20,13 @@ from django.template import RequestContext
 INDEX_NUM_APPS = 3
 
 def index(request):
-    return render_to_response('zoll_com/index.html', {'active_nav':'index', 'apps_slice': '1:{0}'.format(INDEX_NUM_APPS + 1)}, context_instance = RequestContext(request))
+    td = {'active_nav':'index', 'apps_slice': '1:{0}'.format(INDEX_NUM_APPS + 1)}
+    td['colors'] = ['0008e7', '3094f1','9ed0ff','0c8797','0dc2da']
+    td['temperatures'] = [('30',20),('40',40),('50',60),('60',80)]
+    return render_to_response('zoll_com/index.html', td, context_instance = RequestContext(request))
 
 def resume(request):
     return render_to_response('zoll_com/resume.html', {'active_nav':'resume'}, context_instance = RequestContext(request))
-
-def about(request):
-    return render_to_response('zoll_com/about.html', {'active_nav':'about'}, context_instance = RequestContext(request))
 
 def projects(request):
     '''

@@ -49,7 +49,6 @@
             <ul class="nav">
               <li {% if active_nav == 'index' %}class="active"{% endif %}><a href="{% url 'zoll_com.views.index' %}">Home</a></li>
               <li {% if active_nav == 'resume' %}class="active"{% endif %}><a href="{% url 'zoll_com.views.resume' %}">Resume</a></li>
-              <li {% if active_nav == 'about' %}class="active"{% endif %}><a href="{% url 'zoll_com.views.about' %}">About Me</a></li>
               <li class="dropdown{% if active_nav == 'projects' %} active{% endif %}">
                 <a href="#" class="dropdown-toggle" data-toggle="dropdown">My Projects <b class="caret"></b></a>
                 <ul class="dropdown-menu">
