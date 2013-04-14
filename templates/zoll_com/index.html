@@ -1,158 +1,9 @@
 {% extends "base.html" %}
 
 {% block styles %}
-  <link href="{{ STATIC_URL }}scarf/css/styles.css" rel="stylesheet">
-  <style type="text/css">
-    #personalInfoWell {
-    }
-    
-    #personalInfoWell .name-title {
-      margin-top: 10px;
-      padding-left: 63px;
-      background-image: url('{{ STATIC_URL }}zoll_com/img/logo.png');
-      background-repeat: no-repeat;
-      background-position: 0px 0px;
-      
-    }
-    
-    #personalInfoWell .name-title h2 {
-      margin: 0px;
-      line-height: 40px;
-      font-size: 26px;
-    }
-    
-    @media (min-width: 1200px) {
-      #personalInfoWell .name-title h2 {
-        font-size: 31.5px;
-      }
-    }
-    
-    @media (min-width: 768px) and (max-width: 979px) {
-      #personalInfoWell .name-title h2 {
-        font-size: font-size: 26px;
-        line-height: 29px;
-        margin-bottom: 10px;
-      }
-    }
-    
-    @media (min-width: 1200px) {
-      .visible-large-desktop {
-        display: '';
-      }
-    }
-    
-    @media (max-width: 1199px) {
-      .visible-large-desktop {
-        display: none;
-      }
-    }
-    
-    #personalInfoWell .name-title p {
-      line-height: 14px;
-      font-size: 14px;
-      padding-bottom: 4px;
-    }
-    
-    #personalInfoWell .email, #personalInfoWell .github {
-      margin-bottom: 5px;
-    }
-    
-    #personalInfoWell .resume {
-      margin-bottom: 20px;
-    }
-    
-    /*
-     * Styles for the Software Projects index page of the main application.
-     */
-     
-    .project-header img {
-      vertical-align: bottom;
-      height: 20px;
-      width: 20px;
-    }
-    
-    @media (min-width: 768px) {
-      .project-view {
-        position: absolute;
-        bottom: 0px;
-      }
-          
-      .project-description {
-        padding-bottom: 40px;
-      }
-    }
-    
-    @media (max-width: 767px) {
-      .project-view {
-        margin-bottom: 30px;
-      }
-    }
-    
-  </style>
-  <style type="text/css">
-      .progress .bar-0008e7 {
-         background-color: #0008e7;
-         background-image: -moz-linear-gradient(top, #0008e7, #0006b8);
-         background-image: -webkit-gradient(linear, 0 0, 0 100%, from(#0008e7), to(#0006b8));
-         background-image: -webkit-linear-gradient(top, #0008e7, #0006b8);
-         background-image: -o-linear-gradient(top, #0008e7, #0006b8);
-         background-image: linear-gradient(to bottom, #0008e7, #0006b8);
-         background-repeat: repeat-x;
-         filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#ff0008e7', endColorstr='#ff0006b8', GradientType=0);
-      }
-    </style>
-  
-    <style type="text/css">
-      .progress .bar-3094f1 {
-         background-color: #3094f1;
-         background-image: -moz-linear-gradient(top, #3094f1, #2676c0);
-         background-image: -webkit-gradient(linear, 0 0, 0 100%, from(#3094f1), to(#2676c0));
-         background-image: -webkit-linear-gradient(top, #3094f1, #2676c0);
-         background-image: -o-linear-gradient(top, #3094f1, #2676c0);
-         background-image: linear-gradient(to bottom, #3094f1, #2676c0);
-         background-repeat: repeat-x;
-         filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#ff3094f1', endColorstr='#ff2676c0', GradientType=0);
-      }
-    </style>
-  
-    <style type="text/css">
-      .progress .bar-9ed0ff {
-         background-color: #9ed0ff;
-         background-image: -moz-linear-gradient(top, #9ed0ff, #7ea6cc);
-         background-image: -webkit-gradient(linear, 0 0, 0 100%, from(#9ed0ff), to(#7ea6cc));
-         background-image: -webkit-linear-gradient(top, #9ed0ff, #7ea6cc);
-         background-image: -o-linear-gradient(top, #9ed0ff, #7ea6cc);
-         background-image: linear-gradient(to bottom, #9ed0ff, #7ea6cc);
-         background-repeat: repeat-x;
-         filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#ff9ed0ff', endColorstr='#ff7ea6cc', GradientType=0);
-      }
-    </style>
-  
-    <style type="text/css">
-      .progress .bar-0c8797 {
-         background-color: #0c8797;
-         background-image: -moz-linear-gradient(top, #0c8797, #096c78);
-         background-image: -webkit-gradient(linear, 0 0, 0 100%, from(#0c8797), to(#096c78));
-         background-image: -webkit-linear-gradient(top, #0c8797, #096c78);
-         background-image: -o-linear-gradient(top, #0c8797, #096c78);
-         background-image: linear-gradient(to bottom, #0c8797, #096c78);
-         background-repeat: repeat-x;
-         filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#ff0c8797', endColorstr='#ff096c78', GradientType=0);
-      }
-    </style>
-  
-    <style type="text/css">
-      .progress .bar-0dc2da {
-         background-color: #0dc2da;
-         background-image: -moz-linear-gradient(top, #0dc2da, #0a9bae);
-         background-image: -webkit-gradient(linear, 0 0, 0 100%, from(#0dc2da), to(#0a9bae));
-         background-image: -webkit-linear-gradient(top, #0dc2da, #0a9bae);
-         background-image: -o-linear-gradient(top, #0dc2da, #0a9bae);
-         background-image: linear-gradient(to bottom, #0dc2da, #0a9bae);
-         background-repeat: repeat-x;
-         filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#ff0dc2da', endColorstr='#ff0a9bae', GradientType=0);
-      }
-    </style>
+  <link rel="stylesheet" href="{{ STATIC_URL }}{{ apps.0.spotlight.css }}">
+  <link rel="stylesheet" href="{{ STATIC_URL }}zoll_com/css/index.css">
+
 {% endblock %}
 
 {% block container %}
@@ -163,69 +14,52 @@
           <h2>James Zoll</h2>
           <p class="hidden-tablet">Software Engineer</p>
         </div>
-        <div class="email"><i class="icon icon-envelope"></i>&nbsp;<a href="#">zolljd@gmail.com</a></div>
-        <div class="github"><img style="height: 14px; width: 14px; display: inline-block; vertical-align: baseline;" src="{{ STATIC_URL}}zoll_com/img/blacktocat-16.png">&nbsp;<a href="#">github.com/Zerack</a></div>
-        <div class="resume"><i class="icon icon-briefcase"></i>&nbsp;<a href="#">Resume</a>&nbsp;|&nbsp;<a href="#" class="btn btn-mini">Download</a></div>
-        <p class="text-center welcome"><strong>Welcome! Take a look around.</strong></p>
+        <div class="email"><i class="icon icon-envelope"></i>&nbsp;<a href="#">Please Enable JavaScript!</a></div>
+        <div class="github"><i class="icon icon-blacktocat"></i>&nbsp;<a href="https://github.com/Zerack">github.com/Zerack</a></div>
+        <div class="resume"><i class="icon icon-briefcase"></i>&nbsp;<a href="{% url 'zoll_com.views.resume' %}">Resume</a>&nbsp;|&nbsp;<a href="#" class="btn btn-mini">Download</a></div>
+        <p class="text-center"><strong>Welcome! Take a look around.</strong></p>
       </div>
-      <div id="recentPhoto" class="hidden-phone well well-small" style="margin-top: 10px; margin-bottom: 0px;">
-        <h4 style="display: inline">Newest <span class="hidden-tablet">XBMC </span>Photo</h4> <a href="{% url 'xbmc_photos.views.view_all' page='1' %}"><span class="visible-large-desktop">more </span>&raquo;</a>
-        <a href="#" style="display: block;" class="img-polaroid">
-          <div style="position: relative;">
-            <img src="http://fc03.deviantart.net/fs70/f/2012/170/d/1/asdf_by_coronel_tengu-d5414vi.jpg" />
-            <div class="carousel-caption" style="padding: 5px;">
-              <h5 style="color: #ffffff; margin: 0px">Pooping</h5>
+      <div id="newestPhotoWell" class="hidden-phone well well-small margin-bottom-0">
+        <h4>Newest <span class="hidden-tablet">XBMC </span>Photo</h4> <a href="{% url 'xbmc_photos.views.view_all' page='1' %}"><span class="visible-large-desktop">more </span>&raquo;</a>
+        <a href="{% url 'xbmc_photos.views.view' photo_id=newest_photo.id %}" class="img-polaroid">
+          <div class="carousel-wrapper">
+            <img src="{{ newest_photo.file_cropped.url }}?{{newest_photo.edit_date|date:'YmdHis'}}" />
+            <div class="carousel-caption">
+              <h5>{{ newest_photo.title }}</h5>
             </div>
           </div>
         </a>
       </div>
     </div>
-    <div class="span9">
-      <h3 style="margin-top: 0px;">Temperature Scarf - Project Spotlight</h3>
-      <div class="img-polaroid" style="margin-bottom: 10px;">
-        <img src="{{ STATIC_URL }}zoll_com/img/spotlight/scarf_header.png" style="width: 100%"/>
-      </div>
-      <p style="text-align: justify"><!-- <img style="margin-left: 10px; height: 60px" align="right" src="{{ STATIC_URL }}zoll_com/img/spotlight/ravelry.png" />-->The <a href="#">Temperature Scarf</a> project (also known as <em>My Year In Temperatures</em>) is a knitting aid designed to help with a scarf pattern from the knitting / crocheting site <a href="#">Ravelry</a>. First posted by Kristen Cooper, the idea is to use local daily average temperatures as a color key, producing a scarf that reads like daily thermometer of your hometown.</p>
-      <p  style="text-align: justify">I saw the opportunity to create an application that could automatically display the correct temperatures and colors for each day. With this functionality, the user no longer has to manually look up temperatures and find the correct color manually.</p>
-      <!-- <img style="margin: 0 auto; display: block;" src="{{ STATIC_URL }}zoll_com/img/spotlight/scarf_blank_example.png" />
-      <p class="text-center muted" style="line-height: 15px; font-size: 11px;">A simple color configuration</p> -->
-      <div class="well-colors well-legend unselectable cursor-default">
-        <div class="row-fluid">
-          <div class="span12">
-            <p class="muted pull-left">Coolest</p>
-            <p class="pull-right muted">Warmest</p>
-          </div>
-        </div>
-        <div class="progress">
-          {% for color in colors %}
-            <div class="bar bar-{{ color }}" style="width: 20%;">
-            </div>
-          {% endfor %}
-        </div>
-        <div class="temperatures">
-          {% for t, tp in temperatures %}
-            <p style="left: {{ tp }}%;">{{ t }}&#xb0;</p>
-          {% endfor %}
-        </div>
-      </div>
-      <p class="text-center muted" style="line-height: 15px; font-size: 11px;">A simple color configuration</p>
-      <p style="text-align: justify">After picking colors and assigning them names for easy identification, the user can generate a scarf using automatically updated data for his or her hometown. Progress is tracked with a simple click or tap, and remembered between sessions. Updated data from <a href="#">Dayton University</a> is automatically added to the display when available, and the user can always tweak their configuration.</p>
-      <p><a class="btn" href="#">Check It Out! &raquo;</a></p>
-    </div>
+    <div class="span9 spotlight margin-bottom-0">{% include apps.0.spotlight.template with context=apps.0.spotlight.context %}</div>
   </div>
   <hr />
   <div class="row">
     <div class="span12">
-      <p class="muted"> Looking for more? Check out these projects or browse a listing of <a href="#">All Projects &raquo;</a></p>
+      <p class="muted"> Looking for more? Check out these projects or browse a listing of <a href="{% url 'zoll_com.views.projects' %}">All Projects &raquo;</a></p>
     </div>
   </div>
-  <div class="row" style="position: relative;">
+  <div id="otherProjectsContainer" class="row relative">
     {% for app in apps|slice:apps_slice %}
       <div class="span4">
         <h4 class="project-header"><img src="{{ STATIC_URL }}{{ app.icon }}"/> {{ app.name }}</h4>
-        <p class="project-description">{{ app.description|slice:':150' }}</p>   
+        <p class="project-description">{{ app.description_short}}</p>   
         <p class="project-view"><a class="btn" href="{% url app.default_view %}">{{ app.button_label }} &raquo;</a></p>
       </div>
     {% endfor %}
   </div>
+{% endblock %}
+
+{% block scripts %}
+  <script type="text/javascript">
+  	$(document).ready(function() {
+  		// Insert the email link. We take a small stab at email scraping
+  		// by mutilating it and inserting it with javascript.
+  		var domain = 'gmail';
+  		var at = '@';
+  		var me = 'zolljd';
+  		var address = me + at + domain + '.com';
+  		$('.email a').html(address).attr('href', 'mailto:' + address);
+  	});
+  </script>
 {% endblock %}

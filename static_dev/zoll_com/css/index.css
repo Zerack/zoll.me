@@ -1,0 +1,122 @@
+/*
+ * Styles for the personal information well
+ */
+#personalInfoWell {
+}
+    
+#personalInfoWell .name-title {
+	margin-top: 10px;
+	margin-bottom: 10px;
+	height: 58px;
+	padding-left: 63px;
+	background-image: url('../img/logo.png');
+	background-repeat: no-repeat;
+	background-position: 0px 0px;
+}
+
+#personalInfoWell .name-title h2 {
+  margin: 0px;
+  line-height: 40px;
+  font-size: 26px;
+}
+
+@media (min-width: 1200px) {
+  #personalInfoWell .name-title h2 {
+    font-size: 31.5px;
+  }
+}
+
+@media (min-width: 768px) and (max-width: 979px) {
+  #personalInfoWell .name-title h2 {
+    font-size: font-size: 26px;
+    line-height: 29px;
+  }
+}    
+
+#personalInfoWell .name-title p {
+  margin: 0px;
+  line-height: 14px;
+  font-size: 14px;
+}
+
+#personalInfoWell .email, #personalInfoWell .github {
+	margin-bottom: 5px;
+}
+    
+#personalInfoWell .resume {
+  margin-bottom: 20px;
+}
+   
+#personalInfoWell .icon-blacktocat {
+	background-image: url('../img/blacktocat.png');
+	background-position: 0px 0px;
+}
+
+.margin-bottom-0 {
+	margin-bottom: 0px;
+}
+
+.visible-large-desktop {
+	display: none !important;
+}
+
+@media(min-width: 1200px) {
+	.visible-large-desktop {
+		display: inherit !important;
+	}
+}
+
+#newestPhotoWell h4 {
+	display: inline;
+}
+
+#newestPhotoWell a.img-polaroid {
+	display: block;
+}
+
+#newestPhotoWell div.carousel-wrapper {
+	position: relative;
+}
+
+#newestPhotoWell .carousel-caption {
+	 padding: 5px;
+}
+
+#newestPhotoWell .carousel-caption h5 {
+	margin: 0px;
+	color: #ffffff;
+}
+
+.project-header img {
+  vertical-align: bottom;
+  height: 20px;
+  width: 20px;
+}
+
+.project-view {
+  position: absolute;
+  bottom: 0px;
+}
+    
+.project-description {
+  padding-bottom: 40px;
+}
+
+@media (max-width: 767px) {
+  .project-view {
+    margin-bottom: 10px;
+    position: relative;
+  }
+  
+  .project-description {
+  	padding-bottom: 0px;
+  }
+  
+  #otherProjectsContainer .span4 {
+  	margin-bottom: 30px;
+  }
+  
+  #otherProjectsContainer .span4:last-child {
+  	margin-bottom: 0px;
+  }
+}

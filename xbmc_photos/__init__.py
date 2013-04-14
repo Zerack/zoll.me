@@ -2,7 +2,8 @@
 # linkbacks to the application, etc.
 app_info = {'name': 'XBMC Photos',
             'icon': 'xbmc_photos/img/xbmc_logo.png',
-            'description': 'The home media center software XBMC is a fantastic program, and we\'ve long been using the slideshow screensaver to show family photos when not watching media. I built this app to more easily format, view, and distribute all of our photographs.',
+            'description': 'XBMC is a fantastic piece of home media software, and we use it to display a TV slideshow of family photos in our living room. I designed this project to make it easier for all of our family members to upload and edit new photos. New photos join our slideshow nightly!',
+            'description_short': 'Users can upload photos, and give each new photo a title and description. Each night, new photos are added to our TV slideshow.',
             'button_label': 'View Pictures',
             'default_view': 'xbmc_photos.views.index',
             'display_priority': 90,

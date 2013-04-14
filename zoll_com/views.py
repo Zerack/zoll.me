@@ -9,20 +9,20 @@ License: This is a public work.
 
 '''
 
-# System Imports
-import importlib
-
 # Library Imports
 from django.shortcuts import render, render_to_response
 from django.template import RequestContext
+
+# Local Imports
+from xbmc_photos.models import Photo
 
 # Constants
 INDEX_NUM_APPS = 3
 
 def index(request):
-    td = {'active_nav':'index', 'apps_slice': '1:{0}'.format(INDEX_NUM_APPS + 1)}
-    td['colors'] = ['0008e7', '3094f1','9ed0ff','0c8797','0dc2da']
-    td['temperatures'] = [('30',20),('40',40),('50',60),('60',80)]
+    td = {'active_nav':'index', 'apps_slice': '1:{0}'.format(INDEX_NUM_APPS + 1)}    
+    td['newest_photo'] = Photo.objects.order_by('-date')[0]
+        
     return render_to_response('zoll_com/index.html', td, context_instance = RequestContext(request))
 
 def resume(request):

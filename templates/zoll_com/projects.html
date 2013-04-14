@@ -11,17 +11,17 @@
   <div class="row">
     <div class="span12">
       <div class="well well-small">
-        <p>Below is a listing of my available projects. Each link will take you directly to the project page itself. I've tried to use a variety of technologies to build these projects to gain wider experience.</p>
+        <p>Below is a listing of my completed projects. Each button will take you directly to the project page. I've used a wide variety of software to build these projects, and I'm always interested in learning new technologies.</p>
       </div>
     </div>
   </div>
-  <div class="row">
+  <div class="row relative projectsContainer">
   {% for app in apps %}
     {% if forloop.counter0|divisibleby:3 and forloop.counter0 != 0 %}
       </div>
-      <div class="row">
+      <div class="row relative projectsContainer">
     {% endif %}  
-    <div class="span4" style="margin-bottom: 10px;">
+    <div class="span4">
       <h4 class="project-header"><img src="{{ STATIC_URL }}{{ app.icon }}"/> {{ app.name }}</h4>
       <p class="project-description">{{ app.description }}</p>
       <p class="project-uses"><strong>Uses:</strong> {% for name, href in app.uses %}<a href="{{ href }}">{{ name.split|join:'&nbsp;' }}</a>{% if not forloop.revcounter0 == 0 %}, {% endif %}{% endfor %}</p>   

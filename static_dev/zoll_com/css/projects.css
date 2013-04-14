@@ -1,38 +1,37 @@
-/*
- * Styles for the Software Projects index page of the main application.
- */
- 
+.projectsContainer {
+	margin-bottom: 10px;
+}
+
 .project-header img {
   vertical-align: bottom;
   height: 20px;
   width: 20px;
 }
 
-
-/*
- * These media queries keep things lined up nicely in widths where
- * there is more than one project per line.
- */
+.project-view {
+  position: absolute;
+  bottom: 0px;
+}
+    
 .project-uses {
-  margin-left: 44px;
-  text-indent: -44px;
-  min-height: 60px;
-}
-
-@media (min-width: 1200px) {
-  .project-uses {
-    min-height: 40px;
-  }
-}
-
-@media (min-width: 768px) and (max-width: 979px) {
-  .project-uses {
-    min-height: 80px;
-  }
+  padding-bottom: 40px;
 }
 
 @media (max-width: 767px) {
-  .project-uses {
-    min-height: auto;
+  .project-view {
+    margin-bottom: 10px;
+    position: relative;
+  }
+  
+  .project-uses{
+  	padding-bottom: 0px;
+  }
+  
+  .projectsContainer .span4 {
+  	margin-bottom: 30px;
+  }
+  
+  .projectsContainer .span4:last-child {
+  	margin-bottom: 0px;
   }
 }

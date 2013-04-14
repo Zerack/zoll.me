@@ -13,7 +13,8 @@ License: This is a public work.
 # linkbacks to the application, etc.
 app_info = {'name': 'File Upload / Download',
             'icon': 'files/img/files_logo.png',
-            'description': 'Sick and tired of arbitrary size limits and the inability to send anything resembling an archive, I created this project to let me quickly and easily share files with my peers and coworkers. Login is required to view non-public files or to upload new files.',
+            'description': 'Have you ever had trouble sending an email attachment that was too large? I created this project to let me quickly and easily share files of any size or type with family and coworkers. Login is required to view non-public files or to upload new files.',
+            'description_short': 'I designed this project to quickly and easily share files with family and coworkers. Users can upload public files, or choose to make them private.',
             'button_label': 'Files This Way',
             'default_view': 'files.views.index',
             'display_priority': 80,

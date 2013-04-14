@@ -13,7 +13,8 @@ License: This is a public work.
 # linkbacks to the application, etc.
 app_info = {'name': 'RSS Feeds',
             'icon': 'rss/img/rss.png',
-            'description': 'Do you ever get frustrated when the RSS feed for a site you enjoy isn\'t quite right, or just doesn\'t exist? This began as a project to enhance the RSS feed for a popular webcomic, but has grown into several customized feeds for a variety of sites, so take a look!',
+            'description': 'Do you ever get frustrated when the RSS feed for a site you enjoy isn\'t quite right, or just doesn\'t exist? This began as a project to enhance the RSS feed for a popular webcomic, but has grown into several customized feeds for a variety of sites.',
+            'description_short': 'A collection of customized RSS feeds, covering a variety of topics. Some are new, and some modify existing RSS feeds that weren\'t quite what I wanted.',
             'button_label': 'Feed Me',
             'default_view': 'rss.views.index',
             'display_priority': 70,
