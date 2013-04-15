@@ -19,7 +19,7 @@ import re
 from django.conf import settings
 
 # Constants
-APP_EXCLUDE_RE = re.compile(r'^django', re.IGNORECASE)
+APP_EXCLUDE_RE = re.compile(r'^(django)|(compressor)', re.IGNORECASE)
 APP_EXCLUDE_LAMBDA = lambda x: not APP_EXCLUDE_RE.match(x)
 APP_SORT_LAMBDA = lambda x: -1 * x['display_priority']
 
