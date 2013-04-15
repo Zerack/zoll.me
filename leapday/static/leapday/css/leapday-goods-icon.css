@@ -1,0 +1,518 @@
+.leapday-goods-icon {
+  display: inline-block;
+  background-image: url('../img/leapday-goods-icon-ffffff.png');
+  background-repeat: no-repeat;
+  height: 54px;
+  width: 45px;
+  vertical-align: bottom;
+}
+
+.leapday-goods-icon-placeholder {
+	background-image: none;
+}
+
+.table-striped tbody > tr:nth-child(odd) > td .leapday-goods-icon,
+.table-striped tbody > tr:nth-child(odd) > th .leapday-goods-icon {
+    background-image: url('../img/leapday-goods-icon-f9f9f9.png');
+}
+
+.table-hover tbody > tr:hover > td .leapday-goods-icon {
+	background-image: url('../img/leapday-goods-icon-ffffcc.png');
+}
+
+.leapday-goods-icon-black-heart {
+  background-position: -0px -0px;
+}
+
+.leapday-goods-icon-writ-of-seduction {
+  background-position: -45px -0px;
+}
+
+.leapday-goods-icon-shadow-armor {
+  background-position: -90px -0px;
+}
+
+.leapday-goods-icon-glowing-armor {
+  background-position: -135px -0px;
+}
+
+.leapday-goods-icon-arm-party {
+  background-position: -180px -0px;
+}
+
+.leapday-goods-icon-crowned-statue {
+  background-position: -225px -0px;
+}
+
+.leapday-goods-icon-sparky-pants {
+  background-position: -270px -0px;
+}
+
+.leapday-goods-icon-glowing-statue {
+  background-position: -315px -0px;
+}
+
+.leapday-goods-icon-porcelain-statue {
+  background-position: -360px -0px;
+}
+
+.leapday-goods-icon-dull-armor {
+  background-position: -405px -0px;
+}
+
+.leapday-goods-icon-pink-flamingo {
+  background-position: -450px -0px;
+}
+
+.leapday-goods-icon-chocolate-statue {
+  background-position: -495px -0px;
+}
+
+.leapday-goods-icon-wood-statue {
+  background-position: -0px -54px;
+}
+
+.leapday-goods-icon-hammer-of-time {
+  background-position: -45px -54px;
+}
+
+.leapday-goods-icon-ice-statue {
+  background-position: -90px -54px;
+}
+
+.leapday-goods-icon-glowing-crown {
+  background-position: -135px -54px;
+}
+
+.leapday-goods-icon-shadow-crown {
+  background-position: -180px -54px;
+}
+
+.leapday-goods-icon-shadow-amulet {
+  background-position: -225px -54px;
+}
+
+.leapday-goods-icon-glowing-shield {
+  background-position: -270px -54px;
+}
+
+.leapday-goods-icon-shadow-sceptre {
+  background-position: -315px -54px;
+}
+
+.leapday-goods-icon-glowing-amulet {
+  background-position: -360px -54px;
+}
+
+.leapday-goods-icon-glowing-sceptre {
+  background-position: -405px -54px;
+}
+
+.leapday-goods-icon-sundial {
+  background-position: -450px -54px;
+}
+
+.leapday-goods-icon-pottery {
+  background-position: -495px -54px;
+}
+
+.leapday-goods-icon-bracelet {
+  background-position: -0px -108px;
+}
+
+.leapday-goods-icon-mana-orb {
+  background-position: -45px -108px;
+}
+
+.leapday-goods-icon-dull-crown {
+  background-position: -90px -108px;
+}
+
+.leapday-goods-icon-dull-amulet {
+  background-position: -135px -108px;
+}
+
+.leapday-goods-icon-dull-sceptre {
+  background-position: -180px -108px;
+}
+
+.leapday-goods-icon-bread-pudding {
+  background-position: -225px -108px;
+}
+
+.leapday-goods-icon-fine-lumber {
+  background-position: -270px -108px;
+}
+
+.leapday-goods-icon-absinthe {
+  background-position: -315px -108px;
+}
+
+.leapday-goods-icon-sticky-buns {
+  background-position: -360px -108px;
+}
+
+.leapday-goods-icon-crystal-shield {
+  background-position: -405px -108px;
+}
+
+.leapday-goods-icon-stealth-shield {
+  background-position: -450px -108px;
+}
+
+.leapday-goods-icon-spirit-shield {
+  background-position: -495px -108px;
+}
+
+.leapday-goods-icon-ice {
+  background-position: -0px -162px;
+}
+
+.leapday-goods-icon-stone-necklace {
+  background-position: -45px -162px;
+}
+
+.leapday-goods-icon-fire-necklace {
+  background-position: -90px -162px;
+}
+
+.leapday-goods-icon-poison-necklace {
+  background-position: -135px -162px;
+}
+
+.leapday-goods-icon-hammers {
+  background-position: -180px -162px;
+}
+
+.leapday-goods-icon-shields {
+  background-position: -225px -162px;
+}
+
+.leapday-goods-icon-stone-ring {
+  background-position: -270px -162px;
+}
+
+.leapday-goods-icon-fire-ring {
+  background-position: -315px -162px;
+}
+
+.leapday-goods-icon-poison-ring {
+  background-position: -360px -162px;
+}
+
+.leapday-goods-icon-flatbread {
+  background-position: -405px -162px;
+}
+
+.leapday-goods-icon-prayer-stones {
+  background-position: -450px -162px;
+}
+
+.leapday-goods-icon-death-powder {
+  background-position: -495px -162px;
+}
+
+.leapday-goods-icon-hearty-meals {
+  background-position: -0px -216px;
+}
+
+.leapday-goods-icon-necklace {
+  background-position: -45px -216px;
+}
+
+.leapday-goods-icon-black-whiskey {
+  background-position: -90px -216px;
+}
+
+.leapday-goods-icon-iron-rations {
+  background-position: -135px -216px;
+}
+
+.leapday-goods-icon-hair-cream {
+  background-position: -180px -216px;
+}
+
+.leapday-goods-icon-sweet-wine {
+  background-position: -225px -216px;
+}
+
+.leapday-goods-icon-rowboat {
+  background-position: -270px -216px;
+}
+
+.leapday-goods-icon-crockpot {
+  background-position: -315px -216px;
+}
+
+.leapday-goods-icon-luxury-food {
+  background-position: -360px -216px;
+}
+
+.leapday-goods-icon-rings {
+  background-position: -405px -216px;
+}
+
+.leapday-goods-icon-lembas-cakes {
+  background-position: -450px -216px;
+}
+
+.leapday-goods-icon-spyglass {
+  background-position: -495px -216px;
+}
+
+.leapday-goods-icon-stew-barrel {
+  background-position: -0px -270px;
+}
+
+.leapday-goods-icon-fine-flour {
+  background-position: -45px -270px;
+}
+
+.leapday-goods-icon-windows {
+  background-position: -90px -270px;
+}
+
+.leapday-goods-icon-mana {
+  background-position: -135px -270px;
+}
+
+.leapday-goods-icon-fire-bread {
+  background-position: -180px -270px;
+}
+
+.leapday-goods-icon-fired-bricks {
+  background-position: -225px -270px;
+}
+
+.leapday-goods-icon-fine-brandy {
+  background-position: -270px -270px;
+}
+
+.leapday-goods-icon-glue {
+  background-position: -315px -270px;
+}
+
+.leapday-goods-icon-chili {
+  background-position: -360px -270px;
+}
+
+.leapday-goods-icon-potion-of-death {
+  background-position: -405px -270px;
+}
+
+.leapday-goods-icon-chowder {
+  background-position: -450px -270px;
+}
+
+.leapday-goods-icon-stout-barrel {
+  background-position: -495px -270px;
+}
+
+.leapday-goods-icon-jewelry {
+  background-position: -0px -324px;
+}
+
+.leapday-goods-icon-metal-ingot {
+  background-position: -45px -324px;
+}
+
+.leapday-goods-icon-potion-of-life {
+  background-position: -90px -324px;
+}
+
+.leapday-goods-icon-rock-hammers {
+  background-position: -135px -324px;
+}
+
+.leapday-goods-icon-grog {
+  background-position: -180px -324px;
+}
+
+.leapday-goods-icon-cat-statue {
+  background-position: -225px -324px;
+}
+
+.leapday-goods-icon-incense {
+  background-position: -270px -324px;
+}
+
+.leapday-goods-icon-curry {
+  background-position: -315px -324px;
+}
+
+.leapday-goods-icon-idols {
+  background-position: -360px -324px;
+}
+
+.leapday-goods-icon-gunpowder {
+  background-position: -405px -324px;
+}
+
+.leapday-goods-icon-potion-of-joy {
+  background-position: -450px -324px;
+}
+
+.leapday-goods-icon-desk {
+  background-position: -495px -324px;
+}
+
+.leapday-goods-icon-fruit-cake {
+  background-position: -0px -378px;
+}
+
+.leapday-goods-icon-mulled-wine {
+  background-position: -45px -378px;
+}
+
+.leapday-goods-icon-black-oak {
+  background-position: -90px -378px;
+}
+
+.leapday-goods-icon-shrines {
+  background-position: -135px -378px;
+}
+
+.leapday-goods-icon-cinnamon-rolls {
+  background-position: -180px -378px;
+}
+
+.leapday-goods-icon-black-bread {
+  background-position: -225px -378px;
+}
+
+.leapday-goods-icon-jewelry-box {
+  background-position: -270px -378px;
+}
+
+.leapday-goods-icon-beer {
+  background-position: -315px -378px;
+}
+
+.leapday-goods-icon-chair {
+  background-position: -360px -378px;
+}
+
+.leapday-goods-icon-cooked-food {
+  background-position: -405px -378px;
+}
+
+.leapday-goods-icon-whiskey {
+  background-position: -450px -378px;
+}
+
+.leapday-goods-icon-glass {
+  background-position: -495px -378px;
+}
+
+.leapday-goods-icon-flour {
+  background-position: -0px -432px;
+}
+
+.leapday-goods-icon-stew {
+  background-position: -45px -432px;
+}
+
+.leapday-goods-icon-large-barrel {
+  background-position: -90px -432px;
+}
+
+.leapday-goods-icon-ore {
+  background-position: -135px -432px;
+}
+
+.leapday-goods-icon-perfume {
+  background-position: -180px -432px;
+}
+
+.leapday-goods-icon-ruby {
+  background-position: -225px -432px;
+}
+
+.leapday-goods-icon-polished-gems {
+  background-position: -270px -432px;
+}
+
+.leapday-goods-icon-spices {
+  background-position: -315px -432px;
+}
+
+.leapday-goods-icon-bricks {
+  background-position: -360px -432px;
+}
+
+.leapday-goods-icon-lumber {
+  background-position: -405px -432px;
+}
+
+.leapday-goods-icon-sapphire {
+  background-position: -450px -432px;
+}
+
+.leapday-goods-icon-oak {
+  background-position: -495px -432px;
+}
+
+.leapday-goods-icon-diamond, .leapday-goods-icon-crystal {
+  background-position: -0px -486px;
+}
+
+.leapday-goods-icon-onyx {
+  background-position: -45px -486px;
+}
+
+.leapday-goods-icon-jade {
+  background-position: -90px -486px;
+}
+
+.leapday-goods-icon-opal {
+  background-position: -135px -486px;
+}
+
+.leapday-goods-icon-amber {
+  background-position: -180px -486px;
+}
+
+.leapday-goods-icon-silver {
+  background-position: -225px -486px;
+}
+
+.leapday-goods-icon-amethyst {
+  background-position: -270px -486px;
+}
+
+.leapday-goods-icon-spirits {
+  background-position: -315px -486px;
+}
+
+.leapday-goods-icon-bread {
+  background-position: -360px -486px;
+}
+
+.leapday-goods-icon-stone {
+  background-position: -405px -486px;
+}
+
+.leapday-goods-icon-barrel {
+  background-position: -450px -486px;
+}
+
+.leapday-goods-icon-wood {
+  background-position: -495px -486px;
+}
+
+.leapday-goods-icon-junk {
+  background-position: -0px -540px;
+}
+
+.leapday-goods-icon-food {
+  background-position: -45px -540px;
+}
+
+.leapday-goods-icon-water {
+  background-position: -90px -540px;
+}
+
+.leapday-goods-icon-other {
+  background-position: -135px -540px;
+}
+

@@ -1,0 +1,25 @@
+{% extends 'base.html'  %}
+
+{% block styles %}
+  <link rel="stylesheet" type="text/css" href="{{ STATIC_URL }}leapday/css/styles.css">
+  <link rel="stylesheet" type="text/css" href="{{ STATIC_URL }}leapday/css/leapday-goods-icon.css">
+  
+  {% block styles_leapday %}{% endblock %}
+{% endblock %}
+
+{% block container %}
+  <div class="page-header">
+    <h1><a href="{% url 'leapday.views.index' %}"><img src="{{ STATIC_URL }}leapday/img/logo.png" alt=""></a> Leap Day Recipedia</h1>
+  </div>
+  <div class="row">
+    <div class="span12">
+      {% block container_leapday %}{% endblock %}
+    </div>
+  </div>
+{% endblock %}
+
+{% block scripts %}
+  {% block scripts_leapday %}{% endblock %}
+{% endblock %}
+
+{% block footer_right %}Leap Day by <a href="http://www.spryfox.com">Spry Fox</a> | {% endblock %}

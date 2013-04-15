@@ -1,0 +1,216 @@
+{% extends 'leapday/base_leapday.html' %}
+
+{% load leapday_extras %}
+{% load humanize %}
+
+{% block container_leapday %}
+  <p>Every item in Leap Day is visible here to browse. If you'd like to see more detail about a specific item or recipe, just click the icon that you are interested in. Can't find what you're looking for? Use the search box to limit your results.</p>
+  <div class="row">
+    <div class="pull-right">
+      <form style="display: inline-block;" id="searchForm" class="form-search text-right">
+        <div class="input-append">
+          <input id="searchInput" type="text" autocomplete="off" class="span2 search-query">
+          <button type="submit" class="btn"><i class="icon icon-search"></i> Search</button>
+        </div>
+      </form>&nbsp;<div id="filterButtonContainer" style="display: inline-block" class="text-right"><button id="filterButton" class="btn btn-inverse"><i class="icon-white icon-filter"></i> Filter</button></div>
+    </div>
+  </div>
+  <table id="recipeTable" class="table table-condensed table-striped table-bordered recipe-table table-hover">
+    <thead>
+      <tr>
+        <th data-sort="string" class="hand"><span class="caret-after">Item</span></th>
+        <th data-sort="int" data-sort-dir="desc" class="value-column hand sorting-desc"><span class="caret-after">Value</span></th>
+        <th class="recipe-column"><span>Recipe</span></th>
+        <th class="hand base-material-column" data-sort="int" style="padding-left: 10px;"><span class="caret-after">Water</span></th>
+        <th class="hand base-material-column no-border-left" data-sort="int" style="padding-left: 7px;"><span class="caret-after">Food</span></th>
+        <th class="hand base-material-column no-border-left" data-sort="int" style="padding-left: 2px;"><span class="caret-after">Wood</span></th>
+        <th class="hand base-material-column no-border-left" data-sort="int" style="padding-left: 1px;"><span class="caret-after">Stone</span></th>
+        <th class="hand base-material-column no-border-left" data-sort="int" style="padding-left: 7px;"><span class="caret-after">Crystal</span></th>
+        <th class="hand base-material-column no-border-left" data-sort="int" style="padding-left: 4px;"><span class="caret-after">Other</span></th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for good in goods %}
+        <tr>
+          <td class="item-column" data-sort-value="{{ good.display_name }}"><a class="good-detail-link" href="{% url 'leapday.views.good' key=good.key %}"><i data-toggle="tooltip" title="{{ good.display_name }}" class="tooltip-icon leapday-goods-icon leapday-goods-icon-{{ good|good_css_name }}"></i>&nbsp;<h4>{{ good.display_name }}</h4></a></td>
+          <td class="value-column" data-sort-value="{{ good.value }}"><span>{{ good.value|intcomma }}</span></td>
+          <td class="recipe-column">{% if good.good_type == 'goodtype_crafted' and good.key != 'goodtype_crystal' %}{% for i in good.shim_recipe_ingredients %}<a href="{% url 'leapday.views.good' key=i.ingredient.key %}"><i data-toggle="tooltip" title="{{ i.ingredient.display_name }}" class="tooltip-icon leapday-goods-icon leapday-goods-icon-{{ i.ingredient|good_css_name }}"></i></a>{% endfor %}{% else  %}<span class="muted">None</span>{% endif %}</td>
+          {% for base_good in good|base_goods_ordered_set %}
+            <td class="base-material-column{% if forloop.counter0 == 0 %} first-base-material-column{% endif %}" data-sort-value="{{ base_good.quantity }}" data-filter="{% if base_good.quantity > 0 %}{{ base_good.ingredient.key }}{% endif %}">{% if base_good.quantity != 0 %}<a href="{% url 'leapday.views.good' key=base_good.ingredient.key %}">{% endif %}<i {% if base_good.quantity != 0 %}data-toggle="tooltip" title="{{ base_good.ingredient.display_name }}" class="tooltip-icon {% else %}class="leapday-goods-icon-translucent {% endif %}leapday-goods-icon leapday-goods-icon-{{ base_good.ingredient|good_css_name }}"></i>{% if base_good.quantity != 0 %}</a>{% endif %}<span class="base-materials-count{% if base_good.quantity == 0 %} base-materials-count-translucent{% endif %}"><span class="mult-indicator">x</span>{{ base_good.quantity }}</span></td>
+          {% endfor %}
+        </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+  <table style="display: none;" id="excludeTable">
+    <tbody>
+    </tbody>
+  </table>
+  <div id="filterPopoverTitle" style="display: none;"><i class="icon icon-filter"></i> Filter Recipes</div>  
+  <div id="filterPopoverContent" style="display: none;">
+    <div class="label-container">{% for good in basic_goods %}<label class="leapday-goods-icon leapday-goods-icon-{{ good|good_css_name }}"><input type="checkbox" value="{{ good.key }}" id="{{ good.key }}Chk" checked></label>{% endfor %}</div>
+    <p>Recipes using unchecked goods will not be shown.</p>
+    <p class="text-right margin-bottom-0"><button onclick="doFilter(event); " class="btn btn-small btn-inverse">Submit</button>&nbsp;<button onclick="resetFilter(event);" class="btn btn-small">Reset</button></p>
+  </div>
+{% endblock %}
+
+{% block scripts_leapday %}
+  <script type="text/javascript" src="{{ STATIC_URL }}stupidtable/stupidtable.jz.js"></script>
+  <script type="text/javascript">
+    $(document).ready(function() {
+      // Place tooltips on any good icons that
+      // are present in the page.
+      $('.tooltip-icon').tooltip({placement: 'top'});
+      
+      // Setup the typeahead for the search input. This list of
+      // goods is added to the source variable via the template
+      // engine, since it isn't needed anywhere else.      
+      $('#searchInput').typeahead({
+        source: [{% for good in goods %}'{{ good.display_name }}'{% if forloop.revcounter0 != 0 %}, {% endif %}{% endfor %}],
+        items: 10,
+        minLength: 1,        
+      });
+      
+      // Using stupid-table-plugin, setup the table to be sortable,
+      // and keep track locally of the last sort direction. We
+      // need that sort direction for when we re-add items
+      // during our filter process.
+      $('#recipeTable').stupidtable().bind('aftertablesort', function(event, data) {
+    	lastSort = data;
+      });
+      
+      // Setup the filter popover. Toggles when you click the filter
+      // button, and hides when you click anywhere outside of the
+      // popover. The last bit of magic is to re-initialize the
+      // checkboxes when the popover is shown, since the DOM
+      // is destroyed when it is hidden and state is not preserved.
+      $('#filterButton').popover({
+    	  html: true,
+    	  placement: 'left',
+    	  trigger: 'manual',
+    	  title: function() { return $('#filterPopoverTitle').html(); },
+    	  content: function() { return $('#filterPopoverContent').html(); },
+    	  container: '#filterButtonContainer'
+          }).click(function(e) {
+              $(this).popover('toggle');
+              $('.popover input').each(function () {
+            	 var goodKey = $(this).val();
+            	 if (curFilter.indexOf(goodKey) !== -1) {
+            		$(this).prop('checked', false); 
+            	 }
+              });
+              e.stopPropagation();
+          });
+    
+      $(document).click(function(e) {
+          $('#filterButton').popover('hide');
+      });
+      
+      $('#filterButtonContainer').click(function(event) {
+      event.stopPropagation(); 
+      });
+      
+      // Functions for submission / reset on the
+      // filter pseudoform. Note that these are in the global scope,
+      // since this is cleaner than worrying about where click handlers
+      // go to die when their DOM is destroyed over and over again,
+      // and we don't need any additional context from the caller.      
+      doFilter = function(e) {    	
+    	curFilter = [];
+    	$('.popover input').each(function() {
+    		if (!($(this).is(':checked'))) {
+        		var goodKey = $(this).val();
+        		curFilter.push(goodKey);
+    		}    		
+    	});
+    	$('#filterButton').popover('hide');
+    	doSearchFilter();
+      };
+      
+      resetFilter = function(e) {
+    	$('.popover input').prop('checked',true);
+      }
+      
+      // When the searc form is submitted, we snag the updated search and call
+      // our generic 'doSearchFilter()' function.
+      $('#searchForm').submit(function() {
+    	  curSearch = $('#searchInput').val().toLowerCase();
+    	  doSearchFilter();
+    	  return false;
+      });
+      
+      // This is the meat of the searching and filtering. Generally
+      // speaking, we check all of the currently shown items
+      // and hide any that should no longer be shown. Then, we check
+      // the hidden items (not including the ones we just moved) and
+      // show and that should no longer be hidden. Finally, we re-sort,
+      // since adding things to the end of the visible table messes up
+      // the order.
+      var curSearch = '';
+      var curFilter = [];
+      var filterableGoods = [{% for good in basic_goods %}'{{ good.key }}'{% if forloop.revcounter0 != 0 %}, {% endif %}{% endfor %}];
+      var lastSort = {column: 1, direction: 'desc'};
+      var doSearchFilter = function() {
+		  // Grab the current lists of shown and hidden items.
+    	  var shown = $('#recipeTable > tbody > tr');
+    	  var hidden = $('#excludeTable > tbody > tr');    	  
+    	  var shownBody = $('#recipeTable tbody');
+    	  var hiddenBody = $('#excludeTable tbody');
+    	  
+    	  // For each shown item, validate it against search first,
+    	  // and then the filter. If it fails, hide it.
+    	  shown.each(function() {
+    		  var moved = false;
+    		  if (curSearch !== '') {
+    			  var name = $('td', this).first().data('sort-value').toLowerCase();
+    			  if (name.indexOf(curSearch) === -1) {
+    				  hiddenBody.append(this);
+    				  moved = true;
+    			  }
+    		  }
+    		  if (!moved && curFilter !== []) {
+    			  var curRow = this;
+    			  $('td.base-material-column',this).each(function() {
+    				 if (curFilter.indexOf($(this).data('filter')) !== -1) {
+    					hiddenBody.append(curRow);
+    				 	return false;
+    				 } 
+    			  });
+    		  }
+    	  });
+    	  
+    	  // For each hidden item, validate if against search first,
+    	  // and then the filter. If it doesn't fail, re-show it.
+    	  hidden.each(function() {
+    		  var canShow = true;
+    		  if (curSearch !== '') {
+    			  var name = $('td', this).first().data('sort-value').toLowerCase();
+    			  if (name.indexOf(curSearch) === -1) {
+    				  canShow = false;
+    			  }
+    		  }    		  
+    		  if (canShow && curFilter == filterableGoods) {
+    			  canShow = false;
+    		  }    		  
+    		  if (canShow) {
+    			  $('td.base-material-column',this).each(function() {
+      				 if (curFilter.indexOf($(this).data('filter')) !== -1) {
+      					canShow = false;
+      					return false;
+      				 } 
+      			  });
+    		  }    		  
+    		  if (canShow) {
+    			  shownBody.append(this);
+    		  }
+    	  });
+    	  
+    	  // Finally, sort it by calling the click event on the last sorted header.
+    	  // However, before we do that, we reverse the data-sort-dir information on 
+    	  // the header, so that the final result is that the sort order isn't changed, and
+    	  // newly added rows are in the correct location.
+    	  $('#recipeTable th').eq(lastSort.column).data('sort-dir', lastSort.direction === 'asc' ? 'desc' : 'asc').click();    	  
+      }  
+    });
+  </script>
+{% endblock %}
