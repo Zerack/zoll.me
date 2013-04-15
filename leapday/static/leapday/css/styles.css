@@ -162,6 +162,14 @@ p.base-materials-icons {
 	margin-top: 13px;
 }
 
+.base-materials-container span.base-materials-count {
+	display: inline-block;
+	padding-bottom: 5px;
+	width: 34px; 
+	margin-left: -3px;
+}
+ 
+
 p.base-materials-label {
 	 position: absolute; 
 	 top: -3px; 

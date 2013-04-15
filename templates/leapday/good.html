@@ -14,20 +14,20 @@
     <div class="span12">
       <div style="margin-left: 45px;">
         <p>&nbsp;<em>{{ good.description }}</em></p>
-        {% if good.recipe_ingredients.all|length > 0 %}
-          <p>{% for i in good.recipe_ingredients.all %}<a href="{% url 'leapday.views.good' key=i.ingredient.key %}"><i data-toggle="tooltip" title="{{ i.ingredient.display_name }}" class="tooltip-icon leapday-goods-icon leapday-goods-icon-{{ i.ingredient|good_css_name }}"></i></a>{% endfor %}</p>
+        {% if ingredients|length > 0 %}
+          <p>{% for i in ingredients %}<a href="{% url 'leapday.views.good' key=i.key %}"><i data-toggle="tooltip" title="{{ i.display_name }}" class="tooltip-icon leapday-goods-icon leapday-goods-icon-{{ i|good_css_name }}"></i></a>{% endfor %}</p>
         {% endif %}
         <p class="muted margin-bottom-0">&nbsp;Value</p>
         <p>&nbsp;{{ good.value|intcomma }} Gold</p>
         <p class="muted margin-bottom-0">&nbsp;Recipe Multiplier</p>
         <p>&nbsp;<span class="mult-indicator">x</span>{{ good.recipe_value_multiplier|floatformat:1 }}</p>
         <div class="base-materials-container">
-          <p class="base-materials-icons">{% for base_good in good|base_goods_ordered_set %}{% if base_good.quantity != 0 %}<a href="{% url 'leapday.views.good' key=base_good.ingredient.key %}">{% endif %}<i {% if base_good.quantity != 0 %}data-toggle="tooltip" title="{{ base_good.ingredient.display_name }}" class="tooltip-icon {% else %}class="leapday-goods-icon-translucent {% endif %}leapday-goods-icon leapday-goods-icon-{{ base_good.ingredient|good_css_name }}"></i>{% if base_good.quantity != 0 %}</a>{% endif %}<span class="base-materials-count{% if base_good.quantity == 0 %} base-materials-count-translucent{% endif %}"><span class="mult-indicator">x</span>{{ base_good.quantity }}</span>{% endfor %}</p>
+          <p class="base-materials-icons">{% for base_good in base_ingredients %}{% if base_good.quantity != 0 %}<a href="{% url 'leapday.views.good' key=base_good.ingredient.key %}">{% endif %}<i {% if base_good.quantity != 0 %}data-toggle="tooltip" title="{{ base_good.ingredient.display_name }}" class="tooltip-icon {% else %}class="leapday-goods-icon-translucent {% endif %}leapday-goods-icon leapday-goods-icon-{{ base_good.ingredient|good_css_name }}"></i>{% if base_good.quantity != 0 %}</a>{% endif %}<span class="base-materials-count{% if base_good.quantity == 0 %} base-materials-count-translucent{% endif %}"><span class="mult-indicator">x</span>{{ base_good.quantity }}</span>{% endfor %}</p>
           <p class="base-materials-label muted">&nbsp;Base Materials</p>
         </div>
         <p class="muted margin-bottom-0">&nbsp;Used To Craft</p>
-        {% if good.recipes.all|length > 0 %}
-          <p>{% for p in good|unique_products %}<a href="{% url 'leapday.views.good' key=p.key %}"><i data-toggle="tooltip" title="{{ p.display_name }}" class="tooltip-icon leapday-goods-icon leapday-goods-icon-{{ p|good_css_name }}"></i></a>{% endfor %}</p>
+        {% if used_to_craft|length > 0 %}
+          <p>{% for p in used_to_craft %}<a href="{% url 'leapday.views.good' key=p.key %}"><i data-toggle="tooltip" title="{{ p.display_name }}" class="tooltip-icon leapday-goods-icon leapday-goods-icon-{{ p|good_css_name }}"></i></a>{% endfor %}</p>
         {% else %}
           <p><em>&nbsp;None</em></p>
         {% endif %}
@@ -69,12 +69,17 @@
   <!--[if lt IE 9]><script type="text/javascript" src="{{ STATIC_URL }}excanvas/excanvas.js"></script><![endif]-->
   <script type="text/javascript">
     $(document).ready(function() {
-      // Place tooltips on any remove buttons that exist.
+      // Place tooltips on any good icons that are present in the page. We attach
+      // to body to prevent clipping from overflow, particularly in the recipe tree.
       $('.tooltip-icon').tooltip({placement: 'top', container: 'body'});
       
+      // Beziers are written here by the template. We will
+      // Draw each bezier on our canvas to connect the recipe tree.
       var recipeBeziers = [{% for rb in recipe_beziers %}[{% for x in rb %}{{ x }}{% if forloop.revcounter0 != 0 %}, {% endif %}{% endfor %}]{% if forloop.revcounter0 != 0 %}, {% endif %}{% endfor %}];
       var bezierCount = recipeBeziers.length;
       
+      // Grab the canvas object and context, and setup 
+      // the line style.
       var canvas = $('#productionCanvas')[0];
       var context = canvas.getContext('2d');
       
@@ -82,6 +87,8 @@
       context.lineWidth = 2;
       context.lineCap = 'round';
       
+      // For each bezier that was put in recipeBeziers by
+      // the template, draw it!
       for (var i = 0; i < bezierCount; i++) {
     	var t = recipeBeziers[i];
 	    context.beginPath();

@@ -34,7 +34,7 @@
         <tr>
           <td class="item-column" data-sort-value="{{ good.display_name }}"><a class="good-detail-link" href="{% url 'leapday.views.good' key=good.key %}"><i data-toggle="tooltip" title="{{ good.display_name }}" class="tooltip-icon leapday-goods-icon leapday-goods-icon-{{ good|good_css_name }}"></i>&nbsp;<h4>{{ good.display_name }}</h4></a></td>
           <td class="value-column" data-sort-value="{{ good.value }}"><span>{{ good.value|intcomma }}</span></td>
-          <td class="recipe-column">{% if good.good_type == 'goodtype_crafted' and good.key != 'goodtype_crystal' %}{% for i in good.recipe_ingredients.all %}<a href="{% url 'leapday.views.good' key=i.ingredient.key %}"><i data-toggle="tooltip" title="{{ i.ingredient.display_name }}" class="tooltip-icon leapday-goods-icon leapday-goods-icon-{{ i.ingredient|good_css_name }}"></i></a>{% endfor %}{% else  %}<span class="muted">None</span>{% endif %}</td>
+          <td class="recipe-column">{% if good.good_type == 'goodtype_crafted' and good.key != 'goodtype_crystal' %}{% for i in good.shim_recipe_ingredients %}<a href="{% url 'leapday.views.good' key=i.ingredient.key %}"><i data-toggle="tooltip" title="{{ i.ingredient.display_name }}" class="tooltip-icon leapday-goods-icon leapday-goods-icon-{{ i.ingredient|good_css_name }}"></i></a>{% endfor %}{% else  %}<span class="muted">None</span>{% endif %}</td>
           {% for base_good in good|base_goods_ordered_set %}
             <td class="base-material-column{% if forloop.counter0 == 0 %} first-base-material-column{% endif %}" data-sort-value="{{ base_good.quantity }}" data-filter="{% if base_good.quantity > 0 %}{{ base_good.ingredient.key }}{% endif %}">{% if base_good.quantity != 0 %}<a href="{% url 'leapday.views.good' key=base_good.ingredient.key %}">{% endif %}<i {% if base_good.quantity != 0 %}data-toggle="tooltip" title="{{ base_good.ingredient.display_name }}" class="tooltip-icon {% else %}class="leapday-goods-icon-translucent {% endif %}leapday-goods-icon leapday-goods-icon-{{ base_good.ingredient|good_css_name }}"></i>{% if base_good.quantity != 0 %}</a>{% endif %}<span class="base-materials-count{% if base_good.quantity == 0 %} base-materials-count-translucent{% endif %}"><span class="mult-indicator">x</span>{{ base_good.quantity }}</span></td>
           {% endfor %}
@@ -58,15 +58,32 @@
   <script type="text/javascript" src="{{ STATIC_URL }}stupidtable/stupidtable.jz.js"></script>
   <script type="text/javascript">
     $(document).ready(function() {
-      // Place tooltips on any remove buttons that exist.
+      // Place tooltips on any good icons that
+      // are present in the page.
       $('.tooltip-icon').tooltip({placement: 'top'});
       
+      // Setup the typeahead for the search input. This list of
+      // goods is added to the source variable via the template
+      // engine, since it isn't needed anywhere else.      
       $('#searchInput').typeahead({
         source: [{% for good in goods %}'{{ good.display_name }}'{% if forloop.revcounter0 != 0 %}, {% endif %}{% endfor %}],
         items: 10,
         minLength: 1,        
-   	  });
+      });
       
+      // Using stupid-table-plugin, setup the table to be sortable,
+      // and keep track locally of the last sort direction. We
+      // need that sort direction for when we re-add items
+      // during our filter process.
+      $('#recipeTable').stupidtable().bind('aftertablesort', function(event, data) {
+    	lastSort = data;
+      });
+      
+      // Setup the filter popover. Toggles when you click the filter
+      // button, and hides when you click anywhere outside of the
+      // popover. The last bit of magic is to re-initialize the
+      // checkboxes when the popover is shown, since the DOM
+      // is destroyed when it is hidden and state is not preserved.
       $('#filterButton').popover({
     	  html: true,
     	  placement: 'left',
@@ -84,40 +101,64 @@
               });
               e.stopPropagation();
           });
-
+    
       $(document).click(function(e) {
           $('#filterButton').popover('hide');
       });
-
-      $('#recipeTable').stupidtable().bind('aftertablesort', function(event, data) {
-    	  lastSort = data;
-      });
       
       $('#filterButtonContainer').click(function(event) {
-    	 event.stopPropagation(); 
+      event.stopPropagation(); 
       });
       
+      // Functions for submission / reset on the
+      // filter pseudoform. Note that these are in the global scope,
+      // since this is cleaner than worrying about where click handlers
+      // go to die when their DOM is destroyed over and over again,
+      // and we don't need any additional context from the caller.      
+      doFilter = function(e) {    	
+    	curFilter = [];
+    	$('.popover input').each(function() {
+    		if (!($(this).is(':checked'))) {
+        		var goodKey = $(this).val();
+        		curFilter.push(goodKey);
+    		}    		
+    	});
+    	$('#filterButton').popover('hide');
+    	doSearchFilter();
+      };
+      
+      resetFilter = function(e) {
+    	$('.popover input').prop('checked',true);
+      }
+      
+      // When the searc form is submitted, we snag the updated search and call
+      // our generic 'doSearchFilter()' function.
+      $('#searchForm').submit(function() {
+    	  curSearch = $('#searchInput').val().toLowerCase();
+    	  doSearchFilter();
+    	  return false;
+      });
+      
+      // This is the meat of the searching and filtering. Generally
+      // speaking, we check all of the currently shown items
+      // and hide any that should no longer be shown. Then, we check
+      // the hidden items (not including the ones we just moved) and
+      // show and that should no longer be hidden. Finally, we re-sort,
+      // since adding things to the end of the visible table messes up
+      // the order.
       var curSearch = '';
-      var filterableGoods = [{% for good in basic_goods %}'{{ good.key }}'{% if forloop.revcounter0 != 0 %}, {% endif %}{% endfor %}];
       var curFilter = [];
+      var filterableGoods = [{% for good in basic_goods %}'{{ good.key }}'{% if forloop.revcounter0 != 0 %}, {% endif %}{% endfor %}];
       var lastSort = {column: 1, direction: 'desc'};
       var doSearchFilter = function() {
-    	  console.log('Entering doSearchFilter');
-    	  console.log('curSearch is "' + curSearch + '"');
-    	  console.log('curFilter follows:');
-    	  console.log(curFilter);
-    	  // When we search / filter, we need to essentially reapply
-    	  // both each time, since we're actually removing items from the
-    	  // list. Finally, we need to append them to the existing table and
-    	  // resort according to the current sort.
-    	  
-    	  // First, let's handle search.
+		  // Grab the current lists of shown and hidden items.
     	  var shown = $('#recipeTable > tbody > tr');
-    	  var hidden = $('#excludeTable > tbody > tr');
-    	  
+    	  var hidden = $('#excludeTable > tbody > tr');    	  
     	  var shownBody = $('#recipeTable tbody');
     	  var hiddenBody = $('#excludeTable tbody');
     	  
+    	  // For each shown item, validate it against search first,
+    	  // and then the filter. If it fails, hide it.
     	  shown.each(function() {
     		  var moved = false;
     		  if (curSearch !== '') {
@@ -132,12 +173,14 @@
     			  $('td.base-material-column',this).each(function() {
     				 if (curFilter.indexOf($(this).data('filter')) !== -1) {
     					hiddenBody.append(curRow);
-   					 	return false;
+    				 	return false;
     				 } 
     			  });
     		  }
     	  });
     	  
+    	  // For each hidden item, validate if against search first,
+    	  // and then the filter. If it doesn't fail, re-show it.
     	  hidden.each(function() {
     		  var canShow = true;
     		  if (curSearch !== '') {
@@ -145,12 +188,10 @@
     			  if (name.indexOf(curSearch) === -1) {
     				  canShow = false;
     			  }
-    		  }
-    		  
+    		  }    		  
     		  if (canShow && curFilter == filterableGoods) {
     			  canShow = false;
-    		  }
-    		  
+    		  }    		  
     		  if (canShow) {
     			  $('td.base-material-column',this).each(function() {
       				 if (curFilter.indexOf($(this).data('filter')) !== -1) {
@@ -158,8 +199,7 @@
       					return false;
       				 } 
       			  });
-    		  }
-    		  
+    		  }    		  
     		  if (canShow) {
     			  shownBody.append(this);
     		  }
@@ -167,40 +207,10 @@
     	  
     	  // Finally, sort it by calling the click event on the last sorted header.
     	  // However, before we do that, we reverse the data-sort-dir information on 
-    	  // the header, so that the final result is that the sort order isn't changed, any
-    	  // new rews are in teh right order.    	  
-    	  $('#recipeTable th').eq(lastSort.column).data('sort-dir', lastSort.direction === 'asc' ? 'desc' : 'asc').click();
-    	  
-      }
-      
-      
-      doFilter = function(e) {
-    	console.log('Entering doFilter()');
-    	
-    	curFilter = [];
-    	$('.popover input').each(function() {
-    		if (!($(this).is(':checked'))) {
-        		var goodKey = $(this).val();
-        		curFilter.push(goodKey);
-    		}    		
-    	});
-    	$('#filterButton').popover('hide');
-    	console.log('Completed doFilter(). New filter object follows:');
-    	console.log(curFilter);
-    	doSearchFilter();
-      };
-      
-      resetFilter = function(e) {
-    	console.log($('.popover input'));
-    	$('.popover input').prop('checked',true);
-      }
-      
-      $('#searchForm').submit(function() {
-    	  curSearch = $('#searchInput').val().toLowerCase();
-    	  doSearchFilter();
-    	  return false;
-      });
-      
+    	  // the header, so that the final result is that the sort order isn't changed, and
+    	  // newly added rows are in the correct location.
+    	  $('#recipeTable th').eq(lastSort.column).data('sort-dir', lastSort.direction === 'asc' ? 'desc' : 'asc').click();    	  
+      }  
     });
   </script>
 {% endblock %}

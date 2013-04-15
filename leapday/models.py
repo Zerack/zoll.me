@@ -1,6 +1,16 @@
+'''
+James D. Zoll
+
+4/15/2013
+
+Purpose: Defines models for the Leap Day application.
+
+License: This is a public work.
+
+'''
+
 from django.db import models
 
-# Create your models here.
 class Good(models.Model):
     key = models.CharField(max_length=100)
     good_type = models.CharField(max_length=20,choices=[(x, x) for x in ['goodtype_basic','goodtype_crafted','goodtype_crystal']])
