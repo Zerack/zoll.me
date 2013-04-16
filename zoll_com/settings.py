@@ -33,7 +33,7 @@ TEMPLATE_CONTEXT_PROCESSORS = TCP + ('django.core.context_processors.request','z
 LOGIN_URL = '/account/login'
 LOGOUT_URL = '/account/logout'
 
-ALLOWED_HOSTS = ['96.248.69.34','192.168.1.202']
+ALLOWED_HOSTS = ['96.248.69.34','zoll.me','www.zoll.me']
 
 # Local time zone for this installation. Choices can be found here:
 # http://en.wikipedia.org/wiki/List_of_tz_zones_by_name
