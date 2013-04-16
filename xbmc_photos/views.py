@@ -171,6 +171,7 @@ def edit(request, photo_id):
         try:
             title = request.POST['title']
             description = request.POST['description']
+            photo_public = request.POST['photoPublic'].strip().lower()
             crop_x1 = int(request.POST['crop_x1'])
             crop_y1 = int(request.POST['crop_y1'])
             crop_x2 = int(request.POST['crop_x2'])
@@ -183,7 +184,8 @@ def edit(request, photo_id):
             if (title == '' or len(title) > Photo._meta.get_field('title').max_length or
                 description == '' or len(description) > Photo._meta.get_field('description').max_length or
                 crop_x1 < 0 or crop_x2 > td['photo'].width or crop_x2 - crop_x1 < MIN_RES_HORIZ or
-                crop_y1 < 0 or crop_y2 > td['photo'].height or crop_y2 - crop_y1 < MIN_RES_VERT):
+                crop_y1 < 0 or crop_y2 > td['photo'].height or crop_y2 - crop_y1 < MIN_RES_VERT or
+                photo_public not in ['true','false']):
                 print 'validation error'
                 validation_error = True
                             
@@ -196,7 +198,8 @@ def edit(request, photo_id):
             # As far as we can tell, input is valid here. Now, we need to re-title, re-description, and re-crop the
             # image.            
             td['photo'].title = title
-            td['photo'].description = description            
+            td['photo'].description = description
+            td['photo'].public = photo_public == 'true'         
             td['photo'].recrop(crop_x1, crop_y1, crop_x2, crop_y2)            
             td['photo'].save()         
             
@@ -282,12 +285,17 @@ def new(request):
         try:
             title = request.POST['title'].strip()
             description = request.POST['description'].strip()
-            image = request.FILES['image']
+            photo_public = request.POST['photoPublic'].strip().lower()
+            image = request.FILES['image']            
             
             if len(title) > Photo._meta.get_field('title').max_length:
                 raise ValueError
             if len(description) > Photo._meta.get_field('description').max_length:
-                raise ValueError            
+                raise ValueError
+            if photo_public not in ['true','false']:
+                raise ValueError
+            else:
+                photo_public = photo_public == 'true'
         except (KeyError, ValueError):
             # In this case, we had difficulty pulling information from the request, so
             # re-show the page with an error flash.
@@ -357,7 +365,7 @@ def new(request):
         photo = Photo(title=title, description=description, date=datetime.now(), user=request.user,
                       crop_x = crop_box[0], crop_y=crop_box[1], crop_w=crop_box[2] - crop_box[0], crop_h=crop_box[3] - crop_box[1],
                       file_original=imuf_image, file_cropped=imuf_image_cropped, file_thumb=imuf_image_thumb, height=o_h, width=o_w,
-                      edit_date = datetime.now())
+                      edit_date = datetime.now(), public=photo_public)
         photo.save()
         
         td['success'] = True

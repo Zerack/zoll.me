@@ -40,6 +40,18 @@
           <input id="descriptionInput" type="text" maxlength="1000" name="description" class="input-block-level" value="{{ photo.description }}" placeholder="Photograph Description">
         </div>
       </div>
+      <div class="row">
+        <div class="span9">
+          <label class="radio">
+            <input type="radio" name="photoPublic" id="publicRadio" value="true" {% if photo.public %}checked{% endif %} autocomplete="off">
+            Make this photo public.<span class="muted"> Anyone will be able to see this photo.</span>
+          </label>
+          <label class="radio" style="margin-bottom: 10px;">
+            <input type="radio" name="photoPublic" id="privateRadio" value="false" {% if not photo.public %}checked{% endif %} autocomplete="off">
+            Make this photo private. <span class="muted">Only you and other XBMC photo contributors will be able to see this photo.</span>
+          </label>
+        </div>
+      </div>
       <div class="alert alert-error" id="validationAlert" style="display: none;">
         <strong>Negatory.</strong> All fields are required. Make sure you have entered a title / description before submitting.
       </div>

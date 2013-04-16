@@ -45,6 +45,14 @@
             </div>
           </div>
           <input id="descriptionInput" class="input-block-level" type="text" name="description" maxlength="1000" placeholder="Photograph Description">
+          <label class="radio">
+            <input type="radio" name="photoPublic" id="publicRadio" value="true" checked>
+            Make this photo public.<span class="muted"> Anyone will be able to see this photo.</span>
+          </label>
+          <label class="radio" style="margin-bottom: 10px;">
+            <input type="radio" name="photoPublic" id="privateRadio" value="false">
+            Make this photo private. <span class="muted">Only you and other XBMC photo contributors will be able to see this photo.</span>
+          </label>          
           <span class="help-block">You can crop your photo from the Edit Photos page after uploading.</span>
             {% if error %}
               <div class="alert alert-error">
