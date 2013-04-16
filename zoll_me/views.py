@@ -3,7 +3,7 @@ James D. Zoll
 
 3/4/2013
 
-Purpose: Defines some basic views for the main zoll_com application.
+Purpose: Defines some basic views for the main zoll_me application.
 
 License: This is a public work.
 
@@ -26,10 +26,10 @@ def index(request):
         newest_photo = newest_photo.filter(public=True)
     td['newest_photo'] = newest_photo.all()[0]
         
-    return render_to_response('zoll_com/index.html', td, context_instance = RequestContext(request))
+    return render_to_response('zoll_me/index.html', td, context_instance = RequestContext(request))
 
 def resume(request):
-    return render_to_response('zoll_com/resume.html', {'active_nav':'resume'}, context_instance = RequestContext(request))
+    return render_to_response('zoll_me/resume.html', {'active_nav':'resume'}, context_instance = RequestContext(request))
 
 def projects(request):
     '''
@@ -38,25 +38,25 @@ def projects(request):
     
     '''
     
-    return render_to_response('zoll_com/projects.html', {'active_nav':'projects'}, context_instance = RequestContext(request))
+    return render_to_response('zoll_me/projects.html', {'active_nav':'projects'}, context_instance = RequestContext(request))
 
 # Additional views to handle errors.
 def error_400(request):
     td = {'header_text': 'Bad Request (400)',
           'body_text': 'The request could not be understood by the server.'}
-    return render(request,'zoll_com/error.html', td, status=400)
+    return render(request,'zoll_me/error.html', td, status=400)
 
 def error_403(request):
     td = {'header_text': 'Forbidden (403)',
           'body_text': 'You do not have permission to access {0} on this server.'.format(request.path)}
-    return render(request,'zoll_com/error.html', td, status=403)
+    return render(request,'zoll_me/error.html', td, status=403)
 
 def error_404(request):
     td = {'header_text': 'Page Not Found (404)',
           'body_text': 'The path {0} was not found on the server.'.format(request.path)}
-    return render(request,'zoll_com/error.html', td, status=404)
+    return render(request,'zoll_me/error.html', td, status=404)
 
 def error_500(request):
     td = {'header_text': 'Internal Server Error (500)',
           'body_text': 'The server encountered an unexpected condition which prevented it from fulfilling your request.'}
-    return render(request,'zoll_com/error.html', td, status=500)
+    return render(request,'zoll_me/error.html', td, status=500)

@@ -31,7 +31,7 @@ from django.utils.http import urlencode
 from files.models import File, Group_Member, Group
 from files.view_helpers import nav_group_entries
 from files.constants import *
-from zoll_com.views import error_400
+from zoll_me.views import error_400
 
 def index(request):
     '''
@@ -89,7 +89,7 @@ def _list(request, group):
         # All other groups require an authenticated user, so redirect to login if we aren't 
         # currently authenticated.
         if not request.user.is_authenticated():
-            return redirect('{0}?{1}'.format(reverse('zoll_com-login'),urlencode({'next':request.get_full_path()})))
+            return redirect('{0}?{1}'.format(reverse('zoll_me-login'),urlencode({'next':request.get_full_path()})))
         if group == 'private':
             # The private group returns files in "private" that are owned by the current user.
             files = File.objects.filter(group=Group.objects.filter(group='private').get()).filter(user=request.user).all()

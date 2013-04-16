@@ -28,7 +28,7 @@ ADMINS = (
 
 MANAGERS = ADMINS
 
-TEMPLATE_CONTEXT_PROCESSORS = TCP + ('django.core.context_processors.request','zoll_com.context_processors.installed_apps')
+TEMPLATE_CONTEXT_PROCESSORS = TCP + ('django.core.context_processors.request','zoll_me.context_processors.installed_apps')
 
 LOGIN_URL = '/account/login'
 LOGOUT_URL = '/account/logout'
@@ -94,10 +94,10 @@ MIDDLEWARE_CLASSES = (
     # 'django.middleware.clickjacking.XFrameOptionsMiddleware',
 )
 
-ROOT_URLCONF = 'zoll_com.urls'
+ROOT_URLCONF = 'zoll_me.urls'
 
 # Python dotted path to the WSGI application used by Django's runserver.
-WSGI_APPLICATION = 'zoll_com.wsgi.application'
+WSGI_APPLICATION = 'zoll_me.wsgi.application'
 
 INSTALLED_APPS = (
     'django.contrib.auth',

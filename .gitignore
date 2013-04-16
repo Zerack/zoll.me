@@ -1,6 +1,6 @@
 .project
 .pydevproject
-zoll_com/local_settings.py
+zoll_me/local_settings.py
 media_dev/
 static/
 *.pyc

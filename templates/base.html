@@ -21,7 +21,7 @@
     <link href="{{ STATIC_URL }}bootstrap/css/bootstrap.min.css" rel="stylesheet">
     <link href="{{ STATIC_URL }}bootstrap/css/bootstrap-responsive.min.css" rel="stylesheet">
     {% compress css %}
-      <link href="{{ STATIC_URL }}zoll_com/css/styles.css" rel="stylesheet">
+      <link href="{{ STATIC_URL }}zoll_me/css/styles.css" rel="stylesheet">
       {% block styles %}{% endblock %}
     {% endcompress %}
 
@@ -48,15 +48,15 @@
             <span class="icon-bar"></span>
             <span class="icon-bar"></span>
           </button>
-          <a class="brand" href="{% url 'zoll_com.views.index' %}" style="padding-top: 5px; padding-bottom: 5px; padding-right: 10px;"><img style="height: 30px; width: 30px;" src="{{ STATIC_URL }}zoll_com/img/logo.png" /></a>
+          <a class="brand" href="{% url 'zoll_me.views.index' %}" style="padding-top: 5px; padding-bottom: 5px; padding-right: 10px;"><img style="height: 30px; width: 30px;" src="{{ STATIC_URL }}zoll_me/img/logo.png" /></a>
           <div class="nav-collapse collapse">
             <ul class="nav">
-              <li {% if active_nav == 'index' %}class="active"{% endif %}><a href="{% url 'zoll_com.views.index' %}">Home</a></li>
-              <li {% if active_nav == 'resume' %}class="active"{% endif %}><a href="{% url 'zoll_com.views.resume' %}">Resume</a></li>
+              <li {% if active_nav == 'index' %}class="active"{% endif %}><a href="{% url 'zoll_me.views.index' %}">Home</a></li>
+              <li {% if active_nav == 'resume' %}class="active"{% endif %}><a href="{% url 'zoll_me.views.resume' %}">Resume</a></li>
               <li class="dropdown{% if active_nav == 'projects' %} active{% endif %}">
                 <a href="#" class="dropdown-toggle" data-toggle="dropdown">My Projects <b class="caret"></b></a>
                 <ul class="dropdown-menu">
-                  <li><a href="{% url 'zoll_com.views.projects' %}">All Projects</a></li>
+                  <li><a href="{% url 'zoll_me.views.projects' %}">All Projects</a></li>
                   <li class="divider"></li>
                   {% for app in apps %}
                     <li><a href="{% url app.default_view %}">{{ app.name }}</a></li>
