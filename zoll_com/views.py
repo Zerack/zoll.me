@@ -21,7 +21,10 @@ INDEX_NUM_APPS = 3
 
 def index(request):
     td = {'active_nav':'index', 'apps_slice': '1:{0}'.format(INDEX_NUM_APPS + 1)}    
-    td['newest_photo'] = Photo.objects.order_by('-date')[0]
+    newest_photo = Photo.objects.order_by('-date')
+    if not request.user.is_authenticated() or not request.user.has_perm('xbmc_photos.add_photo'):
+        newest_photo = newest_photo.filter(public=True)
+    td['newest_photo'] = newest_photo.all()[0]
         
     return render_to_response('zoll_com/index.html', td, context_instance = RequestContext(request))
 
