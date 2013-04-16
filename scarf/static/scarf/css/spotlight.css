@@ -94,3 +94,8 @@
 	font-weight: bold;
 }
 
+.spotlight .img-polaroid img {
+	display: block;
+	width: 100%;
+}
+

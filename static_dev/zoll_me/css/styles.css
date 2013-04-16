@@ -41,3 +41,10 @@ footer a:hover {
 .justify {
 	text-align: justify;
 }
+
+@media (max-width: 767px) {
+	footer .span6 {
+		margin-bottom: 0px;
+		text-align: center;	
+	}
+}
