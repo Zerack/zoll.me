@@ -44,6 +44,9 @@ def get_td_all(request, role, page=1):
     num_photos = Photo.objects
     if role == 'edit':
         num_photos = num_photos.filter(user=request.user)
+    elif not request.user.is_authenticated() or not request.user.has_perm('xbmc_photos.add_photo'):
+        num_photos = num_photos.filter(public=True)
+        
     num_photos = num_photos.count()
     num_pages = max(1,ceil(num_photos / float(IMAGES_PER_PAGE)))
     

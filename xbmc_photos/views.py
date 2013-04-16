@@ -22,7 +22,7 @@ from django.template import RequestContext
 from django.core.urlresolvers import reverse
 from django.core.files.uploadedfile import InMemoryUploadedFile
 from django.contrib.auth.decorators import permission_required
-from django.http import HttpResponse
+from django.http import HttpResponse, Http404
 from django.core.exceptions import PermissionDenied
 from django.conf import settings
 from PIL import Image
@@ -45,12 +45,21 @@ def index(request):
     # Template object we'll pass to the renderer. td = template_dict
     td = {'active_nav': 'home'}
     
+    # Some photos can be marked private and are not visible to others. While they are really
+    # only hidden behind a hashed filename, this is sufficient for this application.
+    if request.user.is_authenticated() and request.user.has_perm('xbmc_photos.add_photo'):
+        photos = Photo.objects.order_by('?')
+        recent_photos = Photo.objects.order_by('-date')[:6]
+    else:
+        photos = Photo.objects.filter(public=True).order_by('?')
+        recent_photos = Photo.objects.filter(public=True).order_by('-date')[:6]
+    
     # Build the carousel information. For each entry, we need to know the image name,
     # the header, and caption.
-    td['carousel'] = [(photo, CAROUSEL[idx][0], CAROUSEL[idx][1]) for idx, photo in enumerate(Photo.objects.order_by('?')[:len(CAROUSEL)])]
+    td['carousel'] = [(photo, CAROUSEL[idx][0], CAROUSEL[idx][1]) for idx, photo in enumerate(photos[:len(CAROUSEL)])]
     
     # Build the list of recent photographs. This will always be the most recent six photos.
-    td['recents'] = Photo.objects.order_by('-date')[:6]
+    td['recents'] = recent_photos
     
     # Ready to render the template.
     return render_to_response('xbmc_photos/index.html', td, context_instance = RequestContext(request))
@@ -68,6 +77,8 @@ def view(request, photo_id):
     # Template context object
     td = {'active_nav': 'view'}
     
+    is_contributor = request.user.is_authenticated() and request.user.has_perm('xbmc_photos.add_photo')
+    
     # Information needed by the template.
     try:
         td['photo'] = Photo.objects.get(id=photo_id)
@@ -80,22 +91,39 @@ def view(request, photo_id):
     except Photo.DoesNotExist:
         # An invalid ID was given. Replace all photo view content with an error message.
         td['invalid_id'] = True
-        
+    
+    # The photo was found. If the photo is private and the user does not have xbmc_photos.add_photo
+    # we raise a 404.
+    if td['photo'].public == False and not is_contributor:
+        raise Http404
+     
     # Now, determine where the PREV and NEXT links should go. We just need the IDs of the 
     # previously and next uploaded file. In the case of the first / last image, we loop.
     try:
-        td['next_photo'] = Photo.objects.filter(date__gt=td['photo'].date).order_by('date').all()[0]
+        td['next_photo'] = Photo.objects.filter(date__gt=td['photo'].date)
+        if not is_contributor:
+            td['next_photo'] = td['next_photo'].filter(public=True)
+        td['next_photo'] = td['next_photo'].order_by('date').all()[0]
     except IndexError:
         try:
-            td['next_photo'] = Photo.objects.order_by('date').all()[0]
+            td['next_photo'] = Photo.objects.order_by('date')
+            if not is_contributor:
+                td['next_photo'] = td['next_photo'].filter(public=True)
+            td['next_photo'] = td['next_photo'].all()[0]
         except IndexError:
             td['next_photo'] = None
             
     try:
-        td['prev_photo'] = Photo.objects.filter(date__lt=td['photo'].date).order_by('-date').all()[0]
+        td['prev_photo'] = Photo.objects.filter(date__lt=td['photo'].date)
+        if not is_contributor:
+            td['prev_photo'] = td['prev_photo'].filter(public=True)
+        td['prev_photo'] = td['prev_photo'].order_by('-date').all()[0]
     except IndexError:
         try:
-            td['prev_photo'] = Photo.objects.order_by('-date').all()[0]
+            td['prev_photo'] = Photo.objects.order_by('-date')
+            if not is_contributor:
+                td['prev_photo'] = td['prev_photo'].filter(public=True)
+            td['prev_photo'] = td['prev_photo'].all()[0]
         except IndexError:
             td['prev_photo'] = None
     
@@ -378,7 +406,10 @@ def zip_all(request):
     Returns a zip file with all cropped 1920 x 1080 photos
     included. For now this is done in memory, but if the number of
     users were larger, we would use TempFile and mkstemp() instead, to
-    conserver RAM.
+    conserver RAM. Note that this doesn't do any permission checking,
+    again because we just want to allow some photos to be marked private.
+    They can be found here, but you'd have to look at the code to know
+    that this URL exists.
     
     '''
     

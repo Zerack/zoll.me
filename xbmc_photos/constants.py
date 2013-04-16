@@ -25,6 +25,6 @@ THUMBNAIL_RES_HORIZ = 700
 THUMBNAIL_RES_VERT = int(floor(THUMBNAIL_RES_HORIZ * (1.0 / DESIRED_ASPECT_RATIO)))
 
 # Index page carousel text and headings.
-CAROUSEL = [('See All Photos', 'Every photo in our collection is available to browse. Click to View Photos link to the left to get started.'),
+CAROUSEL = [('See All Photos', 'All public photos in our collection are available to browse. Click to View Photos link to the left to get started.'),
             ('Edit Photos', 'Need to re-caption or re-crop a photograph? No problem! Use the Edit Photos link in the navigation area.'),
             ('Upload Photos', 'We\'re always looking for new photos. Login to upload, title, and crop your very own photos for our screensaver.')]

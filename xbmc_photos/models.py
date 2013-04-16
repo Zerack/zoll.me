@@ -39,6 +39,7 @@ class Photo(models.Model):
     file_original = models.ImageField(upload_to=get_media_path_factory('xbmc_photos/original/%Y/%m/%d', 'file_original'))
     file_cropped = models.ImageField(upload_to=get_media_path_factory('xbmc_photos/cropped/%Y/%m/%d', 'file_cropped'))
     file_thumb = models.ImageField(upload_to=get_media_path_factory('xbmc_photos/thumb/%Y/%m/%d', 'file_thumb'))
+    public = models.BooleanField()
     
     def recrop(self, left, top, right, bottom):
         ''' 
