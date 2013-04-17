@@ -67,7 +67,7 @@
             {% if user.is_authenticated %}
             <form method="post" action="{% url 'django.contrib.auth.views.logout' %}" class="navbar-form pull-right">
               {% csrf_token %}
-              <div class="user-welcome">Welcome, <b>{{ user.username }}</b></div>
+              <div class="user-welcome">Welcome, <b>{{ user.username }}</b></div><br class="visible-phone"/>
               <a class="btn" href="{% url 'django.contrib.auth.views.password_change' %}">Account</a>
               <button type="submit" class="btn">Sign out</button>
               <input type="hidden" name="next" value="{{ request.get_full_path }}">
