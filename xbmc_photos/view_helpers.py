@@ -58,6 +58,8 @@ def get_td_all(request, role, page=1):
         td['photos'] = Photo.objects.order_by('-date')
         if role == 'edit':
             td['photos'] = td['photos'].filter(user=request.user)
+        elif not request.user.is_authenticated() or not request.user.has_perm('xbmc_photos.add_photo'):
+            td['photos'] = td['photos'].filter(public=True)
         td['photos'] = td['photos'].order_by('-date')[IMAGES_PER_PAGE * (page - 1): min(IMAGES_PER_PAGE * page, num_photos)]
     else:
         td['photos'] = []
