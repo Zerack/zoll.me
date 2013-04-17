@@ -94,38 +94,39 @@ def view(request, photo_id):
     
     # The photo was found. If the photo is private and the user does not have xbmc_photos.add_photo
     # we raise a 404.
-    if td['photo'].public == False and not is_contributor:
+    if 'invalid_id' not in td and td['photo'].public == False and not is_contributor:
         raise Http404
      
     # Now, determine where the PREV and NEXT links should go. We just need the IDs of the 
     # previously and next uploaded file. In the case of the first / last image, we loop.
-    try:
-        td['next_photo'] = Photo.objects.filter(date__gt=td['photo'].date)
-        if not is_contributor:
-            td['next_photo'] = td['next_photo'].filter(public=True)
-        td['next_photo'] = td['next_photo'].order_by('date').all()[0]
-    except IndexError:
+    if 'invalid_id' not in td:
         try:
-            td['next_photo'] = Photo.objects.order_by('date')
+            td['next_photo'] = Photo.objects.filter(date__gt=td['photo'].date)
             if not is_contributor:
                 td['next_photo'] = td['next_photo'].filter(public=True)
-            td['next_photo'] = td['next_photo'].all()[0]
+            td['next_photo'] = td['next_photo'].order_by('date').all()[0]
         except IndexError:
-            td['next_photo'] = None
-            
-    try:
-        td['prev_photo'] = Photo.objects.filter(date__lt=td['photo'].date)
-        if not is_contributor:
-            td['prev_photo'] = td['prev_photo'].filter(public=True)
-        td['prev_photo'] = td['prev_photo'].order_by('-date').all()[0]
-    except IndexError:
+            try:
+                td['next_photo'] = Photo.objects.order_by('date')
+                if not is_contributor:
+                    td['next_photo'] = td['next_photo'].filter(public=True)
+                td['next_photo'] = td['next_photo'].all()[0]
+            except IndexError:
+                td['next_photo'] = None
+                
         try:
-            td['prev_photo'] = Photo.objects.order_by('-date')
+            td['prev_photo'] = Photo.objects.filter(date__lt=td['photo'].date)
             if not is_contributor:
                 td['prev_photo'] = td['prev_photo'].filter(public=True)
-            td['prev_photo'] = td['prev_photo'].all()[0]
+            td['prev_photo'] = td['prev_photo'].order_by('-date').all()[0]
         except IndexError:
-            td['prev_photo'] = None
+            try:
+                td['prev_photo'] = Photo.objects.order_by('-date')
+                if not is_contributor:
+                    td['prev_photo'] = td['prev_photo'].filter(public=True)
+                td['prev_photo'] = td['prev_photo'].all()[0]
+            except IndexError:
+                td['prev_photo'] = None
     
     return render_to_response('xbmc_photos/view.html', td, context_instance = RequestContext(request))
 
