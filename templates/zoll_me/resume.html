@@ -1,17 +1,30 @@
 {% extends "base.html" %}
 
 {% block styles %}
-  <link rel="stylesheet" href="{{ STATIC_URL }}zoll_com/css/resume.css">
+  <link rel="stylesheet" href="{{ STATIC_URL }}zoll_me/css/resume.css">
+  <style type="text/css">
+    ul.critical-skills {
+      margin: 0px;
+      list-style: none;
+    }
+    
+    ul.critical-skills li {
+      display: inline-block;
+      padding: 0px 10px;
+    }
+    
+    ul.critical-skills li:first-child {
+      padding-left: 0px;
+    }
+  </style>
 {% endblock %}
 
 {% block container %}
   <div class="row">
     <div class="span6">
       <h3 style="line-height: 24.5px;" class="margin-bottom-0">James D. Zoll</h3>
-      <p class="margin-bottom-0">13 Hawthorne Court</p>
-      <p>Maple Shade, NJ 08052</p>
-      <p class="margin-bottom-0"><a class="visible-phone" href="tel:7174485413">717.448.5413</a><span class="hidden-phone">717.448.5413</span></p>
-      <p class="margin-bottom-0"><a href="mailto:zolljd@gmail.com">zolljd@gmail.com</a>
+      <p>Maple Shade, NJ</p>
+      <p class="margin-bottom-0"><i class="icon icon-envelope"></i> <a href="mailto:zolljd@gmail.com">zolljd@gmail.com</a>
     </div>
     <div class="span6 text-right" style="margin-top: 10px;">
       <a href="#" class="btn btn-primary btn-mini"><i class="icon-white icon-download"></i> Download Resume (DOC)</a>
@@ -20,82 +33,16 @@
   <hr />
   <div class="row">
     <div class="span12">
-      <h4 style="margin-top: 0px;">Summary</h4>
-      <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Fusce tempus blandit metus ac viverra. Donec tristique quam dignissim justo adipiscing ultrices. Integer eget leo nec magna ultrices volutpat ut eget eros. Pellentesque et placerat nulla. Nam non leo felis, sed condimentum metus. Nam sed purus lectus. Proin non est non diam tincidunt rutrum ac sit amet felis. Aliquam et dolor mauris.</p>
-    </div>
-  </div>
-  <div class="row">
-    <div class="span12">
-      <h4>Education</h4>
-    </div>
-  </div>
-  <div class="row">
-    <div class="span12">
-      <p class="margin-bottom-0 pull-left"><strong>Wake Forest University,</strong> Winston-Salem, NC</p>
-      <p class="margin-bottom-0 pull-right">2004-2008</p>
-    </div>
-  </div>
-  <div class="row">
-    <div class="span12">
-      <div style="margin-left: 30px;">
-        <p class="margin-bottom-0">Bachelor of Science, Computer Science</p>
-        <p class="margin-bottom-0">Bachelor of Arts, Music Performance with Honors</p>
-        <p><em>Cumulative GPA: 3.73 / 4.0, magna cum laude</em>
-      </div>
-    </div>
-  </div>
-  <div class="row">
-    <div class="span12">
-      <h4>Professional Experience</h4>
-    </div>
-  </div>
-  <div class="row">
-    <div class="span12">
-      <p class="margin-bottom-0 pull-left"><strong>Engility Corporation,</strong> Lexington Park, MD</p>
-      <p class="margin-bottom-0 pull-right">2008-present</p>
-    </div>
-  </div>
-  <div class="row">
-    <div class="span12">
-      <div style="margin-left: 30px;">
-        <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aliquam vehicula urna eget enim faucibus dictum. Praesent nec turpis erat, in porttitor est. Aliquam erat volutpat. Cras cursus tincidunt purus at consequat. Nulla accumsan mauris accumsan dui pharetra dictum. Nam mauris libero, mollis ullamcorper imperdiet id, ultrices in nisi.</p>
-      </div>
-    </div>
-  </div>
-  <div class="row">
-    <div class="span12">
-      <p class="margin-bottom-0"><strong><em>Software Engineer</em></strong></p>
-      <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Mauris quis nisi lacus, nec elementum augue. Nunc sed blandit massa. Cras vel sapien quam, ac accumsan justo. Ut tincidunt purus sed felis imperdiet sit amet molestie lectus dignissim. Suspendisse elementum tortor vitae nulla vehicula posuere. Nullam in nisi sem. Praesent congue laoreet magna, ac egestas sem elementum sed.</p>
-      <ul style="margin-left: 30px;">
-        <li>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aenean egestas consequat tortor. Sed at tortor ligula, vel euismod eros. Sed vel nisi lacus, ut mattis nisl. Lorem ipsum dolor sit.</li>
-        <li>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer malesuada aliquam gravida. Pellentesque orci sem, lacinia a ullamcorper et, rhoncus vitae tellus. Mauris id ante nisl, pretium sodales mi. Proin feugiat augue massa. Nullam congue tempor ligula ac congue. Nulla.</li>
-        <li>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer tincidunt iaculis neque et elementum. Donec.</li>
-        <li>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aenean egestas consequat tortor. Sed at tortor ligula, vel euismod eros. Sed vel nisi lacus, ut mattis nisl. Lorem ipsum dolor sit. Lorem ipsum dolor sit.</li>
-      </ul>
-    </div>
-  </div>
-    <div class="row">
-    <div class="span12">
-      <p class="margin-bottom-0 pull-left"><strong>Engility Corporation,</strong> Lexington Park, MD</p>
-      <p class="margin-bottom-0 pull-right">2008-present</p>
-    </div>
-  </div>
-  <div class="row">
-    <div class="span12">
-      <div style="margin-left: 30px;">
-        <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aliquam vehicula urna eget enim faucibus dictum. Praesent nec turpis erat, in porttitor est. Aliquam erat volutpat. Cras cursus tincidunt purus at consequat. Nulla accumsan mauris accumsan dui pharetra dictum. Nam mauris libero, mollis ullamcorper imperdiet id, ultrices in nisi.</p>
-      </div>
-    </div>
-  </div>
-  <div class="row">
-    <div class="span12">
-      <p class="margin-bottom-0"><strong><em>Associate Software Engineer</em></strong></p>
-      <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Mauris quis nisi lacus, nec elementum augue. Nunc sed blandit massa. Cras vel sapien quam, ac accumsan justo. Ut tincidunt purus sed felis imperdiet sit amet molestie lectus dignissim. Suspendisse elementum tortor vitae nulla vehicula posuere. Nullam in nisi sem. Praesent congue laoreet magna, ac egestas sem elementum sed.</p>
-      <ul style="margin-left: 30px;">
-        <li>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aenean egestas consequat tortor. Sed at tortor ligula, vel euismod eros. Sed vel nisi lacus, ut mattis nisl. Lorem ipsum dolor sit.</li>
-        <li>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer malesuada aliquam gravida. Pellentesque orci sem, lacinia a ullamcorper et, rhoncus vitae tellus. Mauris id ante nisl, pretium sodales mi. Proin feugiat augue massa. Nullam congue tempor ligula ac congue. Nulla.</li>
-        <li>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer tincidunt iaculis neque et elementum. Donec.</li>
-        <li>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aenean egestas consequat tortor. Sed at tortor ligula, vel euismod eros. Sed vel nisi lacus, ut mattis nisl. Lorem ipsum dolor sit. Lorem ipsum dolor sit.</li>
+      <h4 style="margin-top: 0px;">Critical Skills</h4>
+      <ul class="critical-skills">
+        <li><img src="http://cs.lmu.edu/~ray/images/python-logo.png" style="height: 20px; width: 20px;"> Python</li>
+        <li><img src="https://bitbucket-assetroot.s3.amazonaws.com/c/photos/2012/May/12/django-hg-git-logo-3096483512-4_avatar.png" style="height: 20px; width: 20px;"> Django</li>
+        <li><img src="http://www.macnative.com/wp-content/2011/10/jquery.jpg" style="height: 20px; width: 20px;"> jQuery</li>
+        <li>Dojo Toolkit</li>
+        <li>PL/SQL</li>
+        <li>jQuery</li>
+        <li>Flask</li>
+        <li>Java</li>
       </ul>
     </div>
   </div>
