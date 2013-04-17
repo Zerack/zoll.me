@@ -62,7 +62,7 @@ print 'Added fake "Other" item entry.'
 goodtype_crystal = None
 
 # Now, open up the XML file and make a beautiful soup object from it.
-with open('config.xml','r') as config_xml:
+with open('config_20130417.xml','r') as config_xml:
     bs = BeautifulSoup(config_xml.read())
 print 'Read CONFIG.XML.'
 
