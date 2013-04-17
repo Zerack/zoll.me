@@ -57,7 +57,7 @@ def index(request):
         td['user_groups'] = user_groups
     else:
         recent_files = File.objects.filter(group=public_group)
-    td['recent_files'] = recent_files.all()[:5]
+    td['recent_files'] = recent_files.order_by('-date').all()[:5]
     
     # Now we will get counts of active files if the user is authenticated.
     if request.user.is_authenticated():

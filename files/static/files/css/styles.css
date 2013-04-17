@@ -20,3 +20,9 @@ td.line-height-22 {
 td.text-right {
 	text-align: right;
 }
+
+@media (max-width:767px) {	
+	td.text-right-phone {
+		text-align: right;
+	}
+}
