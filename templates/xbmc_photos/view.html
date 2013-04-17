@@ -12,18 +12,18 @@
   {% else %}
     <div class="row">
       <div class="span5">
-        <h4 style="display: inline;">{{ photo.title }}</h4>{% if show_edit %} <a href="{% url 'xbmc_photos.views.edit' photo_id=photo.id %}?prev=view">Edit &raquo;</a>{% endif %}
+        <h4 style="display: inline-block; margin-top: 0px;">{{ photo.title }}</h4>{% if show_edit %} <a href="{% url 'xbmc_photos.views.edit' photo_id=photo.id %}?prev=view">Edit &raquo;</a>{% endif %}
       </div>
       <div class="span4">
-        <p class="text-right muted">{{ photo.date|date:'Y.m.d' }} - {{ photo.user }}</p>
+        <p class="text-right-not-phone muted" style="margin-bottom: 0px;">{{ photo.date|date:'Y.m.d' }} - {{ photo.user }}</p>
       </div>
     </div>
     <div class="row">
       <div class="span9">
         <div class="img-polaroid" style="position: relative;">
           <img src="{{ photo.file_cropped.url }}?{{photo.edit_date|date:'YmdHis'}}" alt>
-          {% if prev_photo %}<a class="carousel-control left" href="{% url 'xbmc_photos.views.view' photo_id=prev_photo.id %}" style="top: 50%;">&lsaquo;</a>{% endif %}
-          {% if next_photo %}<a class="carousel-control right" href="{% url 'xbmc_photos.views.view' photo_id=next_photo.id %}" style="top: 50%;">&rsaquo;</a>{% endif %}
+          {% if prev_photo %}<a class="carousel-control left" title="Previous Photo" href="{% url 'xbmc_photos.views.view' photo_id=prev_photo.id %}" style="top: 50%;">&lsaquo;</a>{% endif %}
+          {% if next_photo %}<a class="carousel-control right" title="Next Photo" href="{% url 'xbmc_photos.views.view' photo_id=next_photo.id %}" style="top: 50%;">&rsaquo;</a>{% endif %}
         </div>
       </div>
     </div>
