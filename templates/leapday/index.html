@@ -7,12 +7,15 @@
   <p>Every item in Leap Day is visible here to browse. If you'd like to see more detail about a specific item or recipe, just click the icon that you are interested in. Can't find what you're looking for? Use the search box to limit your results.</p>
   <div class="row">
     <div class="pull-right">
+      <div id="filterButtonContainer" class="text-right">&nbsp;<button id="filterButton" class="btn btn-inverse"><i class="icon-white icon-filter"></i> Filter</button></div>
+    </div>
+    <div class="pull-right">
       <form style="display: inline-block;" id="searchForm" class="form-search text-right">
         <div class="input-append">
           <input id="searchInput" type="text" autocomplete="off" class="span2 search-query">
           <button type="submit" class="btn"><i class="icon icon-search"></i> Search</button>
         </div>
-      </form>&nbsp;<div id="filterButtonContainer" style="display: inline-block" class="text-right"><button id="filterButton" class="btn btn-inverse"><i class="icon-white icon-filter"></i> Filter</button></div>
+      </form>
     </div>
   </div>
   <table id="recipeTable" class="table table-condensed table-striped table-bordered recipe-table table-hover">

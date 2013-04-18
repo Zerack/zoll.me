@@ -18,6 +18,18 @@
 /*
  * Styles for just the index page.
  */
+
+div#filterButtonContainer {
+	margin-bottom: 10px;
+	display: inline-block;
+}
+
+@media (max-width: 490px) {
+	div#filterButtonContainer {
+		display: none;
+	}
+}
+
 ul.typeahead.dropdown-menu {
       width: 184px;
     }
