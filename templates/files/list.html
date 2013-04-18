@@ -32,14 +32,14 @@
             {% for offset, type, object in list %}
               <tr>
                 {% if type == 'd' %}
-                  <td colspan="4" class="line-height-22" style="padding-left: {{ offset|add:'5'}}px;">
+                  <td colspan="4" class="line-height-22 no-wrap" style="padding-left: {{ offset|add:'5'}}px;">
                     <i class="icon-folder-open"></i>&nbsp;<strong>{{ object }}</strong>
                   </td>
                 {% else %}
-                  <td class="line-height-22" style="padding-left: {{ offset|add:'5' }}px;"><i class="icon-file"></i> <a href="{% url 'files.views.get' file_id=object.id %}">{{ object.uploaded_file.name|basename}}</a></td>
-                  <td class="line-height-22">{{ object.uploaded_file.size|filesizeformat }}</td>
-                  <td class="hidden-phone line-height-22">{{ object.user.username }}</td>
-                  <td class="text-right"><span class="hidden-phone"><div style="line-height: 22px; display: inline-block;">{{ object.date|date:'Y.m.d' }}</div></span>{% if object.user == request.user %}<span class="hidden-phone">&nbsp;</span><a href="{% url 'files.views.delete' file_id=object.id %}" data-toggle="tooltip" title="You uploaded this file. Click to remove it." class="remove-link btn btn-mini btn-danger"><i class="icon-remove icon-white"></i></a>{% endif %}</td>
+                  <td class="line-height-22 no-wrap" style="padding-left: {{ offset|add:'5' }}px;"><i class="icon-file"></i> <a href="{% url 'files.views.get' file_id=object.id %}">{{ object.uploaded_file.name|basename}}</a></td>
+                  <td class="line-height-22 no-wrap">{{ object.uploaded_file.size|filesizeformat }}</td>
+                  <td class="hidden-phone line-height-22 no-wrap">{{ object.user.username }}</td>
+                  <td class="text-right no-wrap"><span class="hidden-phone"><div style="line-height: 22px; display: inline-block;">{{ object.date|date:'Y.m.d' }}</div></span>{% if object.user == request.user %}<span class="hidden-phone">&nbsp;</span><a href="{% url 'files.views.delete' file_id=object.id %}" data-toggle="tooltip" title="You uploaded this file. Click to remove it." class="remove-link btn btn-mini btn-danger"><i class="icon-remove icon-white"></i></a>{% endif %}</td>
                 {% endif %}
               </tr>
             {% endfor %}
