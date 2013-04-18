@@ -31,6 +31,7 @@ urlpatterns = patterns('',
     url(r'^account/password_change_done/$','django.contrib.auth.views.password_change_done', {'template_name': 'zoll_me/account/password_change_done.html'}),
     url(r'^account/password_reset/$','django.contrib.auth.views.password_reset', {'template_name': 'zoll_me/account/password_reset.html', 'email_template_name': 'zoll_me/account/password_reset_email.txt', 'subject_template_name':'zoll_me/account/password_reset_subject.txt'}),
     url(r'^account/password_reset_done/$','django.contrib.auth.views.password_reset_done', {'template_name': 'zoll_me/account/password_reset_done.html'}),
+    url(r'^account/password_reset_complete/$','django.contrib.auth.views.password_reset_complete', {'template_name': 'zoll_me/account/password_reset_complete.html'}),
     url(r'^account/password_reset_confirm/(?P<uidb36>\d+)/(?P<token>[\d\w-]+)$','django.contrib.auth.views.password_reset_confirm', {'template_name': 'zoll_me/account/password_reset_confirm.html'})
 )
 
