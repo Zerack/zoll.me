@@ -20,6 +20,12 @@ from xbmc_photos.models import Photo
 INDEX_NUM_APPS = 3
 
 def index(request):
+    '''
+    Snags the information required to render the index page. This involves just one query
+    to the database to grab the most recently added XBMC photo that the user has privileges
+    to see.
+    
+    '''
     td = {'active_nav':'index', 'apps_slice': '1:{0}'.format(INDEX_NUM_APPS + 1)}    
     newest_photo = Photo.objects.order_by('-date')
     if not request.user.is_authenticated() or not request.user.has_perm('xbmc_photos.add_photo'):
@@ -29,12 +35,18 @@ def index(request):
     return render_to_response('zoll_me/index.html', td, context_instance = RequestContext(request))
 
 def resume(request):
+    '''
+    Renders the resume page. The resume template is all static content, so there
+    isn't any work to be done here.
+    
+    '''
+    
     return render_to_response('zoll_me/resume.html', {'active_nav':'resume'}, context_instance = RequestContext(request))
 
 def projects(request):
     '''
     Shows information about all current projects. This uses the installed_apps context processor to display
-    information about all installed and active non-Django applications.
+    information about all installed and active non-Django applications / utility applications.
     
     '''
     
