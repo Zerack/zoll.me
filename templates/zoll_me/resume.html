@@ -10,11 +10,40 @@
     
     ul.critical-skills li {
       display: inline-block;
-      padding: 0px 10px;
+      padding: 0px;
+      width: 16.6%;
+      padding-bottom: 5px;
+    }
+    
+    @media (min-width: 550px) and (max-width: 979px) {
+      ul.critical-skills li {
+        width: 25%;
+      }
+    }
+    
+    @media (min-width: 460px) and (max-width: 549px) {
+      ul.critical-skills li {
+        width: 33.3%;
+      }
+    }
+    
+    @media (max-width: 459px) {
+      ul.critical-skills li {
+        width: 50%;
+      }
     }
     
     ul.critical-skills li:first-child {
       padding-left: 0px;
+    }
+    
+    ul.position-bullets li {
+      text-align: justify;
+      padding-bottom: 5px;
+    }
+    
+    ul.position-bullets {
+      margin-left: 6%;
     }
   </style>
 {% endblock %}
@@ -23,8 +52,7 @@
   <div class="row">
     <div class="span6">
       <h3 style="line-height: 24.5px;" class="margin-bottom-0">James D. Zoll</h3>
-      <p>Maple Shade, NJ</p>
-      <p class="margin-bottom-0"><i class="icon icon-envelope"></i> <a href="mailto:zolljd@gmail.com">zolljd@gmail.com</a>
+      <p style="margin-bottom: 0px;">Maple Shade, NJ</p>
     </div>
     <div class="span6 text-right" style="margin-top: 10px;">
       <a href="#" class="btn btn-primary btn-mini"><i class="icon-white icon-download"></i> Download Resume (DOC)</a>
@@ -33,17 +61,74 @@
   <hr />
   <div class="row">
     <div class="span12">
-      <h4 style="margin-top: 0px;">Critical Skills</h4>
-      <ul class="critical-skills">
-        <li><img src="http://cs.lmu.edu/~ray/images/python-logo.png" style="height: 20px; width: 20px;"> Python</li>
-        <li><img src="https://bitbucket-assetroot.s3.amazonaws.com/c/photos/2012/May/12/django-hg-git-logo-3096483512-4_avatar.png" style="height: 20px; width: 20px;"> Django</li>
-        <li><img src="http://www.macnative.com/wp-content/2011/10/jquery.jpg" style="height: 20px; width: 20px;"> jQuery</li>
-        <li>Dojo Toolkit</li>
-        <li>PL/SQL</li>
-        <li>jQuery</li>
-        <li>Flask</li>
-        <li>Java</li>
+      <h4 style="margin-top: 0px;">Software Engineer</h4>
+      <p style="text-align: justify;">Talented and driven software engineer with experience creating feature-rich web applications using modern technologies. Embraces challenge and consistently delivers high quality results. Achievements include designing and developing a Python/Flask based website and working with a team to modernize and maintain existing web and standalone Java applications. Critical skills include:</p>
+      <ul class="critical-skills"><li><img src="http://cs.lmu.edu/~ray/images/python-logo.png" style="height: 20px; width: 20px;"> Python</li><li><img src="http://www.dnyandeep.com/static/images/javascript.png" style="height: 20px; width: 20px;"> JavaScript</li><li><img src="http://www.w3.org/html/logo/downloads/HTML5_Badge_256.png" style="height: 20px; width: 20px;"> HTML</li><li><img src="https://bitbucket-assetroot.s3.amazonaws.com/c/photos/2012/May/12/django-hg-git-logo-3096483512-4_avatar.png" style="height: 20px; width: 20px;"> Django</li><li><img src="https://bitbucket-assetroot.s3.amazonaws.com/c/photos/2011/Sep/30/flask-logo-2523728525-3_avatar.png" style="height: 20px; width: 20px;"> Flask</li><li><img src="http://www.macnative.com/wp-content/2011/10/jquery.jpg" style="height: 20px; width: 20px;"> jQuery</li><li><img src="https://bitbucket-assetroot.s3.amazonaws.com/c/photos/2009/Jul/04/dojo.logo.small__avatar.png" style="height: 20px; width: 20px;"> Dojo Toolkit</li><li><img src="http://www.fass.se/wls_utc/images/oracle-logo-small.png" style="height: 20px; width: 20px;"> Oracle PL/SQL</li><li><img src="http://www.icecontrol.eu/images/postgres-logo.png" style="height: 20px; width: 20px;"> PostgreSQL</li><li><img src="http://png-4.findicons.com/files/icons/1008/quiet/256/java.png" style="height: 20px; width: 20px;"> Java</li><li><img src="http://qaidjacobs.com/wp-content/uploads/2012/11/Git_icon.svg_.png" style="height: 20px; width: 20px;"> Git</li><li><img src="http://www.slicer.org/slicerWiki/images/thumb/8/8a/SVN-logo.jpg/40px-SVN-logo.jpg" style="height: 20px; width: 20px;"> Subversion</li></ul>
+    </div>
+  </div>
+  <hr />
+  <div class="row">
+    <div class="span12">
+      <h4 style="margin-top: 0px;">Professional Experience</h4>
+    </div>
+  </div>
+  <div class="row">
+    <div class="span12">
+      <p style="margin-bottom: 0px;"><strong style="text-decoration: underline;">ENGILTY COPORATION</strong>, Lexington Park, MD</p>
+      <p style="margin-bottom: 0px;"><em>(Formerly L-3 Communications)</em></p>
+      <p style="margin-left: 3%; text-align: justify;"><em>Leading provider of contract services to the U.S. government. Air Vehicle Engineering (AVE) group provides technical expertise to the U.S. Navy, delivering applications that track flight and fatigue data for naval aircraft.</em></p>
+    </div>
+  </div>
+  <div class="row">
+    <div class="span6">
+      <p style="margin-bottom: 0px;"><strong><em>Software Engineer</em></strong> (2011-Present)</p>
+      <p style="text-align: justify;">Designed, developed, and deployed a fully featured website used by U.S. military personnel and third-party contractors. Lead continuing efforts to modernize and consolidate existing offline and web-based applications for easier maintenance and greater stability. Worked independently to update fatigue calculation systems for new technical requirements.</p>
+      <ul class="position-bullets">
+        <li>Managed configuration and deployment of Apache, Python, and PostgreSQL software for AVE Loads & Dynamics website. Planned and implemented compliance strategies for U.S. Navy security requirements, including SSL client authentication.</li>
+        <li>Wrote and tested cross browser HTML, CSS, and JavaScript for AVE Loads & Dynamics website. Deep familiarity with the Dojo Toolkit JavaScript library and associated Dojo Widgets (Dijits).</li>
+        <li>Utilized multiple Python libraries in development of AVE Loads & Dynamics website. Experience includes Flask Microframework, Matplotlib, Python Imaging Library, SQLAlchemy, NumPy, SciPy, and Openpyxl.</li>
+        <li>Created license tracking application to control access to third-party contractor software used by U.S. Navy and others. System enforces maximum active license limit, and handles detailed authorization flow for usage rights.</li>
+        <li>Configured Celery asynchronous task library to manage computationally intensive engineering calculations in parallel. Implemented web driven finite element model linear regression calculations for F/A-18A-D aircraft using Celery.</li>
+        <li>Worked with senior engineering personnel to develop in-depth requirements for new AV-8B Harrier II fatigue tracking system. Finalized requirements and coded the system to specification. Tested and deployed updated fatigue tracking system.</li>
+        <li>Worked in a team using centralized version control (Subversion) and distributed version control (Git) to manage software patches and change requests.</li>
       </ul>
+    </div>
+    <div class="span6">
+      <p style="margin-bottom: 0px;"><strong><em>Associate Software Engineer</em></strong> (2008-2011)</p>
+      <p style="text-align: justify;">Primary software engineer assigned to the U.S. Navy AV-8B Harrier II aircraft platform, providing support for existing PL/SQL, Java, and web-based applications. Supported senior personnel in development initiatives affecting all U.S. Navy aircraft, including flight record management and fatigue calculation.</p>
+      <ul class="position-bullets">
+        <li>Consolidated  seven independently running copies of AVE aircraft tracking web application into a unified system. The resulting code was fully documented, tested, and easier to manage and extend. Total lines of code reduction was over 25%, and system maintenance time requirements were reduced by more than 50%.</li>
+        <li>Used newly unified aircraft tracking application to deploy tracking capabilities for eight additional aircraft platforms, completing these tasks in less than half of the time previously required due to the new unified application structure.</li>
+        <li>Cooperated with engineers to fix software errors and implement software change requests for the aircraft tracking web application, using Oracle PL/SQL and Java.</li> 
+        <li>Redesigned and  coded  new PL/SQL and Java server side code for AV-8B Harrier II component tracking web application to eliminate data loss and corruption, while introducing more advanced data quality control features and record audit information.</li> 
+        <li>Supported senior developers across multiple platforms with continued development of fatigue life analysis software, using PL/SQL and Java.</li>
+        <li>Controlled project files and version control information using Serena Dimensions PVCS software.</li>
+      </ul>
+    </div>
+  </div>
+  <!-- <div class="row">
+    <div class="span12">
+      <p style="margin-bottom: 0px;"><strong style="text-decoration: underline;">CLASSIC NETWORKING, INC.</strong>, Mechanicsburg, PA</p>
+      <p style="margin-left: 3%; text-align: justify;"><em>Reseller of network infrastructure components and network security solutions.  Specializes in network design and network access control software solutions for secure networking in a business environment.</em></p>
+      <p style="margin-bottom: 0px;"><strong><em>Student Intern</em></strong> (2007-2008)</p>
+      <p style="text-align: justify;">Responsible for a variety of tasks including development of network-end point compliance software, product testing, customer troubleshooting and product support, product documentation, and interface standards compliance.</p>
+      <ul class="position-bullets">
+        <li>Developed additions and bug fixes for "Network Metal Detector" (NMD), proprietary network end-point compliance software.  Product was then released as a new major revision.</li>
+        <li>Corrected an extensive web-based, templated interface to be HTML standards compliant.  Worked to ensure compatibility and visual consistency across all major web browsers and operating systems.</li>
+        <li>Updated  interface templates for the web accessible portion of .  Changes made directly to templated files, working primarily with SQL, Ajax, SMARTY templates, and PHP.</li>
+        <li>Supported university clients during software updates.  Provided software and interface walkthroughs and tier one troubleshooting, working directly with IT professionals in collegiate organizations.</li>
+        <li>Created an accurate, current, and exhaustive documentation for the most recent version of Network Metal Detector.  Documentation required extensive knowledge of software functions in addition to organized arrangement of topics.</li>
+      </ul>
+    </div>
+  </div>-->
+  <hr />
+  <div class="row">
+    <div class="span12">
+      <h4 style="margin-top: 0px;">Education</h4>
+      <p style="margin-bottom: 0px;"><strong>WAKE FOREST UNIVERSITY</strong>, Winston-Salem, NC</p>
+      <p style="margin-left: 3%; margin-bottom: 0px;">Bachelor of Science, Computer Science</p>
+      <p style="margin-left: 3%; margin-bottom: 0px;">Bachelor of Arts, Music Performance with Honors</p>
+      <p style="margin-left: 3%"><em>magna cum laude</em></p>
     </div>
   </div>
 {% endblock %}
