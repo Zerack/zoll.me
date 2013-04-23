@@ -1,0 +1,15 @@
+{% extends "base.html" %}
+
+{% block title %}lensoftruth.js{% endblock %}
+
+{% block styles %}{% block styles_lensoftruth %}{% endblock %}{% endblock %}
+
+{% block container %}
+  <div class="page-header">
+    <h1><img src="{{ STATIC_URL}}lensoftruth/img/lensoftruth.png"> lensoftruth.js</h1>
+  </div>
+  {% block container_lensoftruth %}
+  {% endblock %}
+{% endblock %}
+
+{% block scripts %}{% block scripts_lensoftruth %}{% endblock %}{% endblock %}

@@ -1,0 +1,303 @@
+{% extends 'lensoftruth/base_lensoftruth.html' %}
+
+{% block styles_lensoftruth %}
+  <style type="text/css">
+    ul.test-list li {
+      margin-bottom: 10px;
+    }
+  </style>
+{% endblock %}
+
+{% block container_lensoftruth %}
+  <div class="row">
+    <div class="span12">
+      <p><a href="{% url 'lensoftruth.views.index' %}">&laquo; Back To Index</a>
+      <h4 style="margin-top: 0px;">The Tests</h4>
+      <p>Each section below tests either a function of lensoftruth.js, or verifies that lensoftruth.js hasn't interfered with the normal functioning of jQuery in some way. Each test should say <span class="label label-success">PASS</span> in the description line, or something has gone wrong.</p>
+      <p style="margin-bottom: 0px;"><strong>Null Object Tests</strong></p>
+      <p>These tests are performed on a null jQuery object.</p>
+      <ul class="test-list">
+        <li><span class="label test-result-label"></span> Testing <span class="muted monospace">$(null).data()</span>.<br />Expected return value is <em class="monospace">null</em></li>
+        <li><span class="label test-result-label"></span> Testing <span class="muted monospace">$(null).data('test')</span>.<br />Expected return value is <em class="monospace">null</em></li>
+        <li><span class="label test-result-label"></span> Testing <span class="muted monospace">$(null).data({val1: 'val', val2: 7.4})</span>.<br />Expected return value is <em class="monospace">[]</em></li>
+        <li><span class="label test-result-label"></span> Testing <span class="muted monospace">$(null).data('test','val')</span>.<br />Expected return value is <em class="monospace">[]</em></li>
+        <li><span class="label test-result-label"></span> Testing <span class="muted monospace">$(null).data('test',[0,1,2,3,4])</span>.<br />Expected return value is <em class="monospace">[]</em></li>
+        <li><span class="label test-result-label"></span> Testing <span class="muted monospace">$(null).data('test',{val1: 'val', val2: 7.4})</span>.<br />Expected return value is <em class="monospace">[]</em></li>
+      </ul>
+      <p style="margin-bottom: 0px;"><strong>Single Node Tests</strong></p>
+      <p>These tests are performed on a jQuery object that has selected exactly one DOM node. The node is defined as:<br /><code>&lt;div id="testNode" data-val1="val" data-val2="7.4"&gt;&lt;/div&gt;</code></p>
+      <ul class="test-list">
+        <li><span class="label test-result-label"></span> Testing <span class="muted monospace">$('#testNode').data()</span>.<br />Expected return value is <em class="monospace">{val1:"val", val2: 7.4}</em></li>
+        <li><span class="label test-result-label"></span> Testing <span class="muted monospace">$('#testNode').data('dummy')</span>.<br />Expected return value is <em class="monospace">undefined</em></li>
+        <li><span class="label test-result-label"></span> Testing <span class="muted monospace">$('#testNode').data('val1')</span>.<br />Expected return value is <em class="monospace">"val"</em></li>
+        <li><span class="label test-result-label"></span> Testing <span class="muted monospace">$('#testNode').data('val2')</span>.<br />Expected return value is <em class="monospace">7.4</em></li>
+        <li><span class="label test-result-label"></span> Testing <span class="muted monospace">$('#testNode').data({val1: 'another_val', val2: 9.3})</span>.<br />Expected return value is <em class="monospace">[div#testNode]</em><br />Expected DOM is <code>&lt;div id="testNode" data-val1="val" data-val2="7.4" data-lot-val1="another_val" data-lot-val2="9.3"&gt;&lt;/div&gt;</code></li>
+        <li><span class="label test-result-label"></span> Testing <span class="muted monospace">$('#testNode').data('test','val')</span>.<br />Expected return value is <em class="monospace">[div#testNode]</em><br />Expected DOM is <code>&lt;div id="testNode" data-val1="val" data-val2="7.4" data-lot-test="val"&gt;&lt;/div&gt;</code></li>
+        <li><span class="label test-result-label"></span> Testing <span class="muted monospace">$('#testNode').data('test',[0,1,2,3,4])</span>.<br />Expected return value is <em class="monospace">[div#testNode]</em><br />Expected DOM is <code>&lt;div id="testNode" data-val1="val" data-val2="7.4" data-lot-test="[0,1,2,3,4]"&gt;&lt;/div&gt;</code></li>
+        <li><span class="label test-result-label"></span> Testing <span class="muted monospace">$('#testNode').data('test',{val1: 'val', val2: 7.4})</span>.<br />Expected return value is <em class="monospace">[div#testNode]</em><br />Expected DOM is <code>&lt;div id="testNode" data-val1="val" data-val2="7.4" data-lot-test="{&quot;val1&quot;:&quot;val&quot;,&quot;val2&quot;:7.4}"&gt;&lt;/div&gt;</code></li>
+      </ul>
+      <p style="margin-bottom: 0px;"><strong>Multi Node Tests</strong></p>
+      <p>These tests are performed on a jQuery object that has selected three DOM nodes. The nodes are defined as:<br /><code>&lt;div class="testNode" data-val1="val1_1" data-val2="1.0"&gt;&lt;/div&gt;</code><br /><code>&lt;div class="testNode" data-val1="val1_2" data-val2="2.0"&gt;&lt;/div&gt;</code><br /><code>&lt;div class="testNode" data-val1="val1_3" data-val2="3.0"&gt;&lt;/div&gt;</code></p>
+      <ul class="test-list">
+        <li><span class="label test-result-label"></span> Testing <span class="muted monospace">$('.testNode').data()</span>.<br />Expected return value is <em class="monospace">{val1:"val1_1", val2: '1.0'}</em></li>
+        <li><span class="label test-result-label"></span> Testing <span class="muted monospace">$('.testNode').data('dummy')</span>.<br />Expected return value is <em class="monospace">undefined</em></li>
+        <li><span class="label test-result-label"></span> Testing <span class="muted monospace">$('.testNode').data('val1')</span>.<br />Expected return value is <em class="monospace">"val1_1"</em></li>
+        <li><span class="label test-result-label"></span> Testing <span class="muted monospace">$('.testNode').data('val2')</span>.<br />Expected return value is <em class="monospace">'1.0'</em></li>
+        <li><span class="label test-result-label"></span> Testing <span class="muted monospace">$('.testNode').data({val1: 'another_val', val2: 9.3})</span>.<br />Expected return value is <em class="monospace">[div.testNode, div.testNode, div.testNode]</em><br />Expected DOM is:<br /><code>&lt;div class="testNode" data-val1="val1_1" data-val2="1.0" data-lot-val1="another_val" data-lot-val2="9.3"&gt;&lt;/div&gt;</code><br /><code>&lt;div class="testNode" data-val1="val1_2" data-val2="2.0" data-lot-val1="another_val" data-lot-val2="9.3"&gt;&lt;/div&gt;</code><br /><code>&lt;div class="testNode" data-val1="val1_3" data-val2="3.0" data-lot-val1="another_val" data-lot-val2="9.3"&gt;&lt;/div&gt;</code></li>
+        <li><span class="label test-result-label"></span> Testing <span class="muted monospace">$('.testNode').data('test','val')</span>.<br />Expected return value is <em class="monospace">[div.testNode, div.testNode, div.testNode]</em><br />Expected DOM is:<br /><code>&lt;div class="testNode" data-val1="val1_1" data-val2="1.0" data-lot-test="val"&gt;&lt;/div&gt;</code><br /><code>&lt;div class="testNode" data-val1="val1_2" data-val2="2.0" data-lot-test="val"&gt;&lt;/div&gt;</code><br /><code>&lt;div class="testNode" data-val1="val1_3" data-val2="3.0" data-lot-test="val"&gt;&lt;/div&gt;</code></li>
+        <li><span class="label test-result-label"></span> Testing <span class="muted monospace">$('.testNode').data('test',[0,1,2,3,4])</span>.<br />Expected return value is <em class="monospace">[div.testNode, div.testNode, div.testNode]</em><br />Expected DOM is:<br /><code>&lt;div class="testNode" data-val1="val1_1" data-val2="1.0" data-lot-test="[0,1,2,3,4]"&gt;&lt;/div&gt;</code><br /><code>&lt;div class="testNode" data-val1="val1_2" data-val2="2.0" data-lot-test="[0,1,2,3,4]"&gt;&lt;/div&gt;</code><br /><code>&lt;div class="testNode" data-val1="val1_3" data-val2="3.0" data-lot-test="[0,1,2,3,4]"&gt;&lt;/div&gt;</code></li>
+        <li><span class="label test-result-label"></span> Testing <span class="muted monospace">$('.testNode').data('test',{val1: 'val', val2: 7.4})</span>.<br />Expected return value is <em class="monospace">[div.testNode, div.testNode, div.testNode]</em><br />Expected DOM is:<br /><code>&lt;div class="testNode" data-val1="val1_1" data-val2="1.0" data-lot-test="{&quot;val1&quot;:&quot;val&quot;,&quot;val2&quot;:7.4}"&gt;&lt;/div&gt;</code><br /><code>&lt;div class="testNode" data-val1="val1_2" data-val2="2.0" data-lot-test="{&quot;val1&quot;:&quot;val&quot;,&quot;val2&quot;:7.4}"&gt;&lt;/div&gt;</code><br /><code>&lt;div class="testNode" data-val1="val1_3" data-val2="3.0" data-lot-test="{&quot;val1&quot;:&quot;val&quot;,&quot;val2&quot;:7.4}"&gt;&lt;/div&gt;</code></li>
+      </ul>
+    </div>
+  </div>
+  <div id="testContainer" style="display: none;">
+    <div id="testNode" data-val1="val" data-val2="7.4"></div>
+    <div class="testNode" data-val1="val1_1" data-val2="1.0"></div>
+    <div class="testNode" data-val1="val1_2" data-val2="2.0"></div>
+    <div class="testNode" data-val1="val1_3" data-val2="3.0"></div>
+  </div>
+{% endblock %}
+
+{% block scripts_lensoftruth %}
+  <script src="{{ STATIC_URL }}lensoftruth/lensoftruth.js"></script>
+  <script type="text/javascript">
+  	$(document).ready(function(){
+  		// Define functions that will teardown and recreate the testing nodes.  		
+  		var testContainer = $('#testContainer');
+  		var multiNodeVals = [['val1_1','1.0'],['val1_2','2.0'],['val1_3','3.0']];
+  		var testReset = function(multi) {
+  			multi = multi || false;
+  			testContainer.empty();
+  			if (multi) {
+  				$.each(multiNodeVals, function() {
+					testContainer.append('<div class="testNode" data-val1="' + this[0] + '" data-val2="' + this[1] + '"></div>');					
+  				})
+  			} else {
+  				testContainer.append('<div id="testNode" data-val1="val" data-val2="7.4"></div>');
+  			}
+  		};
+  		
+  		// Function to get user-defined attributes on a node. We use this because we'd prefer
+  		// to test as close to the browser as possible, without using jQuery for actual
+  		// DOM access when checking results.
+  		var specifiedAttrs = function(e) {
+  			return $.map(e.attributes, function(a) { return a.specified ? a : null; });
+  		};
+  		
+  		// Now, just run each test. After each test, we check the the return value and the DOM.
+  		var testPassed = [];
+  		
+  		// NULL OBJECT TESTS
+  		
+  		// TEST 1: $(null).data()
+  		var result = $(null).data();
+  		testPassed.push(result === null);
+  		
+  		// TEST 2: $(null).data('test')
+  		result = $(null).data('test');
+  		testPassed.push(result === null);
+  		
+  		// TEST 3: $(null).data({val1: 'val', val2: 7.4});
+  		result = $(null).data({val1: 'val', val2: 7.4});
+  		testPassed.push(typeof result === 'object' && result.jquery && result.length === 0);
+  		
+  		// TEST 4: $(null).data('test', 'val')
+  		result = $(null).data('test','val');
+  		testPassed.push(typeof result === 'object' && result.jquery && result.length === 0);
+  		
+  		// TEST 5: $(null).data('test',[0,1,2,3,4]);
+  		result = $(null).data('test',[0,1,2,3,4]);
+  		testPassed.push(typeof result === 'object' && result.jquery && result.length === 0);
+  		
+  		// TEST 6: $(null).data('test', {val1: 'val', val2: 7.4})
+  		result = $(null).data('test', {val1: 'val', val2: 7.4});
+  		testPassed.push(typeof result === 'object' && result.jquery && result.length === 0);
+  		
+  		// SINGLE NODE TESTS
+  		
+  		// TEST 1: $('#testNode').data()
+  		testReset();
+  		result = $('#testNode').data();
+  		testPassed.push(typeof result === 'object' && result.val1 && result.val2 && result.val1 === 'val' && result.val2 === 7.4)
+  		
+  		// TEST 2: $('#testNode').data('dummy')
+  		testReset();
+  		result = $('#testNode').data('dummy');
+  		testPassed.push(result === undefined);
+  		
+  		// TEST 3: $('#testNode').data('val1')
+  		testReset();
+  		result = $('#testNode').data('val1');
+  		testPassed.push(result === 'val');
+  		
+  		// TEST 4: $('#testNode').data('val2')
+  		testReset();
+  		result = $('#testNode').data('val2');
+  		testPassed.push(result === 7.4);
+  		
+  		// TEST 5: $('#testNode').data({val1: 'another_val', val2: 9.3})
+  		testReset();
+  		result = $('#testNode').data({val1: 'another_val', val2: 9.3});
+  		var testNode = $('#testNode')[0];
+  		var resultPassed = typeof result === 'object' && result.jquery && result.length === 1 && result[0] === testNode;
+  		var domPassed = (specifiedAttrs(testNode).length === 5 || (specifiedAttrs(testNode).length === 6 && testNode.attributes.getNamedItem($.expando))) && 
+  			testNode.attributes.getNamedItem('data-val1') && testNode.attributes.getNamedItem('data-val1').nodeValue === 'val' &&
+  			testNode.attributes.getNamedItem('data-val2') && testNode.attributes.getNamedItem('data-val2').nodeValue === '7.4' && 
+  			testNode.attributes.getNamedItem('data-lot-val1') && testNode.attributes.getNamedItem('data-lot-val1').nodeValue === 'another_val' &&
+  			testNode.attributes.getNamedItem('data-lot-val2') && testNode.attributes.getNamedItem('data-lot-val2').nodeValue === '9.3';
+  		testPassed.push(resultPassed && domPassed);
+  		
+  		// TEST 6: $('#testNode').data('test','val')
+  		testReset();
+  		result = $('#testNode').data('test','val');
+  		testNode = $('#testNode')[0];
+  		resultPassed = typeof result === 'object' && result.jquery && result.length === 1 && result[0] === testNode;
+  		domPassed = (specifiedAttrs(testNode).length === 4 || (specifiedAttrs(testNode).length === 5 && testNode.attributes.getNamedItem($.expando))) && 
+  			testNode.attributes.getNamedItem('data-val1') && testNode.attributes.getNamedItem('data-val1').nodeValue === 'val' &&
+  			testNode.attributes.getNamedItem('data-val2') && testNode.attributes.getNamedItem('data-val2').nodeValue === '7.4' && 
+  			testNode.attributes.getNamedItem('data-lot-test') && testNode.attributes.getNamedItem('data-lot-test').nodeValue === 'val';
+  		testPassed.push(resultPassed && domPassed);
+  		
+  		// TEST 7: $('#testNode').data('test',[0,1,2,3,4])
+  		testReset();
+  		var testObject = [0,1,2,3,4];
+  		result = $('#testNode').data('test',testObject);
+  		testNode = $('#testNode')[0];
+  		resultPassed = typeof result === 'object' && result.jquery && result.length === 1 && result[0] === testNode;
+  		domPassed = (specifiedAttrs(testNode).length === 4 || (specifiedAttrs(testNode).length === 5 && testNode.attributes.getNamedItem($.expando))) && 
+  			testNode.attributes.getNamedItem('data-val1') && testNode.attributes.getNamedItem('data-val1').nodeValue === 'val' &&
+  			testNode.attributes.getNamedItem('data-val2') && testNode.attributes.getNamedItem('data-val2').nodeValue === '7.4' && 
+  			testNode.attributes.getNamedItem('data-lot-test') && testNode.attributes.getNamedItem('data-lot-test').nodeValue === (window.JSON && window.JSON.stringify ? window.JSON.stringify(testObject) : testObject.toString());
+  		testPassed.push(resultPassed && domPassed);
+  		
+  		// TEST 8: $('#testNode').data('test',{val1: 'val', val2: 7.4})
+  		testReset();
+  		testObject = {val1: 'val', val2: 7.4};
+  		result = $('#testNode').data('test',testObject);
+  		testNode = $('#testNode')[0];
+  		resultPassed = typeof result === 'object' && result.jquery && result.length === 1 && result[0] === testNode;
+  		domPassed = (specifiedAttrs(testNode).length === 4 || (specifiedAttrs(testNode).length === 5 && testNode.attributes.getNamedItem($.expando))) && 
+  			testNode.attributes.getNamedItem('data-val1') && testNode.attributes.getNamedItem('data-val1').nodeValue === 'val' &&
+  			testNode.attributes.getNamedItem('data-val2') && testNode.attributes.getNamedItem('data-val2').nodeValue === '7.4' && 
+  			testNode.attributes.getNamedItem('data-lot-test') && testNode.attributes.getNamedItem('data-lot-test').nodeValue === (window.JSON && window.JSON.stringify ? window.JSON.stringify(testObject) : testObject.toString());
+  		testPassed.push(resultPassed && domPassed);
+  		
+  		// MULTI NODE TESTS
+  		
+  		// TEST 1: $('.testNode').data()
+  		testReset(true);
+  		result = $('.testNode').data()
+  		testPassed.push(typeof result === 'object' && result.val1 && result.val2 && result.val1 === 'val1_1' && result.val2 === '1.0');
+  		
+  		// TEST 2: $('.testNode').data('dummy')
+  		testReset(true);
+  		result = $('.testNode').data('dummy');
+  		testPassed.push(result === undefined);
+  		
+  		// TEST 3: $('.testNode').data('val1')
+  		testReset(true);
+  		result = $('.testNode').data('val1');
+  		testPassed.push(result === 'val1_1');
+  		
+  		// TEST 4: $('.testNode').data('val2')
+  		testReset(true);
+  		result = $('.testNode').data('val2');
+  		testPassed.push(result === '1.0');
+  		
+  		// TEST 5: $('.testNode').data({val1: 'another_val', val2: 9.3})
+  		testReset(true);
+  		result = $('.testNode').data({val1: 'another_val', val2: 9.3});
+  		var testNodes = $('.testNode').map(function() { return this; });
+  		resultPassed = typeof result === 'object' && result.jquery && result.length === 3 && result[0] === testNodes[0] &&
+  			result[1] === testNodes[1] && result[2] === testNodes[2];
+  		domPassed = (specifiedAttrs(testNodes[0]).length === 5 || (specifiedAttrs(testNodes[0]).length === 6 && testNodes[0].attributes.getNamedItem($.expando))) &&
+  			(specifiedAttrs(testNodes[1]).length === 5 || (specifiedAttrs(testNodes[1]).length === 6 && testNodes[1].attributes.getNamedItem($.expando))) &&
+  			(specifiedAttrs(testNodes[2]).length === 5 || (specifiedAttrs(testNodes[2]).length === 6 && testNodes[2].attributes.getNamedItem($.expando))) &&
+  			testNodes[0].attributes.getNamedItem('data-val1') && testNodes[0].attributes.getNamedItem('data-val1').nodeValue === 'val1_1' &&
+  			testNodes[0].attributes.getNamedItem('data-val2') && testNodes[0].attributes.getNamedItem('data-val2').nodeValue === '1.0' && 
+  			testNodes[0].attributes.getNamedItem('data-lot-val1') && testNodes[0].attributes.getNamedItem('data-lot-val1').nodeValue === 'another_val' &&
+  			testNodes[0].attributes.getNamedItem('data-lot-val2') && testNodes[0].attributes.getNamedItem('data-lot-val2').nodeValue === '9.3' &&
+  			testNodes[1].attributes.getNamedItem('data-val1') && testNodes[1].attributes.getNamedItem('data-val1').nodeValue === 'val1_2' &&
+  			testNodes[1].attributes.getNamedItem('data-val2') && testNodes[1].attributes.getNamedItem('data-val2').nodeValue === '2.0' && 
+  			testNodes[1].attributes.getNamedItem('data-lot-val1') && testNodes[1].attributes.getNamedItem('data-lot-val1').nodeValue === 'another_val' &&
+  			testNodes[1].attributes.getNamedItem('data-lot-val2') && testNodes[1].attributes.getNamedItem('data-lot-val2').nodeValue === '9.3' &&
+  			testNodes[2].attributes.getNamedItem('data-val1') && testNodes[2].attributes.getNamedItem('data-val1').nodeValue === 'val1_3' &&
+  			testNodes[2].attributes.getNamedItem('data-val2') && testNodes[2].attributes.getNamedItem('data-val2').nodeValue === '3.0' && 
+  			testNodes[2].attributes.getNamedItem('data-lot-val1') && testNodes[2].attributes.getNamedItem('data-lot-val1').nodeValue === 'another_val' &&
+  			testNodes[2].attributes.getNamedItem('data-lot-val2') && testNodes[2].attributes.getNamedItem('data-lot-val2').nodeValue === '9.3';
+  		testPassed.push(resultPassed && domPassed);
+  		
+  		// TEST 6: $('.testNode').data('test','val')
+  		testReset(true);
+  		result = $('.testNode').data('test','val');
+  		testNodes = $('.testNode').map(function() { return this; });
+  		resultPassed = typeof result === 'object' && result.jquery && result.length === 3 && result[0] === testNodes[0] &&
+  			result[1] === testNodes[1] && result[2] === testNodes[2];
+  		domPassed = (specifiedAttrs(testNodes[0]).length === 4 || (specifiedAttrs(testNodes[0]).length === 5 && testNodes[0].attributes.getNamedItem($.expando))) &&
+  			(specifiedAttrs(testNodes[1]).length === 4 || (specifiedAttrs(testNodes[1]).length === 5 && testNodes[1].attributes.getNamedItem($.expando))) &&
+  			(specifiedAttrs(testNodes[2]).length === 4 || (specifiedAttrs(testNodes[2]).length === 5 && testNodes[2].attributes.getNamedItem($.expando))) &&
+  			testNodes[0].attributes.getNamedItem('data-val1') && testNodes[0].attributes.getNamedItem('data-val1').nodeValue === 'val1_1' &&
+  			testNodes[0].attributes.getNamedItem('data-val2') && testNodes[0].attributes.getNamedItem('data-val2').nodeValue === '1.0' && 
+  			testNodes[0].attributes.getNamedItem('data-lot-test') && testNodes[0].attributes.getNamedItem('data-lot-test').nodeValue === 'val' &&
+  			testNodes[1].attributes.getNamedItem('data-val1') && testNodes[1].attributes.getNamedItem('data-val1').nodeValue === 'val1_2' &&
+  			testNodes[1].attributes.getNamedItem('data-val2') && testNodes[1].attributes.getNamedItem('data-val2').nodeValue === '2.0' && 
+  			testNodes[1].attributes.getNamedItem('data-lot-test') && testNodes[1].attributes.getNamedItem('data-lot-test').nodeValue === 'val' &&
+  			testNodes[2].attributes.getNamedItem('data-val1') && testNodes[2].attributes.getNamedItem('data-val1').nodeValue === 'val1_3' &&
+  			testNodes[2].attributes.getNamedItem('data-val2') && testNodes[2].attributes.getNamedItem('data-val2').nodeValue === '3.0' && 
+  			testNodes[2].attributes.getNamedItem('data-lot-test') && testNodes[2].attributes.getNamedItem('data-lot-test').nodeValue === 'val';
+  		testPassed.push(resultPassed && domPassed);
+  		
+  		// TEST 7: $('.testNode').data('test',[0,1,2,3,4])
+  		testReset(true);
+  		testObject = [0,1,2,3,4];
+  		result = $('.testNode').data('test',testObject);
+  		testNodes = $('.testNode').map(function() { return this; });
+  		resultPassed = typeof result === 'object' && result.jquery && result.length === 3 && result[0] === testNodes[0] &&
+  			result[1] === testNodes[1] && result[2] === testNodes[2];
+  		domPassed = (specifiedAttrs(testNodes[0]).length === 4 || (specifiedAttrs(testNodes[0]).length === 5 && testNodes[0].attributes.getNamedItem($.expando))) &&
+  			(specifiedAttrs(testNodes[1]).length === 4 || (specifiedAttrs(testNodes[1]).length === 5 && testNodes[1].attributes.getNamedItem($.expando))) &&
+  			(specifiedAttrs(testNodes[2]).length === 4 || (specifiedAttrs(testNodes[2]).length === 5 && testNodes[2].attributes.getNamedItem($.expando))) &&
+  			testNodes[0].attributes.getNamedItem('data-val1') && testNodes[0].attributes.getNamedItem('data-val1').nodeValue === 'val1_1' &&
+  			testNodes[0].attributes.getNamedItem('data-val2') && testNodes[0].attributes.getNamedItem('data-val2').nodeValue === '1.0' && 
+  			testNodes[0].attributes.getNamedItem('data-lot-test') && testNodes[0].attributes.getNamedItem('data-lot-test').nodeValue === (window.JSON && window.JSON.stringify ? window.JSON.stringify(testObject) : testObject.toString()) &&
+  			testNodes[1].attributes.getNamedItem('data-val1') && testNodes[1].attributes.getNamedItem('data-val1').nodeValue === 'val1_2' &&
+  			testNodes[1].attributes.getNamedItem('data-val2') && testNodes[1].attributes.getNamedItem('data-val2').nodeValue === '2.0' && 
+  			testNodes[1].attributes.getNamedItem('data-lot-test') && testNodes[1].attributes.getNamedItem('data-lot-test').nodeValue === (window.JSON && window.JSON.stringify ? window.JSON.stringify(testObject) : testObject.toString()) &&
+  			testNodes[2].attributes.getNamedItem('data-val1') && testNodes[2].attributes.getNamedItem('data-val1').nodeValue === 'val1_3' &&
+  			testNodes[2].attributes.getNamedItem('data-val2') && testNodes[2].attributes.getNamedItem('data-val2').nodeValue === '3.0' && 
+  			testNodes[2].attributes.getNamedItem('data-lot-test') && testNodes[2].attributes.getNamedItem('data-lot-test').nodeValue === (window.JSON && window.JSON.stringify ? window.JSON.stringify(testObject) : testObject.toString());
+  		testPassed.push(resultPassed && domPassed);
+  		
+  		// TEST 8: $('.testNode').data('test',{val1: 'val', val2: 7.4})
+  		testReset(true);
+  		testObject = {val1: 'val', val2: 7.4};
+  		result = $('.testNode').data('test',testObject);
+  		testNodes = $('.testNode').map(function() { return this; });
+  		resultPassed = typeof result === 'object' && result.jquery && result.length === 3 && result[0] === testNodes[0] &&
+  			result[1] === testNodes[1] && result[2] === testNodes[2];
+  		domPassed = (specifiedAttrs(testNodes[0]).length === 4 || (specifiedAttrs(testNodes[0]).length === 5 && testNodes[0].attributes.getNamedItem($.expando))) &&
+  			(specifiedAttrs(testNodes[1]).length === 4 || (specifiedAttrs(testNodes[1]).length === 5 && testNodes[1].attributes.getNamedItem($.expando))) &&
+  			(specifiedAttrs(testNodes[2]).length === 4 || (specifiedAttrs(testNodes[2]).length === 5 && testNodes[2].attributes.getNamedItem($.expando))) &&
+  			testNodes[0].attributes.getNamedItem('data-val1') && testNodes[0].attributes.getNamedItem('data-val1').nodeValue === 'val1_1' &&
+  			testNodes[0].attributes.getNamedItem('data-val2') && testNodes[0].attributes.getNamedItem('data-val2').nodeValue === '1.0' && 
+  			testNodes[0].attributes.getNamedItem('data-lot-test') && testNodes[0].attributes.getNamedItem('data-lot-test').nodeValue === (window.JSON && window.JSON.stringify ? window.JSON.stringify(testObject) : testObject.toString()) &&
+  			testNodes[1].attributes.getNamedItem('data-val1') && testNodes[1].attributes.getNamedItem('data-val1').nodeValue === 'val1_2' &&
+  			testNodes[1].attributes.getNamedItem('data-val2') && testNodes[1].attributes.getNamedItem('data-val2').nodeValue === '2.0' && 
+  			testNodes[1].attributes.getNamedItem('data-lot-test') && testNodes[1].attributes.getNamedItem('data-lot-test').nodeValue === (window.JSON && window.JSON.stringify ? window.JSON.stringify(testObject) : testObject.toString()) &&
+  			testNodes[2].attributes.getNamedItem('data-val1') && testNodes[2].attributes.getNamedItem('data-val1').nodeValue === 'val1_3' &&
+  			testNodes[2].attributes.getNamedItem('data-val2') && testNodes[2].attributes.getNamedItem('data-val2').nodeValue === '3.0' && 
+  			testNodes[2].attributes.getNamedItem('data-lot-test') && testNodes[2].attributes.getNamedItem('data-lot-test').nodeValue === (window.JSON && window.JSON.stringify ? window.JSON.stringify(testObject) : testObject.toString());
+  		testPassed.push(resultPassed && domPassed);
+  		
+  		// TESTS COMPLETE
+  		
+  		// Grab all of the labels and add the PASS / FAIL indicators as required.
+  		$('.test-result-label').each(function(i) {
+			$(this).addClass(testPassed[i] ? 'label-success' : 'label-warning');
+			$(this).html(testPassed[i] ? 'PASS' : 'FAIL');
+  		});
+  		
+  	});
+  </script>
+{% endblock %}
+<div class="testNode" data-val1="val" data-val2="7.4"></div>

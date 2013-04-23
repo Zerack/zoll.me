@@ -113,6 +113,7 @@ INSTALLED_APPS = (
     'files',
     'xbmc_photos',
     'leapday',
+    'lensoftruth',
     'compressor',
 )
 
