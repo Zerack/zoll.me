@@ -4,3 +4,4 @@ zoll_me/local_settings.py
 media_dev/
 static/
 *.pyc
+runserver-localhost.bat
