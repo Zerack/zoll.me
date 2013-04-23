@@ -2,6 +2,6 @@
 .pydevproject
 zoll_me/local_settings.py
 media_dev/
-static/
+/static/
 *.pyc
 runserver-localhost.bat
