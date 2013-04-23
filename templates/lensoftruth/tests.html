@@ -59,7 +59,7 @@
 {% endblock %}
 
 {% block scripts_lensoftruth %}
-  <script src="https://raw.github.com/Zerack/lensoftruth.js/master/lensoftruth.js"></script>
+  <script src="{{ STATIC_URL }}lensoftruth/lensoftruth.js"></script>
   <script type="text/javascript">
   	$(document).ready(function(){
   		// Define functions that will teardown and recreate the testing nodes.  		
@@ -75,7 +75,14 @@
   			} else {
   				testContainer.append('<div id="testNode" data-val1="val" data-val2="7.4"></div>');
   			}
-  		}
+  		};
+  		
+  		// Function to get user-defined attributes on a node. We use this because we'd prefer
+  		// to test as close to the browser as possible, without using jQuery for actual
+  		// DOM access when checking results.
+  		var specifiedAttrs = function(e) {
+  			return $.map(e.attributes, function(a) { return a.specified ? a : null; });
+  		};
   		
   		// Now, just run each test. After each test, we check the the return value and the DOM.
   		var testPassed = [];
@@ -133,7 +140,7 @@
   		result = $('#testNode').data({val1: 'another_val', val2: 9.3});
   		var testNode = $('#testNode')[0];
   		var resultPassed = typeof result === 'object' && result.jquery && result.length === 1 && result[0] === testNode;
-  		var domPassed = testNode.attributes.length === 5 && 
+  		var domPassed = (specifiedAttrs(testNode).length === 5 || (specifiedAttrs(testNode).length === 6 && testNode.attributes.getNamedItem($.expando))) && 
   			testNode.attributes.getNamedItem('data-val1') && testNode.attributes.getNamedItem('data-val1').nodeValue === 'val' &&
   			testNode.attributes.getNamedItem('data-val2') && testNode.attributes.getNamedItem('data-val2').nodeValue === '7.4' && 
   			testNode.attributes.getNamedItem('data-lot-val1') && testNode.attributes.getNamedItem('data-lot-val1').nodeValue === 'another_val' &&
@@ -145,7 +152,7 @@
   		result = $('#testNode').data('test','val');
   		testNode = $('#testNode')[0];
   		resultPassed = typeof result === 'object' && result.jquery && result.length === 1 && result[0] === testNode;
-  		domPassed = testNode.attributes.length === 4 && 
+  		domPassed = (specifiedAttrs(testNode).length === 4 || (specifiedAttrs(testNode).length === 5 && testNode.attributes.getNamedItem($.expando))) && 
   			testNode.attributes.getNamedItem('data-val1') && testNode.attributes.getNamedItem('data-val1').nodeValue === 'val' &&
   			testNode.attributes.getNamedItem('data-val2') && testNode.attributes.getNamedItem('data-val2').nodeValue === '7.4' && 
   			testNode.attributes.getNamedItem('data-lot-test') && testNode.attributes.getNamedItem('data-lot-test').nodeValue === 'val';
@@ -157,7 +164,7 @@
   		result = $('#testNode').data('test',testObject);
   		testNode = $('#testNode')[0];
   		resultPassed = typeof result === 'object' && result.jquery && result.length === 1 && result[0] === testNode;
-  		domPassed = testNode.attributes.length === 4 && 
+  		domPassed = (specifiedAttrs(testNode).length === 4 || (specifiedAttrs(testNode).length === 5 && testNode.attributes.getNamedItem($.expando))) && 
   			testNode.attributes.getNamedItem('data-val1') && testNode.attributes.getNamedItem('data-val1').nodeValue === 'val' &&
   			testNode.attributes.getNamedItem('data-val2') && testNode.attributes.getNamedItem('data-val2').nodeValue === '7.4' && 
   			testNode.attributes.getNamedItem('data-lot-test') && testNode.attributes.getNamedItem('data-lot-test').nodeValue === (window.JSON && window.JSON.stringify ? window.JSON.stringify(testObject) : testObject.toString());
@@ -169,7 +176,7 @@
   		result = $('#testNode').data('test',testObject);
   		testNode = $('#testNode')[0];
   		resultPassed = typeof result === 'object' && result.jquery && result.length === 1 && result[0] === testNode;
-  		domPassed = testNode.attributes.length === 4 && 
+  		domPassed = (specifiedAttrs(testNode).length === 4 || (specifiedAttrs(testNode).length === 5 && testNode.attributes.getNamedItem($.expando))) && 
   			testNode.attributes.getNamedItem('data-val1') && testNode.attributes.getNamedItem('data-val1').nodeValue === 'val' &&
   			testNode.attributes.getNamedItem('data-val2') && testNode.attributes.getNamedItem('data-val2').nodeValue === '7.4' && 
   			testNode.attributes.getNamedItem('data-lot-test') && testNode.attributes.getNamedItem('data-lot-test').nodeValue === (window.JSON && window.JSON.stringify ? window.JSON.stringify(testObject) : testObject.toString());
@@ -203,7 +210,9 @@
   		var testNodes = $('.testNode').map(function() { return this; });
   		resultPassed = typeof result === 'object' && result.jquery && result.length === 3 && result[0] === testNodes[0] &&
   			result[1] === testNodes[1] && result[2] === testNodes[2];
-  		domPassed = testNodes[0].attributes.length === 5 && testNodes[1].attributes.length === 5 && testNodes[2].attributes.length === 5 && 
+  		domPassed = (specifiedAttrs(testNodes[0]).length === 5 || (specifiedAttrs(testNodes[0]).length === 6 && testNodes[0].attributes.getNamedItem($.expando))) &&
+  			(specifiedAttrs(testNodes[1]).length === 5 || (specifiedAttrs(testNodes[1]).length === 6 && testNodes[1].attributes.getNamedItem($.expando))) &&
+  			(specifiedAttrs(testNodes[2]).length === 5 || (specifiedAttrs(testNodes[2]).length === 6 && testNodes[2].attributes.getNamedItem($.expando))) &&
   			testNodes[0].attributes.getNamedItem('data-val1') && testNodes[0].attributes.getNamedItem('data-val1').nodeValue === 'val1_1' &&
   			testNodes[0].attributes.getNamedItem('data-val2') && testNodes[0].attributes.getNamedItem('data-val2').nodeValue === '1.0' && 
   			testNodes[0].attributes.getNamedItem('data-lot-val1') && testNodes[0].attributes.getNamedItem('data-lot-val1').nodeValue === 'another_val' &&
@@ -224,7 +233,9 @@
   		testNodes = $('.testNode').map(function() { return this; });
   		resultPassed = typeof result === 'object' && result.jquery && result.length === 3 && result[0] === testNodes[0] &&
   			result[1] === testNodes[1] && result[2] === testNodes[2];
-  		domPassed = testNodes[0].attributes.length === 4 && testNodes[1].attributes.length === 4 && testNodes[2].attributes.length === 4 && 
+  		domPassed = (specifiedAttrs(testNodes[0]).length === 4 || (specifiedAttrs(testNodes[0]).length === 5 && testNodes[0].attributes.getNamedItem($.expando))) &&
+  			(specifiedAttrs(testNodes[1]).length === 4 || (specifiedAttrs(testNodes[1]).length === 5 && testNodes[1].attributes.getNamedItem($.expando))) &&
+  			(specifiedAttrs(testNodes[2]).length === 4 || (specifiedAttrs(testNodes[2]).length === 5 && testNodes[2].attributes.getNamedItem($.expando))) &&
   			testNodes[0].attributes.getNamedItem('data-val1') && testNodes[0].attributes.getNamedItem('data-val1').nodeValue === 'val1_1' &&
   			testNodes[0].attributes.getNamedItem('data-val2') && testNodes[0].attributes.getNamedItem('data-val2').nodeValue === '1.0' && 
   			testNodes[0].attributes.getNamedItem('data-lot-test') && testNodes[0].attributes.getNamedItem('data-lot-test').nodeValue === 'val' &&
@@ -243,7 +254,9 @@
   		testNodes = $('.testNode').map(function() { return this; });
   		resultPassed = typeof result === 'object' && result.jquery && result.length === 3 && result[0] === testNodes[0] &&
   			result[1] === testNodes[1] && result[2] === testNodes[2];
-  		domPassed = testNodes[0].attributes.length === 4 && testNodes[1].attributes.length === 4 && testNodes[2].attributes.length === 4 && 
+  		domPassed = (specifiedAttrs(testNodes[0]).length === 4 || (specifiedAttrs(testNodes[0]).length === 5 && testNodes[0].attributes.getNamedItem($.expando))) &&
+  			(specifiedAttrs(testNodes[1]).length === 4 || (specifiedAttrs(testNodes[1]).length === 5 && testNodes[1].attributes.getNamedItem($.expando))) &&
+  			(specifiedAttrs(testNodes[2]).length === 4 || (specifiedAttrs(testNodes[2]).length === 5 && testNodes[2].attributes.getNamedItem($.expando))) &&
   			testNodes[0].attributes.getNamedItem('data-val1') && testNodes[0].attributes.getNamedItem('data-val1').nodeValue === 'val1_1' &&
   			testNodes[0].attributes.getNamedItem('data-val2') && testNodes[0].attributes.getNamedItem('data-val2').nodeValue === '1.0' && 
   			testNodes[0].attributes.getNamedItem('data-lot-test') && testNodes[0].attributes.getNamedItem('data-lot-test').nodeValue === (window.JSON && window.JSON.stringify ? window.JSON.stringify(testObject) : testObject.toString()) &&
@@ -262,7 +275,9 @@
   		testNodes = $('.testNode').map(function() { return this; });
   		resultPassed = typeof result === 'object' && result.jquery && result.length === 3 && result[0] === testNodes[0] &&
   			result[1] === testNodes[1] && result[2] === testNodes[2];
-  		domPassed = testNodes[0].attributes.length === 4 && testNodes[1].attributes.length === 4 && testNodes[2].attributes.length === 4 && 
+  		domPassed = (specifiedAttrs(testNodes[0]).length === 4 || (specifiedAttrs(testNodes[0]).length === 5 && testNodes[0].attributes.getNamedItem($.expando))) &&
+  			(specifiedAttrs(testNodes[1]).length === 4 || (specifiedAttrs(testNodes[1]).length === 5 && testNodes[1].attributes.getNamedItem($.expando))) &&
+  			(specifiedAttrs(testNodes[2]).length === 4 || (specifiedAttrs(testNodes[2]).length === 5 && testNodes[2].attributes.getNamedItem($.expando))) &&
   			testNodes[0].attributes.getNamedItem('data-val1') && testNodes[0].attributes.getNamedItem('data-val1').nodeValue === 'val1_1' &&
   			testNodes[0].attributes.getNamedItem('data-val2') && testNodes[0].attributes.getNamedItem('data-val2').nodeValue === '1.0' && 
   			testNodes[0].attributes.getNamedItem('data-lot-test') && testNodes[0].attributes.getNamedItem('data-lot-test').nodeValue === (window.JSON && window.JSON.stringify ? window.JSON.stringify(testObject) : testObject.toString()) &&
@@ -273,7 +288,6 @@
   			testNodes[2].attributes.getNamedItem('data-val2') && testNodes[2].attributes.getNamedItem('data-val2').nodeValue === '3.0' && 
   			testNodes[2].attributes.getNamedItem('data-lot-test') && testNodes[2].attributes.getNamedItem('data-lot-test').nodeValue === (window.JSON && window.JSON.stringify ? window.JSON.stringify(testObject) : testObject.toString());
   		testPassed.push(resultPassed && domPassed);
-  		
   		
   		// TESTS COMPLETE
   		
