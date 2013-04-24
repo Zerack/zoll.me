@@ -1,5 +1,9 @@
 {% extends "base.html" %}
 
+{% block title%}James Zoll - Resume{% endblock %}
+
+{% block meta_description %}The professional resume of James Zoll, available both online and as a downloadable file.{% endblock %}
+
 {% block styles %}
   <link rel="stylesheet" href="{{ STATIC_URL }}zoll_me/css/resume.css">
 {% endblock %}
@@ -20,18 +24,18 @@
       <h4 style="margin-top: 0px;">Software Engineer</h4>
       <p style="text-align: justify;">Talented and driven software engineer with extensive experience creating feature-rich web applications using modern technologies. Embraces challenge and consistently delivers high quality results. Achievements include designing and developing a Python/Flask based website and working with a team to modernize and maintain existing web and standalone Java applications. Critical experience includes:</p>
       <ul class="critical-skills"
-        ><li class="critical-skill"><a href="{% url 'zoll_me.views.index' %}"><img src="{{ STATIC_URL }}zoll_me/img/resume/logo-webdevelopment.png"> <span>Web Dev<span class="hidden-webdev">elopment</span></span></a></li
-        ><li class="critical-skill"><a href="http://www.python.org"><img src="{{ STATIC_URL }}zoll_me/img/resume/logo-python.png"> <span>Python</span></a></li
-        ><li class="critical-skill"><a href="http://www.ecmascript.org"><img src="{{ STATIC_URL }}zoll_me/img/resume/logo-javascript.png"> <span>JavaScript</span></a></li
-        ><li class="critical-skill"><a href="http://www.w3.org"><img src="{{ STATIC_URL }}zoll_me/img/resume/logo-html.png"> <span>HTML</span></a></li
-        ><li class="critical-skill"><a href="http://www.djangoproject.com"><img src="{{ STATIC_URL }}zoll_me/img/resume/logo-django.png"> <span>Django</span></a></li
-        ><li class="critical-skill"><a href="http://flask.pocoo.org"><img src="{{ STATIC_URL }}zoll_me/img/resume/logo-flask.png"> <span>Flask</span></a></li
-        ><li class="critical-skill"><a href="http://jquery.com"><img src="{{ STATIC_URL }}zoll_me/img/resume/logo-jquery.png"> <span>jQuery</span></a></li
-        ><li class="critical-skill"><a href="http://dojotoolkit.org"><img src="{{ STATIC_URL }}zoll_me/img/resume/logo-dojo.png"> <span>Dojo Toolkit</span></a></li
-        ><li class="critical-skill"><a href="http://www.oracle.com/technetwork/database/features/plsql/index.html"><img src="{{ STATIC_URL }}zoll_me/img/resume/logo-oracle.png"> <span>Oracle PL/SQL</span></a></li
-        ><li class="critical-skill"><a href="http://www.postgresql.org"><img src="{{ STATIC_URL }}zoll_me/img/resume/logo-postgresql.png"> <span>PostgreSQL</span></a></li
-        ><li class="critical-skill"><a href="http://www.java.com"><img src="{{ STATIC_URL }}zoll_me/img/resume/logo-java.png"> <span>Java</span></a></li
-        ><li class="critical-skill"><a href="http://git-scm.com"><img src="{{ STATIC_URL }}zoll_me/img/resume/logo-git.png"> <span>Git</span></a></li
+        ><li class="critical-skill"><a href="{% url 'zoll_me.views.index' %}"><img alt="Web Development Icon" src="{{ STATIC_URL }}zoll_me/img/resume/logo-webdevelopment.png"> <span>Web Dev<span class="hidden-webdev">elopment</span></span></a></li
+        ><li class="critical-skill"><a href="http://www.python.org"><img alt="Python Icon" src="{{ STATIC_URL }}zoll_me/img/resume/logo-python.png"> <span>Python</span></a></li
+        ><li class="critical-skill"><a href="http://www.ecmascript.org"><img alt="JavaScript Icon" src="{{ STATIC_URL }}zoll_me/img/resume/logo-javascript.png"> <span>JavaScript</span></a></li
+        ><li class="critical-skill"><a href="http://www.w3.org"><img alt="HTML Icon" src="{{ STATIC_URL }}zoll_me/img/resume/logo-html.png"> <span>HTML</span></a></li
+        ><li class="critical-skill"><a href="http://www.djangoproject.com"><img alt="Django Icon" src="{{ STATIC_URL }}zoll_me/img/resume/logo-django.png"> <span>Django</span></a></li
+        ><li class="critical-skill"><a href="http://flask.pocoo.org"><img alt="Flask Icon" src="{{ STATIC_URL }}zoll_me/img/resume/logo-flask.png"> <span>Flask</span></a></li
+        ><li class="critical-skill"><a href="http://jquery.com"><img alt="jQuery Icon" src="{{ STATIC_URL }}zoll_me/img/resume/logo-jquery.png"> <span>jQuery</span></a></li
+        ><li class="critical-skill"><a href="http://dojotoolkit.org"><img alt="Dojo Toolkit Icon" src="{{ STATIC_URL }}zoll_me/img/resume/logo-dojo.png"> <span>Dojo Toolkit</span></a></li
+        ><li class="critical-skill"><a href="http://www.oracle.com/technetwork/database/features/plsql/index.html"><img alt="Oracle PL/SQL Icon" src="{{ STATIC_URL }}zoll_me/img/resume/logo-oracle.png"> <span>Oracle PL/SQL</span></a></li
+        ><li class="critical-skill"><a href="http://www.postgresql.org"><img alt="PostgreSQL Icon" src="{{ STATIC_URL }}zoll_me/img/resume/logo-postgresql.png"> <span>PostgreSQL</span></a></li
+        ><li class="critical-skill"><a href="http://www.java.com"><img alt="Java Icon" src="{{ STATIC_URL }}zoll_me/img/resume/logo-java.png"> <span>Java</span></a></li
+        ><li class="critical-skill"><a href="http://git-scm.com"><img alt="Git Icon" src="{{ STATIC_URL }}zoll_me/img/resume/logo-git.png"> <span>Git</span></a></li
       ></ul>
     </div>
   </div>
