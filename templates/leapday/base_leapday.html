@@ -1,6 +1,8 @@
 {% extends 'base.html'  %}
 
-{% block title %}Leap Day Recipedia{% endblock %}
+{% block title %}Leap Day Recipedia{% block title_leapday %}{% endblock %}{% endblock %}
+
+{% block meta_description %}{% block meta_description_leapday %}Detailed recipe, material, and value information for all items in the game Leap Day by Spry Fox.{% endblock %}{% endblock %}
 
 {% block styles %}
   <link rel="stylesheet" type="text/css" href="{{ STATIC_URL }}leapday/css/styles.css">

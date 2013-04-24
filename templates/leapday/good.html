@@ -3,6 +3,9 @@
 {% load leapday_extras %}
 {% load humanize %}
 
+{% block title_leapday %} - {{ good.display_name }}{% endblock %}
+{% block meta_description_leapday %}{{ good.display_name }} is worth {{ good.value|intcomma }} gold.{% if ingredients|length > 0 %} It is crafted by combining {% for i in ingredients %}{% if forloop.counter0 != 0 %}, {% endif %}{% if forloop.revcounter0 == 0 %}and {% endif %}{{ i.display_name }}{% endfor %}.{% endif %}{% endblock %}
+
 {% block container_leapday %}
   <div class="row">
     <div class="span12" style="position: relative;">
