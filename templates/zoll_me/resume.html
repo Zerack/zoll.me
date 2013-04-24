@@ -2,67 +2,6 @@
 
 {% block styles %}
   <link rel="stylesheet" href="{{ STATIC_URL }}zoll_me/css/resume.css">
-  <style type="text/css">
-    ul.critical-skills {
-      margin: 0px;
-      list-style: none;
-    }
-    
-    ul.critical-skills li {
-      display: inline-block;
-      padding: 0px;
-      width: 16.6%;
-      padding-bottom: 5px;
-    }
-    
-    @media (min-width: 650px) and (max-width: 979px) {
-      ul.critical-skills li {
-        width: 25%;
-      }
-    }
-    
-    @media (min-width: 505px) and (max-width: 649px) {
-      ul.critical-skills li {
-        width: 33.3%;
-      }
-    }
-    
-    @media (max-width: 504px) {
-      ul.critical-skills li {
-        width: 50%;
-      }
-    }
-    
-    @media (max-width: 350px) {
-      span.hidden-webdev {
-        display: none;
-      }
-    }
-    
-    ul.critical-skills li:first-child {
-      padding-left: 0px;
-    }
-    
-    @media (min-width: 768px) {
-      .text-right-desktop {
-        text-align: right;      
-      }
-    }
-    
-   .critical-skills .critical-skill img {
-      height: 20px;
-      width: 20px;
-    }
-    
-    .critical-skills .critical-skill a:hover,  .critical-skills .critical-skill a:active, .critical-skills .critical-skill a:visited {
-      text-decoration: none;
-    }
-    
-    .critical-skills .critical-skill a:hover span {
-      text-decoration: underline;
-    }
-    
-  </style>
 {% endblock %}
 
 {% block container %}
