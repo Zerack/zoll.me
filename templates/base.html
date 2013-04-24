@@ -2,14 +2,12 @@
 
 <!DOCTYPE html>
 <html lang="en">
-  <!-- This document is a heavily edited version of one of Twitter Bootstrap's templates. -->
   <head>
     <meta charset="utf-8">
     <title>{% block title %}James Zoll - WebDev{% endblock %}</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="description" content="I'm Jim, and I write web applications. Here's some of my stuff.">
     <meta name="author" content="James Zoll">
-    <meta name=”robots” content=”index,follow” />
 
     <!-- CSS Styles. A few of these are here since they are only used by the main template, and
          having them here reduces the number of requests that need to be made. -->
@@ -37,10 +35,8 @@
     <link rel="apple-touch-icon-precomposed" sizes="72x72" href="{{ STATIC_URL}}apple-touch-icon-72-precomposed.png">
     <link rel="apple-touch-icon-precomposed" href="{{ STATIC_URL}}apple-touch-icon-57-precomposed.png">
   </head>
-
   <body>
-
-    <div class="navbar navbar-inverse navbar-fixed-top">
+    <header class="navbar navbar-inverse navbar-fixed-top">
       <div class="navbar-inner">
         <div class="container">
           <button type="button" class="btn btn-navbar" data-toggle="collapse" data-target=".nav-collapse">
@@ -48,26 +44,28 @@
             <span class="icon-bar"></span>
             <span class="icon-bar"></span>
           </button>
-          <a class="brand" href="{% url 'zoll_me.views.index' %}" style="padding-top: 5px; padding-bottom: 5px; padding-right: 10px;"><img style="height: 30px; width: 30px;" src="{{ STATIC_URL }}zoll_me/img/logo.png" /></a>
+          <a class="brand" href="{% url 'zoll_me.views.index' %}"><img src="{{ STATIC_URL }}zoll_me/img/logo.png" alt="Site Logo"></a>
           <div class="nav-collapse collapse">
-            <ul class="nav">
-              <li {% if active_nav == 'index' %}class="active"{% endif %}><a href="{% url 'zoll_me.views.index' %}">Home</a></li>
-              <li {% if active_nav == 'resume' %}class="active"{% endif %}><a href="{% url 'zoll_me.views.resume' %}">Resume</a></li>
-              <li class="dropdown{% if active_nav == 'projects' %} active{% endif %}">
-                <a href="#" class="dropdown-toggle" data-toggle="dropdown">My Projects <b class="caret"></b></a>
-                <ul class="dropdown-menu">
-                  <li><a href="{% url 'zoll_me.views.projects' %}">All Projects</a></li>
-                  <li class="divider"></li>
-                  {% for app in apps %}
-                    <li><a href="{% url app.default_view %}">{{ app.name }}</a></li>
-                  {% endfor %}
-                </ul>
-              </li>
-            </ul>
+            <nav>
+              <ul class="nav">
+                <li {% if active_nav == 'index' %}class="active"{% endif %}><a href="{% url 'zoll_me.views.index' %}">Home</a></li>
+                <li {% if active_nav == 'resume' %}class="active"{% endif %}><a href="{% url 'zoll_me.views.resume' %}">Resume</a></li>
+                <li class="dropdown{% if active_nav == 'projects' %} active{% endif %}">
+                  <a href="#" class="dropdown-toggle" data-toggle="dropdown">My Projects <b class="caret"></b></a>
+                  <ul class="dropdown-menu">
+                    <li><a href="{% url 'zoll_me.views.projects' %}">All Projects</a></li>
+                    <li class="divider"></li>
+                    {% for app in apps %}
+                      <li><a href="{% url app.default_view %}">{{ app.name }}</a></li>
+                    {% endfor %}
+                  </ul>
+                </li>
+              </ul>
+            </nav>
             {% if user.is_authenticated %}
             <form method="post" action="{% url 'django.contrib.auth.views.logout' %}" class="navbar-form pull-right">
               {% csrf_token %}
-              <div class="user-welcome">Welcome, <b>{{ user.username }}</b></div><br class="visible-phone"/>
+              <div class="user-welcome">Welcome, <b>{{ user.username }}</b></div><br class="visible-phone">
               <a class="btn" href="{% url 'django.contrib.auth.views.password_change' %}">Account</a>
               <button type="submit" class="btn">Sign out</button>
               <input type="hidden" name="next" value="{{ request.get_full_path }}">
@@ -84,10 +82,12 @@
           </div><!--/.nav-collapse -->
         </div>
       </div>
-    </div>
+    </header>
 
     <div class="container">
-      {% block container %}{% endblock %}            
+      <main>
+        {% block container %}{% endblock %}
+      </main>            
       <hr>
       <footer>
           <div class="row muted">
