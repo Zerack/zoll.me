@@ -1,5 +1,9 @@
 {% extends 'xbmc_photos/base_xbmc.html'  %}
 
+{% block title_xbmc %} - {{ photo.title }}{% endblock %}
+
+{% block meta_description_xbmc %}Viewing XBMC Photo: &quot;{{ photo.title }}&quot; - &quot;{{ photo.description }}&quot;{% endblock %}
+
 {% block container_xbmc %}
   {% if invalid_id %}
     <div class="row">

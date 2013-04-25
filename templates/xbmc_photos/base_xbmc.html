@@ -1,6 +1,8 @@
 {% extends 'base.html'  %}
 
-{% block title %}XBMC Photos{% endblock %}
+{% block title %}XBMC Photos{% block title_xbmc %}{% endblock %}{% endblock %}
+
+{% block meta_description %}{% block meta_description_xbmc %}Upload and view photos for our home XBMC slideshow. Photos you will appear on our TV screensaver automatically.{% endblock %}{% endblock %}
 
 {% block styles %}
   <link rel="stylesheet" type="text/css" href="{{ STATIC_URL }}xbmc_photos/css/styles.css">

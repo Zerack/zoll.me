@@ -1,5 +1,9 @@
 {% extends 'xbmc_photos/base_xbmc.html'  %}
 
+{% block title_xbmc %} - {% if role == 'view' %}View{% else %}Edit{% endif%} Photos{% endblock %}
+
+{% block meta_description_xbmc %}{% if role == 'view' %}View all available XBMC photos currently in our collection.{% else %}View a list of XBMC photos currently in the system that you have permission to edit.{% endif %}{% endblock %}
+
 {% block container_xbmc %}
   <div class="row">
     <div class="span9">
