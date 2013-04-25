@@ -1,5 +1,9 @@
 {% extends 'files/base_files.html' %}
 
+{% block title_files %}Files - Delete {{ active_nav|capfirst}} File{% endblock %}
+
+{% block meta_description_files %}Delete a {{ active_nav|capfirst }} file.{% endblock %}
+
 {% load files_extras %}
 
 {% block styles_files %}

@@ -1,5 +1,9 @@
 {% extends 'files/base_files.html' %}
 
+{% block title_files %}Files - Add {{ active_nav|capfirst }} File{% endblock %}
+
+{% block meta_description_files %}Add a new {{ active_nav|capfirst }} file.{% endblock %}
+
 {% block styles_files %}
   <link rel="stylesheet" type="text/css" href="{{ STATIC_URL }}bootstrap_fileupload/bootstrap-fileupload.css">
 {% endblock %}
