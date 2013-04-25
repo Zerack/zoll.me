@@ -1,6 +1,8 @@
 {% extends 'base.html' %}
 
-{% block title %}My Year In Temperatures{% endblock %}
+{% block title %}My Year In Temperatures{% block title_scarf %}{% endblock %}{% endblock %}
+
+{% block meta_description %}{% block meta_description_scarf %}My Year In Temperatures project.{% endblock %}{% endblock %}
 
 {% block styles %}
   <!-- Local stylesheet(s) -->

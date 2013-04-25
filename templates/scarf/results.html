@@ -1,5 +1,9 @@
 {% extends 'scarf/base_scarf.html' %}
 
+{% block title_scarf %} - Scarf Results{% endblock %}
+
+{% block meta_description_scarf %}View the results of your color and city selections for your My Year In Temperatures scarf.{% endblock %}
+
 {% block styles_scarf %}
   <!-- Defining gradient colors and styles for the colors that have been selected. -->
   {% for c, cd, cl in colors %}
