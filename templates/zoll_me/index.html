@@ -1,5 +1,7 @@
 {% extends "base.html" %}
 
+{% block meta_keywords %}James Zoll,Jim Zoll,Zerack,Software Engineer,Web Developer,{% for app in apps %}{{ app.name }}{% if forloop.revcounter0 != 0 %},{% endif %}{% endfor %}{% endblock %}
+
 {% block styles %}
   <link rel="stylesheet" href="{{ STATIC_URL }}{{ apps.0.spotlight.css }}">
   <link rel="stylesheet" href="{{ STATIC_URL }}zoll_me/css/index.css">

@@ -4,6 +4,8 @@
 
 {% block meta_description %}A comprehensive listing of the projects I have made available online.{% endblock %}
 
+{% block meta_keywords %}projects,applications,{% for app in apps %}{{ app.name }}{% if forloop.revcounter0 != 0 %},{% endif %}{% endfor %}{% endblock %}
+
 {% block styles %}
   <link rel="stylesheet" href="{{ STATIC_URL }}zoll_me/css/projects.css">
 {% endblock %}
