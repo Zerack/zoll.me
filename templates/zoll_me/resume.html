@@ -12,9 +12,11 @@
 
 {% block container %}
   <div class="row">
-    <div class="span6">
-      <h3 style="line-height: 24.5px;" class="margin-bottom-0">James D. Zoll</h3>
-      <p style="margin-bottom: 0px;">Maple Shade, NJ</p>
+    <div itemscope itemtype="http://data-vocabulary.org/Person" class="span6">
+      <h3 itemprop="name" style="line-height: 24.5px;" class="margin-bottom-0">James D. Zoll</h3>
+      <p itemprop="address" itemscope itemtype="http://data-vocabulary.org/Address" style="margin-bottom: 0px;"><span itemprop="locality">Maple Shade</span>, <span itemprop="region">NJ</span></p>
+      <!-- Forgive me for duplicating this here, but our display logic doesn't match the Rich Snippets requirements -->
+      <p itemprop="title" style="display: none;">Software Engineer</p>
     </div>
     <div class="span6 text-right-desktop" style="margin-top: 10px;">
       <a href="{{ STATIC_URL }}zoll_me/James_Zoll_Software_Engineer_Resume.doc" class="btn btn-primary"><i class="icon-white icon-download"></i> Full Resume (DOC)</a>
