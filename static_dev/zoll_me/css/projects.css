@@ -1,4 +1,9 @@
-.projectsContainer {
+/*
+ * Styles for the Project page. Some extra tweaking of display
+ * for the single column layout.
+ */
+
+.projects-row {
 	margin-bottom: 10px;
 }
 
@@ -29,11 +34,11 @@
   	padding-bottom: 0px;
   }
   
-  .projectsContainer .span4 {
+  .projects-row .span4 {
   	margin-bottom: 30px;
   }
   
-  .projectsContainer .span4:last-child {
+  .projects-row .span4:last-child {
   	margin-bottom: 0px;
   }
 }

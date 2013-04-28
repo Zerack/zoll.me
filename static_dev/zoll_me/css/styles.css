@@ -1,11 +1,24 @@
-/*
- * Styles for the main zoll_me application framework. This stuff is included in _every_
- * page load, so be gentle.
+/* 
+ * Body Styles
  */
 body {
   padding-bottom: 40px;
 }
 
+/* 
+ * Nav Styles
+ */
+.navbar a.brand {
+  padding-top: 5px; 
+  padding-bottom: 5px; 
+  padding-right: 10px;
+}
+
+.navbar a.brand img {
+  height: 30px; 
+  width: 30px; 
+}
+ 
 .user-welcome {
   line-height: 20px;
   display: inline-block;
@@ -15,12 +28,19 @@ body {
   color: #999999;
 }
 
+/*
+ * Page Header Styles
+ */
 .page-header h1 img {
   width: 40px;
   height: 40px;
   vertical-align: bottom;
 }
 
+
+/* 
+ * Footer Styles
+ */ 
 footer a {
   color: #999999;
   text-decoration: underline;
@@ -30,8 +50,40 @@ footer a:hover {
   color: #999999;
 }
 
+@media (max-width: 767px) {
+	footer .span6 {
+		margin-bottom: 0px;
+		text-align: center;	
+	}
+}
+
+/* 
+ * Utility Classes. Some of these are used as overrides
+ * for default bootstrap styling, which is why they 
+ * exist in the first place.
+ */
+.visible-large-desktop {
+  display: none !important;
+}
+
+@media(min-width: 1200px) {
+	.visible-large-desktop {
+		display: inherit !important;
+	}
+}
+
+@media (min-width: 768px) {
+  .text-right-desktop {
+    text-align: right !important;      
+  }
+}
+
 .monospace {
 	font-family: monospace;
+}
+
+.underline {
+	text-decoration: underline;
 }
 
 .relative {
@@ -42,20 +94,10 @@ footer a:hover {
 	text-align: justify;
 }
 
-@media (max-width: 767px) {
-	footer .span6 {
-		margin-bottom: 0px;
-		text-align: center;	
-	}
+.margin-bottom-0 {
+	margin-bottom: 0px;
 }
 
-.navbar a.brand {
-  padding-top: 5px; 
-  padding-bottom: 5px; 
-  padding-right: 10px;
-}
-
-.navbar a.brand img {
-  height: 30px; 
-  width: 30px; 
+.margin-top-0 {
+	margin-top: 0px;
 }

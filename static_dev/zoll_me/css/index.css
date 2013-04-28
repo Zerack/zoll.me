@@ -44,7 +44,7 @@
 }
     
 #personalInfoWell .resume {
-  margin-bottom: 20px;
+  	margin-bottom: 20px;
 }
    
 #personalInfoWell .icon-blacktocat {
@@ -52,30 +52,16 @@
 	background-position: 0px 0px;
 }
 
-.margin-bottom-0 {
-	margin-bottom: 0px;
-}
-
-.visible-large-desktop {
-	display: none !important;
-}
-
-@media(min-width: 1200px) {
-	.visible-large-desktop {
-		display: inherit !important;
-	}
-}
-
+/* 
+ * Styles for the newest photo well. This whole div is hidden
+ * in single column layout.
+ */
 #newestPhotoWell h4 {
 	display: inline;
 }
 
 #newestPhotoWell a.img-polaroid {
 	display: block;
-}
-
-#newestPhotoWell div.carousel-wrapper {
-	position: relative;
 }
 
 #newestPhotoWell .carousel-caption {
@@ -87,6 +73,9 @@
 	color: #ffffff;
 }
 
+/*
+ * Styles for project highlight area.
+ */
 .project-header img {
   vertical-align: bottom;
   height: 20px;

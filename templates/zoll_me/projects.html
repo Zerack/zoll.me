@@ -14,25 +14,27 @@
   <div class="page-header">
     <h1><img src="{{ STATIC_URL }}zoll_me/img/computer.png" /> Software Projects</h1>
   </div>
-  <div class="row">
-    <div class="span12">
-      <div class="well well-small">
-        <p>Below is a listing of my completed projects. Each button will take you directly to the project page. I've used a wide variety of software to build these projects, and I'm always interested in learning new technologies.</p>
+  <section>
+    <div class="row">
+      <div class="span12">
+        <div class="well well-small">
+          <p>Below is a listing of my completed projects. Each button will take you directly to the project page. I've used a wide variety of software to build these projects, and I'm always interested in learning new technologies.</p>
+        </div>
       </div>
     </div>
-  </div>
-  <div class="row relative projectsContainer">
-  {% for app in apps %}
-    {% if forloop.counter0|divisibleby:3 and forloop.counter0 != 0 %}
+    <div class="row projects-row relative">
+    {% for app in apps %}
+      {% if forloop.counter0|divisibleby:3 and forloop.counter0 != 0 %}
+        </div>
+        <div class="row projects-row relative">
+      {% endif %}  
+      <div class="span4">
+        <h4 class="project-header"><img src="{{ STATIC_URL }}{{ app.icon }}"/> {{ app.name }}</h4>
+        <p class="project-description">{{ app.description }}</p>
+        <p class="project-uses"><strong>Uses:</strong> {% for name, href in app.uses %}<a href="{{ href }}">{{ name.split|join:'&nbsp;' }}</a>{% if not forloop.revcounter0 == 0 %}, {% endif %}{% endfor %}</p>   
+        <p class="project-view"><a class="btn" href="{% url app.default_view %}">{{ app.button_label }} &raquo;</a></p>
       </div>
-      <div class="row relative projectsContainer">
-    {% endif %}  
-    <div class="span4">
-      <h4 class="project-header"><img src="{{ STATIC_URL }}{{ app.icon }}"/> {{ app.name }}</h4>
-      <p class="project-description">{{ app.description }}</p>
-      <p class="project-uses"><strong>Uses:</strong> {% for name, href in app.uses %}<a href="{{ href }}">{{ name.split|join:'&nbsp;' }}</a>{% if not forloop.revcounter0 == 0 %}, {% endif %}{% endfor %}</p>   
-      <p class="project-view"><a class="btn" href="{% url app.default_view %}">{{ app.button_label }} &raquo;</a></p>
+    {% endfor %}
     </div>
-  {% endfor %}
-  </div>
+  </section>
 {% endblock %}

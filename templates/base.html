@@ -10,8 +10,9 @@
     <meta name="author" content="James Zoll">
     <meta name="keywords" content="{% block meta_keywords %}{% endblock %}">
 
-    <!-- CSS Styles. A few of these are here since they are only used by the main template, and
-         having them here reduces the number of requests that need to be made. -->
+    <!-- Body padding comes here because it is overwritten by mobile media queries
+         in bootstrap-responsive.min.css. So, it can't be in regular stylesheet
+         otherwise it would always take precendence. -->
     <style type="text/css">
       body {
         padding-top: 60px;

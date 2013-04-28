@@ -1,10 +1,25 @@
 /*
- * Styles for the resume page.
+ * Resume styling.
  */
-.margin-bottom-0 {
-	margin-bottom: 0px;
+h3.name {
+	line-height: 24.5px;	
 }
 
+.download-container {
+	margin-top: 10px;	
+}
+
+.job-description {
+	font-size: 12px;
+}
+
+.education-info {
+	margin-left: 3%;
+}
+
+/*
+ * Styles for the critical skills section.
+ */
 ul.critical-skills {
   margin: 0px;
   list-style: none;
@@ -37,23 +52,73 @@ ul.critical-skills li {
 
 @media (max-width: 350px) {
   span.hidden-webdev {
-    display: none;
+    display: none !important;
   }
 }
 
-ul.critical-skills li:first-child {
-  padding-left: 0px;
+.critical-skills .skill-icon {
+	background-image: url('../img/resume/critical-skills.png');
+	background-position: 0 0;
+	background-repeat: no-repeat;
+	display: inline-block;
+	width: 20px;
+	height: 20px;
+	vertical-align: bottom;
 }
 
-@media (min-width: 768px) {
-  .text-right-desktop {
-    text-align: right;      
-  }
+@media only screen and (-webkit-min-device-pixel-ratio: 2), only screen and (min-device-pixel-ratio: 2) {
+	.critical-skills .skill-icon {
+		background-image: url('../img/resume/critical-skills-2x.png');
+		background-size: 80px 60px;
+	}
 }
 
-.critical-skills .critical-skill img {
-  height: 20px;
-  width: 20px;
+.critical-skills .skill-icon-webdev {
+	background-position: 0 0;
+}
+
+.critical-skills .skill-icon-python {
+	background-position: -20px 0px;
+}
+
+.critical-skills .skill-icon-javascript {
+	background-position: -40px 0px;
+}
+
+.critical-skills .skill-icon-html {
+	background-position: -60px 0px;
+}
+
+.critical-skills .skill-icon-django {
+	background-position: 0px -20px;
+}
+
+.critical-skills .skill-icon-flask {
+	background-position: -20px -20px;
+}
+
+.critical-skills .skill-icon-jquery {
+	background-position: -40px -20px;
+}
+
+.critical-skills .skill-icon-dojo {
+	background-position: -60px -20px;
+}
+
+.critical-skills .skill-icon-oracle {
+	background-position: 0px -40px;
+}
+
+.critical-skills .skill-icon-postgresql {
+	background-position: -20px -40px;
+}
+
+.critical-skills .skill-icon-java {
+	background-position: -40px -40px;
+}
+
+.critical-skills .skill-icon-git {
+	background-position: -60px -40px;
 }
 
 .critical-skills .critical-skill a:hover,  .critical-skills .critical-skill a:active, .critical-skills .critical-skill a:visited {

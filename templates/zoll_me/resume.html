@@ -11,66 +11,70 @@
 {% endblock %}
 
 {% block container %}
-  <div class="row">
-    <div itemscope itemtype="http://data-vocabulary.org/Person" class="span6">
-      <h3 itemprop="name" style="line-height: 24.5px;" class="margin-bottom-0">James D. Zoll</h3>
-      <p itemprop="address" itemscope itemtype="http://data-vocabulary.org/Address" style="margin-bottom: 0px;"><span itemprop="locality">Maple Shade</span>, <span itemprop="region">NJ</span></p>
-      <!-- Forgive me for duplicating this here, but our display logic doesn't match the Rich Snippets requirements -->
-      <p itemprop="title" style="display: none;">Software Engineer</p>
+  <section itemscope itemtype="http://data-vocabulary.org/Person" >
+    <div class="row">
+      <div class="span6">
+        <h3 itemprop="name" class="name margin-bottom-0">James D. Zoll</h3>
+        <p itemprop="address" itemscope itemtype="http://data-vocabulary.org/Address" class="margin-bottom-0"><span itemprop="locality">Maple Shade</span>, <span itemprop="region">NJ</span></p>
+      </div>
+      <div class="span6 text-right-desktop download-container">
+        <a href="{{ STATIC_URL }}zoll_me/James_Zoll_Software_Engineer_Resume.doc" class="btn btn-primary"><i class="icon-white icon-download"></i> Full Resume (DOCX)</a>
+      </div>
     </div>
-    <div class="span6 text-right-desktop" style="margin-top: 10px;">
-      <a href="{{ STATIC_URL }}zoll_me/James_Zoll_Software_Engineer_Resume.doc" class="btn btn-primary"><i class="icon-white icon-download"></i> Full Resume (DOC)</a>
+    <hr />
+    <div class="row">
+      <div class="span12">
+        <h4 itemprop="title" class="margin-top-0">Software Engineer</h4>
+        <p class="justify">Talented and driven software engineer with extensive experience creating feature-rich web applications using modern technologies. Embraces challenge and consistently delivers high quality results. Achievements include designing and developing a Python/Flask based website and working with a team to modernize and maintain existing web and standalone Java applications. Critical experience includes:</p>
+        <ul class="critical-skills"
+          ><li class="critical-skill"><a href="{% url 'zoll_me.views.index' %}"><span class="skill-icon skill-icon-webdev"></span> <span>Web Dev<span class="hidden-webdev">elopment</span></a></li
+          ><li class="critical-skill"><a href="http://www.python.org"><span class="skill-icon skill-icon-python"></span> <span>Python</span></a></li
+          ><li class="critical-skill"><a href="http://www.ecmascript.org"><span class="skill-icon skill-icon-javascript"></span> <span>JavaScript</span></a></li
+          ><li class="critical-skill"><a href="http://www.w3.org"><span class="skill-icon skill-icon-html"></span> <span>HTML</span></a></li
+          ><li class="critical-skill"><a href="http://www.djangoproject.com"><span class="skill-icon skill-icon-django"></span> <span>Django</span></a></li
+          ><li class="critical-skill"><a href="http://flask.pocoo.org"><span class="skill-icon skill-icon-flask"></span> <span>Flask</span></a></li
+          ><li class="critical-skill"><a href="http://jquery.com"><span class="skill-icon skill-icon-jquery"></span> <span>jQuery</span></a></li
+          ><li class="critical-skill"><a href="http://dojotoolkit.org"><span class="skill-icon skill-icon-dojo"></span> <span>Dojo Toolkit</span></a></li
+          ><li class="critical-skill"><a href="http://www.oracle.com/technetwork/database/features/plsql/index.html"><span class="skill-icon skill-icon-oracle"></span> <span>Oracle PL/SQL</span></a></li
+          ><li class="critical-skill"><a href="http://www.postgresql.org"><span class="skill-icon skill-icon-postgresql"></span> <span>PostgreSQL</span></a></li
+          ><li class="critical-skill"><a href="http://www.java.com"><span class="skill-icon skill-icon-java"></span> <span>Java</span></a></li
+          ><li class="critical-skill"><a href="http://git-scm.com"><span class="skill-icon skill-icon-git"></span> <span>Git</span></a></li
+        ></ul>
+      </div>
     </div>
-  </div>
-  <hr />
-  <div class="row">
-    <div class="span12">
-      <h4 style="margin-top: 0px;">Software Engineer</h4>
-      <p style="text-align: justify;">Talented and driven software engineer with extensive experience creating feature-rich web applications using modern technologies. Embraces challenge and consistently delivers high quality results. Achievements include designing and developing a Python/Flask based website and working with a team to modernize and maintain existing web and standalone Java applications. Critical experience includes:</p>
-      <ul class="critical-skills"
-        ><li class="critical-skill"><a href="{% url 'zoll_me.views.index' %}"><img alt="Web Development Icon" src="{{ STATIC_URL }}zoll_me/img/resume/logo-webdevelopment.png"> <span>Web Dev<span class="hidden-webdev">elopment</span></span></a></li
-        ><li class="critical-skill"><a href="http://www.python.org"><img alt="Python Icon" src="{{ STATIC_URL }}zoll_me/img/resume/logo-python.png"> <span>Python</span></a></li
-        ><li class="critical-skill"><a href="http://www.ecmascript.org"><img alt="JavaScript Icon" src="{{ STATIC_URL }}zoll_me/img/resume/logo-javascript.png"> <span>JavaScript</span></a></li
-        ><li class="critical-skill"><a href="http://www.w3.org"><img alt="HTML Icon" src="{{ STATIC_URL }}zoll_me/img/resume/logo-html.png"> <span>HTML</span></a></li
-        ><li class="critical-skill"><a href="http://www.djangoproject.com"><img alt="Django Icon" src="{{ STATIC_URL }}zoll_me/img/resume/logo-django.png"> <span>Django</span></a></li
-        ><li class="critical-skill"><a href="http://flask.pocoo.org"><img alt="Flask Icon" src="{{ STATIC_URL }}zoll_me/img/resume/logo-flask.png"> <span>Flask</span></a></li
-        ><li class="critical-skill"><a href="http://jquery.com"><img alt="jQuery Icon" src="{{ STATIC_URL }}zoll_me/img/resume/logo-jquery.png"> <span>jQuery</span></a></li
-        ><li class="critical-skill"><a href="http://dojotoolkit.org"><img alt="Dojo Toolkit Icon" src="{{ STATIC_URL }}zoll_me/img/resume/logo-dojo.png"> <span>Dojo Toolkit</span></a></li
-        ><li class="critical-skill"><a href="http://www.oracle.com/technetwork/database/features/plsql/index.html"><img alt="Oracle PL/SQL Icon" src="{{ STATIC_URL }}zoll_me/img/resume/logo-oracle.png"> <span>Oracle PL/SQL</span></a></li
-        ><li class="critical-skill"><a href="http://www.postgresql.org"><img alt="PostgreSQL Icon" src="{{ STATIC_URL }}zoll_me/img/resume/logo-postgresql.png"> <span>PostgreSQL</span></a></li
-        ><li class="critical-skill"><a href="http://www.java.com"><img alt="Java Icon" src="{{ STATIC_URL }}zoll_me/img/resume/logo-java.png"> <span>Java</span></a></li
-        ><li class="critical-skill"><a href="http://git-scm.com"><img alt="Git Icon" src="{{ STATIC_URL }}zoll_me/img/resume/logo-git.png"> <span>Git</span></a></li
-      ></ul>
-    </div>
-  </div>
+  </section>
   <hr>
-  <div class="row">
-    <div class="span12">
-      <h4 style="margin-top: 0px;">Professional Experience</h4>
+  <section>
+    <div class="row">
+      <div class="span12">
+        <h4 class="margin-top-0">Professional Experience</h4>
+      </div>
     </div>
-  </div>
-  <div class="row">
-    <div class="span6">
-      <p><strong style="text-decoration: underline;">ENGILTY COPORATION</strong>, Lexington Park, MD</p>
-      <p style="margin-bottom: 0px;"><strong><em>Software Engineer</em></strong> (2011-Present)</p>
-      <p style="text-align: justify; font-size: 12px;">Designed, developed, and deployed a fully featured website used by U.S. military personnel and third-party contractors. Lead continuing efforts to modernize and consolidate existing offline and web-based applications for easier maintenance and greater stability. Worked independently to update fatigue calculation systems for new technical requirements.</p>
-      <p style="margin-bottom: 0px;"><strong><em>Associate Software Engineer</em></strong> (2008-2011)</p>
-      <p style="text-align: justify; font-size: 12px;">Primary software engineer assigned to the U.S. Navy AV-8B Harrier II aircraft platform, providing support for existing PL/SQL, Java, and web-based applications. Supported senior personnel in development initiatives affecting all U.S. Navy aircraft, including flight record management and fatigue calculation.</p>
+    <div class="row">
+      <div class="span6">
+        <p><span class="underline"><strong>ENGILTY COPORATION</strong></span>, Lexington Park, MD</p>
+        <p class="margin-bottom-0"><strong><em>Software Engineer</em></strong> (2011-Present)</p>
+        <p class="justify job-description">Designed, developed, and deployed a fully featured website used by U.S. military personnel and third-party contractors. Lead continuing efforts to modernize and consolidate existing offline and web-based applications for easier maintenance and greater stability. Worked independently to update fatigue calculation systems for new technical requirements.</p>
+        <p class="margin-bottom-0"><strong><em>Associate Software Engineer</em></strong> (2008-2011)</p>
+        <p class="justify job-description">Primary software engineer assigned to the U.S. Navy AV-8B Harrier II aircraft platform, providing support for existing PL/SQL, Java, and web-based applications. Supported senior personnel in development initiatives affecting all U.S. Navy aircraft, including flight record management and fatigue calculation.</p>
+      </div>
+      <div class="span6">
+        <p><span class="underline"><strong>CLASSIC NETWORKING, INC.</strong></span>, Mechanicsburg, PA</p>
+        <p class="margin-bottom-0"><strong><em>Student Intern</em></strong> (2007-2008)</p>
+        <p class="justify job-description">Responsible for a variety of tasks including development of network-end point compliance software, product testing, customer troubleshooting and product support, product documentation, and interface standards compliance.</p>
+      </div>
     </div>
-    <div class="span6">
-      <p><strong style="text-decoration: underline;">CLASSIC NETWORKING, INC.</strong>, Mechanicsburg, PA</p>
-      <p style="margin-bottom: 0px;"><strong><em>Student Intern</em></strong> (2007-2008)</p>
-      <p style="text-align: justify; font-size: 12px;">Responsible for a variety of tasks including development of network-end point compliance software, product testing, customer troubleshooting and product support, product documentation, and interface standards compliance.</p>
-    </div>
-  </div>
+  </section>
   <hr>
-  <div class="row">
-    <div class="span6">
-      <h4 style="margin-top: 0px;">Education</h4>
-      <p style="margin-bottom: 0px;"><strong>WAKE FOREST UNIVERSITY</strong>, Winston-Salem, NC</p>
-      <p style="margin-left: 3%; margin-bottom: 0px;">Bachelor of Science, Computer Science</p>
-      <p style="margin-left: 3%; margin-bottom: 0px;">Bachelor of Arts, Music Performance with Honors</p>
-      <p style="margin-left: 3%"><em>magna cum laude</em></p>
+  <section>
+    <div class="row">
+      <div class="span6">
+        <h4 class="margin-top-0">Education</h4>
+        <p class="margin-bottom-0"><strong>WAKE FOREST UNIVERSITY</strong>, Winston-Salem, NC</p>
+        <p class="education-info margin-bottom-0">Bachelor of Science, Computer Science</p>
+        <p class="education-info margin-bottom-0">Bachelor of Arts, Music Performance with Honors</p>
+        <p class="education-info"><em>magna cum laude</em></p>
+      </div>
     </div>
-  </div>
+   </section>
 {% endblock %}
