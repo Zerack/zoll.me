@@ -1,7 +1,11 @@
 '''
-Created on Apr 22, 2013
+James D. Zoll
 
-@author: Jim
+4/29/2013
+
+Purpose: Defines the single URL rule for the DK Optimize project.
+
+License: This is a public work.
 '''
 
 # Library Imports
