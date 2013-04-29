@@ -1,3 +1,13 @@
+'''
+James D. Zoll
+
+4/29/2013
+
+Purpose: Defines the two required views for the lensoftruth.js application.
+
+License: This is a public work.
+'''
+
 # Library Imports
 from django.template import RequestContext
 from django.shortcuts import render_to_response
