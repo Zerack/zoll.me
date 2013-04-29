@@ -16,12 +16,6 @@ License: This is a public work.
 # Library Imports
 from django.conf.global_settings import TEMPLATE_CONTEXT_PROCESSORS as TCP
 
-# Local Imports
-from local_settings import *
-
-# DEBUG is imported from local_settings
-TEMPLATE_DEBUG = DEBUG
-
 ADMINS = (
           ('James Zoll', 'zolljd@gmail.com'),
 )
@@ -110,6 +104,7 @@ INSTALLED_APPS = (
     'xbmc_photos',
     'leapday',
     'lensoftruth',
+    'dk_optimize',
     'compressor',
 )
 
@@ -146,3 +141,9 @@ LOGGING = {
         },
     }
 }
+
+# Local Imports
+from local_settings import *
+
+# DEBUG is imported from local_settings
+TEMPLATE_DEBUG = DEBUG

@@ -1,0 +1,44 @@
+{% extends 'dk_optimize/base_dk.html' %}
+
+{% block meta_description_dk %}A Visual Basic program to determine the best possible gear for a Death Knight character, given a configurable set of constraints.{% endblock %}
+
+{% block styles_dk %}
+{% endblock %}
+
+{% block container_dk %}
+  <div class="alert alert-block alert-info">
+    <h4>Heads Up!</h4>
+    DK Optimize is no longer being maintained. The mechanics are no longer up to date, and cannot be used to calculate results for World of Warcraft today. The application still works, but is only usable as a demonstration tool.
+  </div>
+  <section>
+    <h4>So Many Choices...</h4>
+    <p>During the Wrath of the Lich King expansion to the popular game World of Warcraft, players were faced with interesting choices when deciding how best to gear their character. In addition to choosing pieces of gear, each worn item could be customized in a number of small ways, with bonuses for matching certain statistics or gear pieces.</p>
+    <p>Determing the absolute best decisions to make was neither intuitive nor easy - thus DK Optimize was born. This Visual Basic program takes a wide variety of constraints from the user and exhaustively calculates scores for all possible permutations of gear, finally choosing the best result.</p>
+    <p><em>Quick, which item is better?</em></p>
+    <ul>
+      <li><strong><a href="http://www.wowhead.com/item=51129"></a></strong></li>
+      <li><strong><a href="http://www.wowhead.com/item=51902"></a></strong></li>
+    </ul>
+    <p>You might not know, but DK Optimize does.</p>
+  </section>
+  <section>
+    <h4>Many, Many Permutations</h4>
+    <p>A single piece of gear (a character can wear upwards of 15) can potentially be configured in over 400 unique ways. That is <em>a lot</em> of permutations to check - far more than any human would ever be able to manage. DK Optimize can do millions of permutations in fairly short order, which means it can usually come up with an answer in a few minutes. Go get a cup of coffee while it calculates, and come back to a answer that is guaranteed to be optimal.</p>
+    <p><em>Seriously, that's a lot of options.</em></p>
+    <img src="{{ STATIC_URL }}dk_optimize/img/dk_optimize_ui.png" alt="DK Optimize interface">
+  </section>
+  <section>
+    <h4>Additional Resources</h4>
+    <p>I no longer maintain DK Optimize, and am no longer active in the World of Warcraft community. The application still runs, but the results are now meaningless. That said, please use these links if you're interested in more information about the project:</p>
+    <ul>
+      <li><a href="http://dkoptimize.googlecode.com/files/DK_Optimize_2.6.9.zip">Download DK Optimize</a></li>
+      <li><a href="https://code.google.com/p/dkoptimize/">Google Code Repository</a></li>
+      <li><a href="http://elitistjerks.com/f72/t71378-zeracks_dk_gear_optimizer_v2_6_9_03_mar_2010_a/">DK Optimize thread at elitistjerks.com</a></li>
+    </ul>
+    <p>Thanks for looking!</p>
+  </section>
+{% endblock %}
+
+{% block scripts_dk %}
+    <script type="text/javascript" src="//static.wowhead.com/widgets/power.js"></script><script>var wowhead_tooltips = { "colorlinks": true, "iconizelinks": true, "renamelinks": true }</script>
+{% endblock %}
