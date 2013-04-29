@@ -142,7 +142,9 @@ LOGGING = {
     }
 }
 
-# Local Imports
+# Local Imports. It's alright to do a wild import here
+# since we explicitly want to overwrite things that are both
+# in local_settings and this file.
 from local_settings import *
 
 # DEBUG is imported from local_settings
