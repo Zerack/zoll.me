@@ -65,6 +65,10 @@ table td.no-border-left, table th.no-border-left {
 	border-left: none;
 }
 
+table.recipe-table tbody tr td, table.recipe-table thead tr th {
+	white-space: nowrap;
+}
+
 table.recipe-table tbody tr td {
 	vertical-align: bottom;
 }
