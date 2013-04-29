@@ -24,7 +24,7 @@ div#filterButtonContainer {
 	display: inline-block;
 }
 
-@media (max-width: 490px) {
+@media (max-width: 1199px) {
 	div#filterButtonContainer {
 		display: none;
 	}
@@ -65,8 +65,52 @@ table td.no-border-left, table th.no-border-left {
 	border-left: none;
 }
 
-table.recipe-table tbody tr td, table.recipe-table thead tr th {
-	white-space: nowrap;
+/*@media (max-width: 360px) {*/
+@media (max-width: 600px) {
+	table.recipe-table td.item-column h4 {
+		font-size: 13px;
+	}
+}
+
+table.recipe-table colgroup#value-colgroup, table.recipe-table th.value-colgroup, table.recipe-table td.value-colgroup {
+	display: none;
+}
+
+@media (min-width: 320px) {
+	table.recipe-table colgroup#value-colgroup, table.recipe-table th.value-colgroup, table.recipe-table td.value-colgroup {
+		display: table-cell;
+	}	
+}
+
+table.recipe-table colgroup#recipe-colgroup, table.recipe-table th.recipe-colgroup, table.recipe-table td.recipe-colgroup {
+	display: none;
+}
+
+/*@media (min-width: 600px) {*/
+@media (min-width: 568px) {
+	table.recipe-table colgroup#recipe-colgroup, table.recipe-table th.recipe-colgroup, table.recipe-table td.recipe-colgroup {
+		display: table-cell;
+	}
+}
+
+table.recipe-table colgroup#base-colgroup, table.recipe-table th.base-colgroup, table.recipe-table td.base-colgroup {
+	display: none;
+}
+
+@media (min-width: 1200px) {
+	table.recipe-table colgroup#base-colgroup, table.recipe-table th.base-colgroup, table.recipe-table td.base-colgroup {
+		display: table-cell;
+	}
+}
+
+@media (min-width: 1200px) {
+	table.recipe-table colgroup#recipe-colgroup, table.recipe-table th.recipe-colgroup, table.recipe-table td.recipe-colgroup {
+		display: table-cell;
+	}
+}
+
+@media (min-width: 1200px) {
+	
 }
 
 table.recipe-table tbody tr td {
