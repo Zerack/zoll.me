@@ -52,6 +52,6 @@ if settings.DEBUG:
    )
     
 # Define error handling views.
-handler403 = 'zoll_me.views.error_404'
+handler403 = 'zoll_me.views.error_403'
 handler404 = 'zoll_me.views.error_404'
 handler500 = 'zoll_me.views.error_500'
