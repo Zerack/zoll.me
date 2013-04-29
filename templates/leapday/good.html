@@ -95,8 +95,8 @@
       for (var i = 0; i < bezierCount; i++) {
     	var t = recipeBeziers[i];
 	    context.beginPath();
-	    context.moveTo(t[0],t[1]);
-	    context.bezierCurveTo(t[2],t[3],t[4],t[5],t[6],t[7]);
+	    context.moveTo.apply(context, t.slice(0,2));
+	    context.bezierCurveTo.apply(context, t.slice(2));
 	    context.stroke();
       }      
       

@@ -1,5 +1,7 @@
 /*
+ *
  * Styles for both Leap Day pages.
+ *
  */
  
 .leapday-goods-icon-translucent, .base-materials-count-translucent {
@@ -11,28 +13,22 @@
 	line-height: 0.7em;
 }
 
-.margin-bottom-0 {
-	margin-bottom: 0px;
-}
-
 /*
+ *
  * Styles for just the index page.
+ *
  */
 
 div#filterButtonContainer {
 	margin-bottom: 10px;
-	display: inline-block;
+	display: none;
 }
 
-@media (max-width: 1199px) {
+@media (min-width: 1199px) {
 	div#filterButtonContainer {
-		display: none;
+		display: block;
 	}
 }
-
-ul.typeahead.dropdown-menu {
-      width: 184px;
-    }
      
 .popover {
   max-width: none;
@@ -50,157 +46,175 @@ ul.typeahead.dropdown-menu {
 
 .popover label input {
 	display: inline-block; 
-	margin-top: -6px; 
+	margin-top: -6px;
+	
+	/* IE 7 Fixes */
+	zoom: 1;
+	*display: inline;
+	*vertical-align: bottom;
 }
 
 .popover .popover-content p {
 	font-weight: normal;
 }
 
+ul.typeahead.dropdown-menu {
+      right: 0px;
+      text-align: left;
+}
+
+/* Override the existing hover color. */
 .table-hover tbody tr:hover > td {
 	background-color: #FFFFCC;
 }
 
+/* 
+ * We can't use :first-child because the columns are in the middle
+ * of the table.
+ */
 table td.no-border-left, table th.no-border-left {
 	border-left: none;
 }
 
+
+/*
+ * Column display media queries for the main table.
+ */
 @media (max-width: 600px) {
-	table.recipe-table td.item-column h4 {
+	table#recipeTable td.item-column h4 {
 		font-size: 13px;
 	}
 }
 
-table.recipe-table colgroup#value-colgroup, table.recipe-table th.value-colgroup, table.recipe-table td.value-colgroup {
-	display: none;
+#value-colgroup, .value-column {
+	display: table-cell;
 }
 
-@media (min-width: 320px) {
-	table.recipe-table colgroup#value-colgroup, table.recipe-table th.value-colgroup, table.recipe-table td.value-colgroup {
-		display: table-cell;
+@media (max-width: 319px) {
+	#value-colgroup, .value-column {
+		display: none;
 	}	
 }
 
-table.recipe-table colgroup#recipe-colgroup, table.recipe-table th.recipe-colgroup, table.recipe-table td.recipe-colgroup {
+#recipe-colgroup, .recipe-column {
+	display: table-cell;
+}
+
+@media (max-width: 567px) {
+	#recipe-colgroup, .recipe-column {
+		display: none;
+	}
+}
+
+#base-material-colgroup, .base-material-column {
 	display: none;
 }
 
-@media (min-width: 568px) {
-	table.recipe-table colgroup#recipe-colgroup, table.recipe-table th.recipe-colgroup, table.recipe-table td.recipe-colgroup {
+@media (min-width: 1200px) {
+	#base-material-colgroup, .base-material-column {
 		display: table-cell;
 	}
 }
 
-table.recipe-table colgroup#base-colgroup, table.recipe-table th.base-colgroup, table.recipe-table td.base-colgroup {
-	display: none;
-}
-
-@media (min-width: 1200px) {
-	table.recipe-table colgroup#base-colgroup, table.recipe-table th.base-colgroup, table.recipe-table td.base-colgroup {
-		display: table-cell;
-	}
-}
-
-@media (min-width: 1200px) {
-	table.recipe-table colgroup#recipe-colgroup, table.recipe-table th.recipe-colgroup, table.recipe-table td.recipe-colgroup {
-		display: table-cell;
-	}
-}
-
-@media (min-width: 1200px) {
-	
-}
-
-table.recipe-table tbody tr td {
+/*
+ * Other formatting for #recipeTable
+ */
+table#recipeTable tbody tr td {
 	vertical-align: bottom;
 }
 
-table.recipe-table tbody tr td.item-column a.good-detail-link {
+table#recipeTable a.good-detail-link {
 	color: #333333; 
 	text-decoration: none;
 }
 
-table.recipe-table tbody tr td.item-column a.good-detail-link h4 {
+table#recipeTable a.good-detail-link h4 {
 	 display: inline-block;
 	 margin: 0px; 
 	 padding-bottom: 5px;
+	 
+	 /* IE 7 Fixes */
+	 zoom: 1;
+	 *display: inline;
+	 *vertical-align: bottom;
 }
 
-table.recipe-table tbody tr td.value-column, table.recipe-table thead tr th.value-column {
+table#recipeTable .value-column {
 	width:75px;
 }
 
-table.recipe-table tbody tr td.recipe-column, table.recipe-table thead tr th.recipe-column {
+table#recipeTable .recipe-column {
 	 width: 235px;
 }
 
-table.recipe-table tbody tr td.recipe-column {
+table#recipeTable td.recipe-column {
 	 text-align: center;
 }
 
-table.recipe-table tbody tr td.base-material-column, table.recipe-table thead tr th.base-material-column {
+table#recipeTable .base-material-column {
 	width: 76px;
 }
 
-table.recipe-table tbody tr td.base-material-column {
+table#recipeTable td.base-material-column {
 	border-left: none;
 	padding-left: 0px;
 	padding-right: 0px;
 }
 
-table.recipe-table tbody tr td.base-material-column:last-child; {
+table#recipeTable td.base-material-column:last-child; {
 	padding-right: 5px;
 }
 
-table.recipe-table tbody tr td.base-material-column.first-base-material-column {
+/*
+ * Again,we don't use first-child since this is actually the
+ * fourth column.
+ */
+table#recipeTable td.base-material-column.first-base-material-column {
 	border-left: 1px solid #DDDDDD;
 	padding-left: 5px;
 }
 
-table.recipe-table tbody tr td > span {
+table#recipeTable td > span {
 	display: inline-block;
 	padding-bottom: 5px;
+	
+	/* IE 7 Fixes */
+	zoom: 1;
+	*display: inline;
+	vertical-align: bottom;
 }
  
-table.recipe-table tbody tr td span.base-materials-count {
+table#recipeTable span.base-materials-count {
 	width: 34px; 
 	margin-left: -3px;
 }
 
-table thead th.sorting-desc span.caret-after:after {
+table#recipeTable th.sorting-desc span.caret-after:after {
 	content: ' \25bc';
 }
 
-table thead th.sorting-asc span.caret-after:after {
+table#recipeTable th.sorting-asc span.caret-after:after {
 	content: ' \25b2';
 }
 
-table thead th.hand {
+table#recipeTable th.hand {
 	cursor: pointer;
-}
-
-.icon-nosort {
-	background-image: url('../img/icon_sortnone.png');
-	background-position: 0px 0px;
-}
-
-.icon-descsort {
-	background-image: url('../img/icon_sortdesc.png');
-	background-position: 0px 0px;	
-}
-
-.icon-ascsort {
-	background-image: url('../img/icon_sortasc.png');
-	background-position: 0px 0px;
 }
  
 /*
+ *
  * Styles for just the goods detail page.
+ *
  */
 h4.item-title {
 	display: inline-block; 
 	margin: 0px; 
 	padding-bottom: 5px;
+	
+	/* IE 7 Fixes */
+	zoom: 1;
+	*display: inline;
+	*vertical-align: bottom;
 }
 
 p.recipe-index-link {
@@ -225,6 +239,11 @@ p.base-materials-icons {
 	padding-bottom: 5px;
 	width: 34px; 
 	margin-left: -3px;
+	
+	/* IE 7 Fixes */
+	zoom: 1;
+	*display: inline;
+	*vertical-align: bottom;
 }
  
 

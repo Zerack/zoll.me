@@ -11,12 +11,18 @@
 	background-image: none;
 }
 
+.leapday-goods-icon-preload {
+	background-position: -9999px -9999px;
+	background-repeat: no-repeat;
+}
+
 .table-striped tbody > tr:nth-child(odd) > td .leapday-goods-icon,
 .table-striped tbody > tr:nth-child(odd) > th .leapday-goods-icon {
     background-image: url('../img/leapday-goods-icon-f9f9f9.png');
 }
 
-.table-hover tbody > tr:hover > td .leapday-goods-icon {
+.table-hover tbody > tr:hover > td .leapday-goods-icon,
+.leapday-goods-icon-hover {
 	background-image: url('../img/leapday-goods-icon-ffffcc.png');
 }
 
