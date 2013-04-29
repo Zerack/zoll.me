@@ -63,10 +63,6 @@ USE_TZ = True
 # Examples: "http://media.lawrence.com/media/", "http://example.com/media/"
 MEDIA_URL = '/media/'
 
-# URL prefix for static files.
-# Example: "http://media.lawrence.com/static/"
-STATIC_URL = '/static/'
-
 # List of finder classes that know how to find static files in
 # various locations.
 STATICFILES_FINDERS = (
