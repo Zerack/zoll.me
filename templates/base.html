@@ -123,6 +123,7 @@
 
     </script>
     {% endif %}
+    {% block scripts_uncompressed %}{% endblock %}
     {% compress js %}
       {% block scripts %}{% endblock %}
     {% endcompress %}
