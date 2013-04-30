@@ -15,9 +15,12 @@
           <h2>James Zoll</h2>
           <p class="hidden-tablet">Software Engineer</p>
         </div>
-        <div class="email"><i class="icon icon-envelope"></i>&nbsp;<a href="#"><noscript>Link Requires JavaScript</noscript></a></div>
-        <div class="github"><i class="icon icon-blacktocat"></i>&nbsp;<a href="https://github.com/Zerack">github.com/Zerack</a></div>
-        <div class="resume"><i class="icon icon-briefcase"></i>&nbsp;<a href="{% url 'zoll_me.views.resume' %}">Resume</a>&nbsp;|&nbsp;<a href="{{ STATIC_URL }}zoll_me/James_Zoll_Software_Engineer_Resume.doc" class="btn btn-mini">Download</a></div>
+        <div class="link-container">
+          <div class="email"><i class="icon icon-envelope"></i>&nbsp;<a href="#"><noscript>Link Requires JavaScript</noscript></a></div>
+          <div class="github"><i class="icon icon-blacktocat"></i>&nbsp;<a href="https://github.com/Zerack">github.com/Zerack</a></div>
+          <div class="resume" style="margin-bottom: 0px;"><i class="icon icon-briefcase"></i>&nbsp;<a href="{% url 'zoll_me.views.resume' %}">Resume</a>&nbsp;|&nbsp;<a href="{{ STATIC_URL }}zoll_me/James_Zoll_Software_Engineer_Resume.doc" class="btn btn-mini">Download</a></div>
+        </div>
+        <div id="personalInfoClear"></div>
         <p class="text-center"><strong>Welcome! Take a look around.</strong></p>
       </div>
       <div id="newestPhotoWell" class="hidden-phone well well-small margin-bottom-0">

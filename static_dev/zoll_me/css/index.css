@@ -39,17 +39,34 @@
   font-size: 14px;
 }
 
+@media (min-width: 450px) and (max-width: 767px) {
+	#personalInfoWell .name-title {
+		float: left;
+		margin-bottom: 0px;
+	}
+	
+	#personalInfoWell .link-container {
+		float: right;
+		margin-top: 3px;
+	}
+}
+
 #personalInfoWell .email, #personalInfoWell .github {
 	margin-bottom: 5px;
 }
     
 #personalInfoWell .resume {
-  	margin-bottom: 20px;
+  	margin-bottom: 0px;
 }
    
 #personalInfoWell .icon-blacktocat {
 	background-image: url('../img/blacktocat.png');
 	background-position: 0px 0px;
+}
+
+#personalInfoClear {
+	clear: both; 
+	margin-bottom: 20px;	
 }
 
 /* 
