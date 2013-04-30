@@ -1,0 +1,20 @@
+ul.example-list li {
+	margin-bottom: 3px;
+}
+
+.small-text {
+	font-size: 0.7em;
+}
+
+.margin-top-20 {
+	margin-top: 20px;
+}
+
+ul.example-list span.muted {
+	display: inline-block; 
+	width: 260px;
+}
+
+ul.test-list li {
+	margin-bottom: 10px;
+}

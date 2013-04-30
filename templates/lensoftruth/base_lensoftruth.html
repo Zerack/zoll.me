@@ -6,7 +6,10 @@
 
 {% block meta_keywords %}jQuery,plugin,lightweight,data,DOM,tests,lensoftruth,javascript,simple,small,debug,development,web{% endblock %}
 
-{% block styles %}{% block styles_lensoftruth %}{% endblock %}{% endblock %}
+{% block styles %}
+    <link rel="stylesheet" type="text/css" href="{{ STATIC_URL }}lensoftruth/css/styles.css">
+    {% block styles_lensoftruth %}{% endblock %}
+{% endblock %}
 
 {% block container %}
   <div class="page-header">

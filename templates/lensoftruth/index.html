@@ -2,39 +2,31 @@
 
 {% block meta_description_lensoftruth %}A lightweight jQuery plugin for debugging complex usage of data-* attributes. Inserts placeholder attributes in HTML for easier examination.{% endblock %}
 
-{% block styles_lensoftruth %}
-  <style type="text/css">
-    li {
-      margin-bottom: 3px;
-    }
-  </style>
-{% endblock %}
-
 {% block container_lensoftruth %}
   <div class="row">
     <div class="span12">
       <section>
-        <h4 style="margin-top: 0px;">What is it?</h4>
+        <h4 class="margin-top-0">What is it?</h4>
         <p>lensoftruth.js is a jQuery plugin designed to help you when you're debugging complex usage of data-* attributes. jQuery hides these in an internal cache by default, so they aren't visible when you examine the DOM at runtime.</p>
         <p><em>But that can change.</em></p>
-        <p class="muted" style="margin-bottom: 0px; font-size: 0.7em;">jQuery - Where are my data-* attributes?.</p>
+        <p class="muted margin-bottom-0 small-text">jQuery - Where are my data-* attributes?.</p>
         <p><code>&lt;div id="myDiv" class="myClass"&gt;...&lt;/div&gt;</code></p>
-        <p class="muted" style="margin-bottom: 0px; font-size: 0.7em;">jQuery with lensoftruth.js - Look at all that data!</p>
+        <p class="muted margin-bottom-0 small-text">jQuery with lensoftruth.js - Look at all that data!</p>
         <p><code>&lt;div id="myDiv" class="myClass" data-lot-demo="true" data-lot-otherdemo="38"&gt;...&lt;/div&gt;</code></p>
       </section>
       <section>
-        <h4 style="margin-top: 20px;">Wait, what?</h4>
+        <h4 class="margin-top-20">Wait, what?</h4>
         <p>The lens of truth has revealed the data attributes that jQuery was hiding - but don't worry, they are just there to help you debug. jQuery is still independently caching your data attributes, so your code will run just as it did before. Notice that the data attributes are prepended with <strong>data-lot-</strong>. All data attributes written to the DOM by this plugin will have this prepended to avoid collisions.</p>
         <p><em>A few examples:</em></p>
         <p>If we start with <code>&lt;div id="myDiv" data-order="1"&gt;&lt;/div&gt;</code>, and run...</p>
-        <ul>
-          <li><span style="display: inline-block; width: 260px;" class="muted monospace">$('#myDiv').data()</span> <i class="icon icon-arrow-right"></i> <code>&lt;div id="myDiv" data=order="1"&gt;&lt;/div&gt;</code> <em>Object { order=1 }</em></li>
-          <li><span style="display: inline-block; width: 260px;" class="muted monospace">$('#myDiv').data('sort')</span> <i class="icon icon-arrow-right"></i> <code>&lt;div id="myDiv" data-order="1"&gt;&lt;/div&gt;</code> <em>undefined</em></li>
-          <li><span style="display: inline-block; width: 260px;" class="muted monospace">$('#myDiv').data('sort', 'asc')</span> <i class="icon icon-arrow-right"></i> <code>&lt;div id="myDiv" data-lot-sort="asc" "data-order="1"&gt;&lt;/div&gt;</code> <em>Object[div#testDiv]</em></li>
+        <ul class="example-list">
+          <li><span class="muted monospace">$('#myDiv').data()</span> <i class="icon icon-arrow-right"></i> <code>&lt;div id="myDiv" data=order="1"&gt;&lt;/div&gt;</code> <em>Object { order=1 }</em></li>
+          <li><span class="muted monospace">$('#myDiv').data('sort')</span> <i class="icon icon-arrow-right"></i> <code>&lt;div id="myDiv" data-order="1"&gt;&lt;/div&gt;</code> <em>undefined</em></li>
+          <li><span class="muted monospace">$('#myDiv').data('sort', 'asc')</span> <i class="icon icon-arrow-right"></i> <code>&lt;div id="myDiv" data-lot-sort="asc" "data-order="1"&gt;&lt;/div&gt;</code> <em>Object[div#testDiv]</em></li>
         </ul>
       </section>
       <section>
-        <h4 style="margin-top: 20px;">It just works</h4>
+        <h4 class="margin-top-20">It just works</h4>
         <p>Just include lensoftruth.js anywhere in your document after jQuery has been included, and this will just work. lensoftruth.js has been tested in jQuery 1.9.1, and leverages jQuery.attr() for cross browser compatibility. It will even convert attributes that are complex objects to JSON if your browser supports it.</p>
         <p><em>Want to see for yourself? <a href="{% url 'lensoftruth.views.tests' %}">View Tests &raquo;</a></em></p>
         <h4>Get It!</h4>
@@ -42,5 +34,4 @@
       </section>
     </div>
   </div>
-  <div id="testDiv" data-order="1"></div>
 {% endblock %}

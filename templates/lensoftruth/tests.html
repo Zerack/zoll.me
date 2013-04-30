@@ -4,22 +4,14 @@
 
 {% block meta_description_lensoftruth %}Automated test results for the current version of lensoftruth.js.{% endblock %}
 
-{% block styles_lensoftruth %}
-  <style type="text/css">
-    ul.test-list li {
-      margin-bottom: 10px;
-    }
-  </style>
-{% endblock %}
-
 {% block container_lensoftruth %}
   <div class="row">
     <div class="span12">
       <p><a href="{% url 'lensoftruth.views.index' %}">&laquo; Back To Index</a>
-      <h4 style="margin-top: 0px;">The Tests</h4>
+      <h4 class="margin-top-0">The Tests</h4>
       <p>Each section below tests either a function of lensoftruth.js, or verifies that lensoftruth.js hasn't interfered with the normal functioning of jQuery in some way. Each test should say <span class="label label-success">PASS</span> in the description line, or something has gone wrong.</p>
       <section>
-        <p style="margin-bottom: 0px;"><strong>Null Object Tests</strong></p>
+        <p class="margin-bottom-0"><strong>Null Object Tests</strong></p>
         <p>These tests are performed on a null jQuery object.</p>
         <ul class="test-list">
           <li><span class="label test-result-label"></span> Testing <span class="muted monospace">$(null).data()</span>.<br />Expected return value is <em class="monospace">null</em></li>
@@ -31,7 +23,7 @@
         </ul>
       </section>
       <section>
-        <p style="margin-bottom: 0px;"><strong>Single Node Tests</strong></p>
+        <p class="margin-bottom-0"><strong>Single Node Tests</strong></p>
         <p>These tests are performed on a jQuery object that has selected exactly one DOM node. The node is defined as:<br /><code>&lt;div id="testNode" data-val1="val" data-val2="7.4"&gt;&lt;/div&gt;</code></p>
         <ul class="test-list">
           <li><span class="label test-result-label"></span> Testing <span class="muted monospace">$('#testNode').data()</span>.<br />Expected return value is <em class="monospace">{val1:"val", val2: 7.4}</em></li>
@@ -45,7 +37,7 @@
         </ul>
       </section>
       <section>
-        <p style="margin-bottom: 0px;"><strong>Multi Node Tests</strong></p>
+        <p class="margin-bottom-0"><strong>Multi Node Tests</strong></p>
         <p>These tests are performed on a jQuery object that has selected three DOM nodes. The nodes are defined as:<br /><code>&lt;div class="testNode" data-val1="val1_1" data-val2="1.0"&gt;&lt;/div&gt;</code><br /><code>&lt;div class="testNode" data-val1="val1_2" data-val2="2.0"&gt;&lt;/div&gt;</code><br /><code>&lt;div class="testNode" data-val1="val1_3" data-val2="3.0"&gt;&lt;/div&gt;</code></p>
         <ul class="test-list">
           <li><span class="label test-result-label"></span> Testing <span class="muted monospace">$('.testNode').data()</span>.<br />Expected return value is <em class="monospace">{val1:"val1_1", val2: '1.0'}</em></li>
