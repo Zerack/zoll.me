@@ -132,6 +132,7 @@ table#recipeTable a.good-detail-link h4 {
 	 display: inline-block;
 	 margin: 0px; 
 	 padding-bottom: 5px;
+	 font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
 	 
 	 /* IE 7 Fixes */
 	 zoom: 1;

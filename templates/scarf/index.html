@@ -16,7 +16,7 @@
   <p>Use the controls below to choose your location, colors, and temperatures to get started on your very own scarf.</p>
   <form class="form-inline">
     <fieldset>
-      <legend>Choose Your Data</legend>
+      <h4>Choose Your Data</h4>
       <select id="inputCity">
         {% for city in cities %}
           <option value="{{city}}" {% if city == city_selected %}selected{% endif %}>{{ city }}</option>
@@ -31,7 +31,7 @@
   </form>
   <form id="numColorsForm" class="form-inline">
     <fieldset>
-      <legend>Pick Some Colors</legend>
+      <h4>Pick Some Colors<h4>
       <input id="inputNumColors" type="text" placeholder="How Many Colors?" autocomplete="off">
       <button type="submit" class="btn">Update</button>
     </fieldset>
