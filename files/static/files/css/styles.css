@@ -2,6 +2,10 @@ h4.section-header {
 	margin-top: 0px;
 }
 
+td.delete-column {
+	width: 30px;
+}
+
 /*
  * This line height is used to center text vertically
  * in rows with btn-mini in it, and also to make other rows 
@@ -27,6 +31,28 @@ td.text-right {
 	}
 }
 
-.no-wrap {
-	white-space: nowrap;
+/*
+ * We have to make our own visible-* styles, since
+ * table cells won't correctly inherit display: table-cell;
+ * We have to use important to override bootstrap's builtin
+ * styles.
+ */
+td.visible-desktop {
+	display: table-cell !important;
+}
+
+@media (max-width: 979px) {
+	td.visible-desktop {
+		display: none !important;
+	}
+}
+
+td.hidden-phone {
+	display: table-cell !important;
+}
+
+@media (max-width: 767px) {
+	td.hidden-phone {
+		display: none !important;
+	}
 }

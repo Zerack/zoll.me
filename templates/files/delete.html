@@ -19,9 +19,9 @@
         <tbody>
           <tr>
             <td class="line-height-22"><i class="icon-file"></i> {{ db_file.uploaded_file.name|basename}}</a></td>
-            <td class="line-height-22">{{ db_file.uploaded_file.size|filesizeformat }}</td>
-            <td class="line-height-22">{{ db_file.user.username }}</td>
-            <td  class="line-height-22 text-right">{{ db_file.date|date:'Y.m.d' }}</td>
+            <td class="visible-desktop line-height-22">{{ db_file.uploaded_file.size|filesizeformat }}</td>
+            <td class="visible-desktop line-height-22">{{ db_file.user.username }}</td>
+            <td  class="hidden-phone line-height-22 text-right">{{ db_file.date|date:'Y.m.d' }}</td>
           </tr>
         </tbody>
       </table>

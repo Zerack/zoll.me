@@ -20,10 +20,10 @@
           <tbody>
             {% for recent_file in recent_files %}
               <tr>
-                <td class="line-height-22 no-wrap"><i class="icon-file"></i>&nbsp;<a href="{% url 'files.views.get' file_id=recent_file.id %}">{{ recent_file.uploaded_file.name|basename }}</a></td>
-                <td class="text-right-phone line-height-22 no-wrap">{{ recent_file.uploaded_file.size|filesizeformat }}</td>
-                <td class="hidden-phone line-height-22 no-wrap">{{ recent_file.group.group|capfirst }}</td>
-                <td class="hidden-phone text-right line-height-22 no-wrap">{{ recent_file.date|date:'Y.m.d' }}</td>
+                <td class="line-height-22"><i class="icon-file"></i>&nbsp;<a href="{% url 'files.views.get' file_id=recent_file.id %}">{{ recent_file.uploaded_file.name|basename }}</a></td>
+                <td class="visible-desktop line-height-22">{{ recent_file.uploaded_file.size|filesizeformat }}</td>
+                <td class="visible-desktop line-height-22">{{ recent_file.group.group|capfirst }}</td>
+                <td class="hidden-phone text-right line-height-22">{{ recent_file.date|date:'Y.m.d' }}</td>
               </tr>
             {% endfor %}
           </tbody>
