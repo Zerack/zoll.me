@@ -39,7 +39,7 @@
   <div id="errorNumColors" class="alert alert-error alert-none">
     <strong>That Won't Work.</strong> Please enter a number between {{ min_colors }} and {{ max_colors }}.
   </div>
-  <form id="scarfForm">
+  <form id="scarfForm" autocomplete="off">
     <fieldset>
       <p>Click or tap a color to change it. Use the text inputs to enter the temperature limits.</p>
       <div class="well well-colors well-entry">
@@ -62,14 +62,14 @@
                  background-repeat: repeat-x;
                  filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#ff{{ c }}', endColorstr='#ff{{ cd }}', GradientType=0);">
                 <span id="labelSpan{{ forloop.counter0 }}" class="hidden-phone">{{ cl|default_if_none:'' }}</span>
-                <input type="hidden" id="inputColor{{ forloop.counter0 }}" class="scarf-color" value="#{{ c }}" autocomplete="off">
-                <input type="hidden" id="inputLabel{{ forloop.counter0 }}" class="scarf-label" value ="{{ cl|default_if_none:'' }}" autocomplete="off">
+                <input type="hidden" id="inputColor{{ forloop.counter0 }}" class="scarf-color" value="#{{ c }}">
+                <input type="hidden" id="inputLabel{{ forloop.counter0 }}" class="scarf-label" value ="{{ cl|default_if_none:'' }}">
               </a>
             {% endfor %}
         </div>
         <div class="temperatures">
           {% for t, tp in temps %}
-            <input type="text"  style="left: {{ tp }}%;" id="inputTemperature{{ forloop.counter0 }}" class="scarf-temperature" value="{{ t }}&#xb0;" placeholder="0&#xb0;" autocomplete="off">
+            <input type="text"  style="left: {{ tp }}%;" id="inputTemperature{{ forloop.counter0 }}" class="scarf-temperature" value="{{ t }}&#xb0;" placeholder="0&#xb0;">
           {% endfor %}
         </div>
       </div>

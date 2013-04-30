@@ -64,8 +64,8 @@
     {% endif %}
     <a href="{% url 'scarf.views.index' city=param_city year=param_year temperature_config=param_temperature_config %}" class="btn margin-bottom-20">Edit Design &raquo;</a>
     {% if not no_data %}
-      <form>
-        <legend>Start Knitting Here!</legend>
+      <div>
+        <h4>Start Knitting Here!</h4>
         <p>Click or tap a row to mark your progress.</p>
           {% for m, d in scarf_data %}
           <div class="well well-month unselectable">
@@ -83,7 +83,7 @@
             {% endfor %}
           </div>
         {% endfor %}
-      </form>
+      </div>
     {% endif %}
   {% endif %}
 {% endblock %}
