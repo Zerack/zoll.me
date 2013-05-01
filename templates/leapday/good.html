@@ -68,8 +68,10 @@
   </div>
 {% endblock %}
 
-{% block scripts_leapday %}
+{% block scripts_leapday_uncompressed %}
   <!--[if lt IE 9]><script type="text/javascript" src="{{ STATIC_URL }}excanvas/excanvas.js"></script><![endif]-->
+{% endblock %}
+{% block scripts_leapday %}  
   <script type="text/javascript">
     $(document).ready(function() {
       // Place tooltips on any good icons that are present in the page. We attach
