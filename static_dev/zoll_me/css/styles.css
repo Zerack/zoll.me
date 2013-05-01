@@ -45,6 +45,11 @@ h1, h2, h3, h4, h5 {
 /* 
  * Footer Styles
  */ 
+
+footer {
+	font-size: 12px;
+}
+ 
 footer a {
   color: #999999;
   text-decoration: underline;
