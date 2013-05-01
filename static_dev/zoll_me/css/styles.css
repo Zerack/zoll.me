@@ -55,7 +55,7 @@ footer a:hover {
 }
 
 @media (max-width: 767px) {
-	footer .span6 {
+	footer .span4, footer .span8 {
 		margin-bottom: 0px;
 		text-align: center;	
 	}
