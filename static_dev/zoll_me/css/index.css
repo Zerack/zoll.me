@@ -2,6 +2,10 @@
  * Styles for the personal information well
  */
 #personalInfoWell {
+	border: none;
+	-webkit-box-shadow: none;
+	   -moz-box-shadow: none;
+		    box-shadow: none;
 }
     
 #personalInfoWell .name-title {
@@ -73,6 +77,14 @@
  * Styles for the newest photo well. This whole div is hidden
  * in single column layout.
  */
+
+#newestPhotoWell {
+	border: none;
+	-webkit-box-shadow: none;
+	   -moz-box-shadow: none;
+		    box-shadow: none;
+}
+
 #newestPhotoWell h4 {
 	display: inline;
 }
