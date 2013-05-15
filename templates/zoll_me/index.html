@@ -27,7 +27,7 @@
         <h4>Newest <span class="hidden-tablet">XBMC </span>Photo</h4> <a href="{% url 'xbmc_photos.views.view_all' page='1' %}"><span class="visible-large-desktop">more </span>&raquo;</a>
         <a href="{% url 'xbmc_photos.views.view' photo_id=newest_photo.id %}" class="img-polaroid">
           <div class="carousel-wrapper relative">
-            <img src="{{ newest_photo.file_cropped.url }}?{{newest_photo.edit_date|date:'YmdHis'}}" alt="{{ newest_photo.title }}">
+            <img src="{{ newest_photo.file_thumb.url }}?{{newest_photo.edit_date|date:'YmdHis'}}" alt="{{ newest_photo.title }}">
             <div class="carousel-caption">
               <h5>{{ newest_photo.title }}</h5>
             </div>
