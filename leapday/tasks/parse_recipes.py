@@ -62,7 +62,7 @@ print 'Added fake "Other" item entry.'
 goodtype_crystal = None
 
 # Now, open up the XML file and make a beautiful soup object from it.
-with open('config_20130417.xml','r') as config_xml:
+with open('config_20130520.xml','r') as config_xml:
     bs = BeautifulSoup(config_xml.read())
 print 'Read CONFIG.XML.'
 
@@ -143,11 +143,11 @@ while len(goods) > 0:
         cg_db.save()
         
         print 'Good object added. Adding Base_Material object.'
-        cgbm_db = Base_Material(product=cg_db, ingredient=good_other, quantity=3)
+        cgbm_db = Base_Material(product=cg_db, ingredient=good_other, quantity=2)
         cgbm_db.save()
         
         print 'Base_Material object added. Adding Recipe_Item objects.'
-        for i in range(3):
+        for i in range(2):
             cg_recipe_item = Recipe_Item(product=cg_db, ingredient=good_other, display_order=i)
             cg_recipe_item.save()
         
@@ -174,10 +174,20 @@ while len(goods) > 0:
             cg_db.save()
             
             print 'Good object added. Adding Recipe_Item objects.'
+            '''
+            Removed 5/20/2013
+            All recipes are 2 items.
+            
+            ==============
+            
             if len(cg_ingredients) <= 3:
                 cg_ingredients += ['good_other'] * (3 - len(cg_ingredients))
             elif len(cg_ingredients) <= 5:
                 cg_ingredients += ['good_other'] * (5 - len(cg_ingredients))
+                
+            ==============
+            '''                
+                
             ingredients_db = list(ingredients_db) + [good_other]
             
             bm = {}
@@ -234,7 +244,18 @@ for good in Good.objects.all():
     for missing_base in list(goods_base - present_base):
         cgbm_db = Base_Material(product=good, ingredient=missing_base, quantity=0)
         cgbm_db.save()
-
+        
 print 'Base material counts complete.'
+
+# A little bit of shenanigans since the config XML in this version has some bad display names.
+Good.objects.filter(key='good_shadowearrings').update(display_name='Shadow Earrings')
+Good.objects.filter(key='good_glowingearrings').update(display_name='Glowing Earrings')
+Good.objects.filter(key='good_porcelain').update(display_name='Porcelain')
+Good.objects.filter(key='good_gunship').update(display_name='Gunship')
+Good.objects.filter(key='good_hairelixir').update(display_name='Hair Elixir')
+Good.objects.filter(key='good_wineofjoy').update(display_name='Wine of Joy')
+Good.objects.filter(key='good_earrings').update(display_name='Earrings')
+
+print 'Item fixes / renaming complete.'
 print 'Operation Complete!'
             

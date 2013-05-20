@@ -21,12 +21,12 @@
 
 div#filterButtonContainer {
 	margin-bottom: 10px;
-	display: none;
+	display: block;
 }
 
-@media (min-width: 1199px) {
+@media (max-width: 979px) {
 	div#filterButtonContainer {
-		display: block;
+		display: none;
 	}
 }
      
@@ -100,19 +100,19 @@ table td.no-border-left, table th.no-border-left {
 	display: table-cell;
 }
 
-@media (max-width: 567px) {
+@media (max-width: 445px) {
 	#recipe-colgroup, .recipe-column {
 		display: none;
 	}
 }
 
 #base-material-colgroup, .base-material-column {
-	display: none;
+	display: table-cell;
 }
 
-@media (min-width: 1200px) {
+@media (max-width: 979px) {
 	#base-material-colgroup, .base-material-column {
-		display: table-cell;
+		display: none;
 	}
 }
 
@@ -145,7 +145,7 @@ table#recipeTable .value-column {
 }
 
 table#recipeTable .recipe-column {
-	 width: 235px;
+	 width: 94px;
 }
 
 table#recipeTable td.recipe-column {
@@ -153,7 +153,7 @@ table#recipeTable td.recipe-column {
 }
 
 table#recipeTable .base-material-column {
-	width: 76px;
+	width: 78px;
 }
 
 table#recipeTable td.base-material-column {

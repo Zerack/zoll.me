@@ -16,8 +16,8 @@ from django.template import RequestContext
 from leapday.models import Good, Recipe_Item, Base_Material
 
 # Constants for the Goods page. Mostly for tree generation.
-ICON_WIDTH = 45
-ICON_HEIGHT = 54
+ICON_WIDTH = 47
+ICON_HEIGHT = 58
 ROW_BUFFER = 20
 BOTTOM_ATTACH_YBUFFER = 3
 TOP_ATTACH_YBUFFER = -10
