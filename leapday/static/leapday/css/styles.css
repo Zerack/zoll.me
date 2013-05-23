@@ -100,19 +100,19 @@ table td.no-border-left, table th.no-border-left {
 	display: table-cell;
 }
 
-@media (max-width: 445px) {
+@media (max-width: 567px) {
 	#recipe-colgroup, .recipe-column {
 		display: none;
 	}
 }
 
 #base-material-colgroup, .base-material-column {
-	display: table-cell;
+	display: none;
 }
 
-@media (max-width: 979px) {
+@media (min-width: 1200px) {
 	#base-material-colgroup, .base-material-column {
-		display: none;
+		display: table-cell;
 	}
 }
 
@@ -145,7 +145,7 @@ table#recipeTable .value-column {
 }
 
 table#recipeTable .recipe-column {
-	 width: 94px;
+	 width: 235px;
 }
 
 table#recipeTable td.recipe-column {
