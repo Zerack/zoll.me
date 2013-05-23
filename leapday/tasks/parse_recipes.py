@@ -41,9 +41,9 @@ def parse_good(g):
     d['recipe_value_multiplier'] = float(g.find(u'recipevaluemultiplier')['value'])
     d['value'] = int(g.find(u'value')['value'])
     d['description'] = g.find(u'description')['value']
+    active = True if g.find(u'active')['value'] == u'TRUE' else False
     ingredients = [x['value'] for x in g.find(u'craftingrecipe').find_all('good')]
-    
-    return d, ingredients
+    return d, ingredients, active
 
 # First, empty the table.
 Good.objects.all().delete()
@@ -62,7 +62,7 @@ print 'Added fake "Other" item entry.'
 goodtype_crystal = None
 
 # Now, open up the XML file and make a beautiful soup object from it.
-with open('config_20130520.xml','r') as config_xml:
+with open('config_20130522.xml','r') as config_xml:
     bs = BeautifulSoup(config_xml.read())
 print 'Read CONFIG.XML.'
 
@@ -85,9 +85,14 @@ print 'Found {0} Goods. Parsing Now.'.format(len(goods))
 idx = 0
 loop_check = False
 while len(goods) > 0:
-    cg, cg_ingredients = parse_good(goods[idx])
+    cg, cg_ingredients, cg_active = parse_good(goods[idx])
     print '\nProcessing good at index {0}, "{1}"'.format(idx, cg['display_name'])
-    if cg['good_type'] == u'goodtype_basic' and cg['key'] != u'good_junk':
+    if not cg_active:
+        # If the good is inactive, skip it and remove it from the list.
+        print 'Inactive good detected. Skipping.'
+        goods = goods[:idx] + goods[idx+1:]
+        loop_check = True
+    elif cg['good_type'] == u'goodtype_basic' and cg['key'] != u'good_junk':
         # If this is a basic good, we will create a record, and then add the single base material information required.
         print 'Basic good detected. Adding Good object.'
         cg_db = Good(**cg)
@@ -248,6 +253,7 @@ for good in Good.objects.all():
 print 'Base material counts complete.'
 
 # A little bit of shenanigans since the config XML in this version has some bad display names.
+'''
 Good.objects.filter(key='good_shadowearrings').update(display_name='Shadow Earrings')
 Good.objects.filter(key='good_glowingearrings').update(display_name='Glowing Earrings')
 Good.objects.filter(key='good_porcelain').update(display_name='Porcelain')
@@ -255,7 +261,7 @@ Good.objects.filter(key='good_gunship').update(display_name='Gunship')
 Good.objects.filter(key='good_hairelixir').update(display_name='Hair Elixir')
 Good.objects.filter(key='good_wineofjoy').update(display_name='Wine of Joy')
 Good.objects.filter(key='good_earrings').update(display_name='Earrings')
-
+'''
 print 'Item fixes / renaming complete.'
 print 'Operation Complete!'
             
