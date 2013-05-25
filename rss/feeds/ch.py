@@ -18,6 +18,7 @@ import urllib
 from bs4 import BeautifulSoup
 import PyRSS2Gen
 from django.core.urlresolvers import reverse
+from django.db import connection
 
 # Local Imports
 from rss.models import CH_Item
@@ -92,7 +93,10 @@ class CH_Feed(Feed):
                 except:
                     # There is something unexpected happening. For now, fail silently.
                     continue
-                
+            except:
+                connection._rollback()
+                continue
+           
             # Now we know the image URL, so build our RSS Item.
             pub_date = datetime.datetime.strptime(item.title.text.strip(), '%m.%d.%Y')
             rss_feed_items.append(PyRSS2Gen.RSSItem(title = '{0} - Comic'.format(pub_date.strftime('%B %d, %Y')),
