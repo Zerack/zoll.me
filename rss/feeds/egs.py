@@ -128,7 +128,7 @@ class EGS_Feed(Feed):
                 # Now we know the image URL, so build our RSS Item.
                 rss_feed_items.append(PyRSS2Gen.RSSItem(title = 'El Goonish Shive' + ( ' (Sketchbook)' if source=='sketchbook' else '') + ' - ' + item.title.text.strip(),
                                                         link = item.link.text.strip(),
-                                                        description = '<img src="{0}" /><br />{1}'.format(image_url, commentary_html),
+                                                        description = '<img src="{0}" /><br />{1}'.format(image_url, commentary_html.encode('ascii','ignore')),
                                                         guid = item.guid.text.strip(),
                                                         pubDate = item.pubdate.text.strip()))    
         
