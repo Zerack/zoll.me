@@ -22,8 +22,12 @@
         {% endif %}
         <p class="muted margin-bottom-0">&nbsp;Value</p>
         <p>&nbsp;{{ good.value|intcomma }} Gold</p>
-        <p class="muted margin-bottom-0">&nbsp;Recipe Multiplier</p>
-        <p>&nbsp;<span class="mult-indicator">x</span>{{ good.recipe_value_multiplier|floatformat:1 }}</p>
+        {% if good.recipe_value_multiplier > 0 %}
+          <p class="muted margin-bottom-0">&nbsp;Recipe Multiplier</p>
+          <p>&nbsp;<span class="mult-indicator">x</span>{{ good.recipe_value_multiplier|floatformat:1 }}</p>
+          <p class="muted margin-bottom-0">&nbsp;Total Multiplier</p>
+          <p>&nbsp;<span class="mult-indicator">x</span>{{ good.total_value_multiplier|floatformat:1 }}</p>
+        {% endif %}
         <div class="base-materials-container">
           <p class="base-materials-icons">{% for base_good in base_ingredients %}{% if base_good.quantity != 0 %}<a href="{% url 'leapday.views.good' key=base_good.ingredient.key %}">{% endif %}<i {% if base_good.quantity != 0 %}data-toggle="tooltip" title="{{ base_good.ingredient.display_name }}" class="tooltip-icon {% else %}class="leapday-goods-icon-translucent {% endif %}leapday-goods-icon leapday-goods-icon-{{ base_good.ingredient|good_css_name }}"></i>{% if base_good.quantity != 0 %}</a>{% endif %}<span class="base-materials-count{% if base_good.quantity == 0 %} base-materials-count-translucent{% endif %}"><span class="mult-indicator">x</span>{{ base_good.quantity }}</span>{% endfor %}</p>
           <p class="base-materials-label muted">&nbsp;Base Materials</p>

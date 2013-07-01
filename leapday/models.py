@@ -20,6 +20,7 @@ class Good(models.Model):
     base_value = models.IntegerField()
     num_ingredients = models.IntegerField()
     recipe_value_multiplier = models.FloatField()
+    total_value_multiplier = models.FloatField()
     value = models.IntegerField()
     description = models.CharField(max_length=1000)
     

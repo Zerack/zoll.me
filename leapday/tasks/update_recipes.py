@@ -26,19 +26,6 @@ CRYSTAL_DESCRIPTION = ('Crystals used to craft shiny objects. ' +
                        'satisfied if each crystal is a ' + 
                        'different type.')
 
-def GEN_GOOD_OTHER():
-    '''
-    Creates a database object that is representative of the "Other" good,
-    a good used when a recipe allows a wildcard item.
-    
-    '''
-    
-    return Good(key='good_other',good_type='goodtype_basic',
-                display_name='Other',tier=1,base_multiplier=0,
-                base_value=0,num_ingredients=0,recipe_value_multiplier=0,
-                value=0,description=('Anything that does not satisfy ' + 
-                                     'a more valuable recipe.'))
-
 def parse_good(g):
     '''
     Parses out all valid properties of the given good and returns
@@ -64,6 +51,7 @@ def parse_good(g):
                                          (u'recipevaluemultiplier')['value'])
     d['value'] = int(g.find(u'value')['value'])
     d['description'] = g.find(u'description')['value']
+    d['total_value_multiplier'] = 0.0
     active = True if g.find(u'active')['value'] == u'TRUE' else False
     ingredients = [x['value'].lower() for x in g.find(u'craftingrecipe')
                    .find_all('good')]
@@ -98,7 +86,7 @@ def update_recipes(out=None):
             
     if soup is None:
         out.write('Error fetching current XML. Aborting recipe update.')
-        out.write(str(exc_info()[1]))
+        out.write(str(exc_info[1]))
         return
     out.write('XML fetched successfully.')
     
@@ -128,9 +116,7 @@ def update_recipes(out=None):
     out.write('New item list appears to be valid. Continuing with update.')
     
     # OK, so we think we're good to go as far as items, so we can proceed
-    # with the update. We will begin by clearing the existing data and 
-    # then inserting the fake "Other" object, which is needed in case a 
-    # recipe refers to it.
+    # with the update. We will begin by clearing the existing data.
     out.write('Cleaning table LEAPDAY_GOOD')
     try:
         Good.objects.all().delete()
@@ -139,19 +125,6 @@ def update_recipes(out=None):
                   'recipe update.')
         out.write(str(sys.exc_info()[1]))
     out.write('LEAPDAY_GOODS table cleaned.')
-    
-    out.write('Adding "Other" Good to goods list.')
-    try:
-        good_other = GEN_GOOD_OTHER()
-        good_other.save()
-        good_other_bm = Base_Material(product=good_other, ingredient=good_other, 
-                                      quantity=1)
-        good_other_bm.save()
-    except:
-        out.write('Error added "Other" good to goods list. Aborting recipe ' + 
-                  'update.')
-        out.write(str(sys.exc_info()[1]))
-    out.write('"Other" good added successfully.')
     
     # A little housekeeping - we have to initialize the goodtype_crystal entry
     # to None, so that we can check specific recipes to see if it has been found
@@ -174,7 +147,7 @@ def update_recipes(out=None):
     #    even though the XML treats it as a crafted good.
     # 2) The recipe "Junk" shows up as 'goodtype_basic', even though it's 
     #    technically a crafted item, and has a recipe of 2 "Other" items. This
-    #    needs to be handled in a special case.
+    #    recipe still hides in the XML even though it is not obtainable.
     out.write('Beginning Goods processing. ' + 
               'There are {0} goods to process'.format(len(goods_list)))
     while len(goods_list) > 0:
@@ -245,28 +218,10 @@ def update_recipes(out=None):
             goods_list = goods_list[:idx] + goods_list[idx+1:]
             modified_list = True
         elif cg['key'] == u'good_junk':
-            # The junk craftable is interesting, because we need to also
-            # populate a recipe for the item.
-            out.write('....JUNK detected. Adding Good object.')
-            cg['good_type'] = 'goodtype_crafted'    
-            cg_db = Good(**cg)
-            cg_db.save()
+            # If we are processing the "junk" item, simply remove it from the
+            # list of goods. It is not craftable in the current game, so 
+            # we just pass over it.
             
-            out.write('....Good object added. Adding Base_Material object.')
-            cgbm_db = Base_Material(product=cg_db, 
-                                    ingredient=good_other, quantity=2)
-            cgbm_db.save()
-            
-            out.write('....Base_Material object added. Adding Recipe_Item ' + 
-                      'objects.')
-            for i in range(2):
-                cg_recipe_item = Recipe_Item(product=cg_db, 
-                                             ingredient=good_other, 
-                                             display_order=i)
-                cg_recipe_item.save()
-            
-            out.write(('....Recipe_Item objects added. Removing {0} from ' + 
-                       'outstanding goods list.').format(cg['display_name']))
             goods_list = goods_list[:idx] + goods_list[idx+1:]
             modified_list = True
         elif cg['good_type'] == u'goodtype_crafted':
@@ -295,9 +250,10 @@ def update_recipes(out=None):
                 cg_db.save()                
                 out.write('....Good object added. Adding Recipe_Item objects.')              
                     
-                ingredients_db = list(ingredients_db) + [good_other]
+                ingredients_db = list(ingredients_db)
                 
                 bm = {}
+                bv = 0
                 for i, ingredient in enumerate(cg_ingredients):
                     ingredient_db = filter(lambda x: x.key == ingredient, 
                                            ingredients_db)[0]
@@ -310,7 +266,10 @@ def update_recipes(out=None):
                     for i_base in ingredient_db.base_ingredients.all():
                         if i_base.ingredient not in bm:
                             bm[i_base.ingredient] = 0
-                        bm[i_base.ingredient] += i_base.quantity            
+                        bm[i_base.ingredient] += i_base.quantity
+                        bv += (i_base.ingredient.base_value * i_base.quantity)                        
+                cg_db.total_value_multiplier = float(cg_db.value) / float(bv)
+                cg_db.save()      
                 
                 out.write('....Good object added. Adding Base_Material ' +
                           'objects.')
