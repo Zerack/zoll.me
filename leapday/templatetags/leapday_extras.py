@@ -45,5 +45,4 @@ def base_goods_ordered_set(value):
     except:
         base_goods = value.base_ingredients.all()
     ret = sorted(base_goods, key=lambda x: x.ingredient.value)
-    ret = ret[1:] + [ret[0]]
     return ret
