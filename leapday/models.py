@@ -39,3 +39,20 @@ class Base_Material(models.Model):
     product = models.ForeignKey(Good, related_name='base_ingredients')
     ingredient = models.ForeignKey(Good, related_name='bases')
     quantity = models.IntegerField()
+
+class Production_Plan(models.Model):
+    water = models.IntegerField()
+    food = models.IntegerField()
+    wood = models.IntegerField()
+    stone = models.IntegerField()
+    crystal = models.IntegerField()
+    
+class Production_Plan_Entry(models.Model):
+    production_plan = models.ForeignKey(Production_Plan, related_name='entries')
+    value = models.IntegerField()
+    num_items = models.IntegerField()
+    
+class Production_Plan_Entry_Goods(models.Model):
+    production_plan_entry = models.ForeignKey(Production_Plan_Entry, related_name='goods')
+    good = models.ForeignKey(Good)
+    quantity = models.IntegerField()
