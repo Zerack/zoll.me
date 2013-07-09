@@ -243,7 +243,7 @@ def get(request, file_id):
     try:
         db_file = File.objects.filter(id=file_id).get()  
     except File.DoesNotExist:
-        raise Http404
+        return Http404
     
     if db_file.group.group == 'public':
         # In this case, anyone is permitted to download the file.
