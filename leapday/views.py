@@ -7,13 +7,18 @@ Purpose: Defines application views for the Leap Day recipedia application.
 License: This is a public work.
 
 '''
+# System Imports
+import json
+import pprint
+from math import ceil
+from collections import OrderedDict
 
 # Library Imports
-from django.shortcuts import render_to_response, get_object_or_404
+from django.shortcuts import render_to_response, get_object_or_404, HttpResponse
 from django.template import RequestContext
 
 # Local Imports
-from leapday.models import Good, Recipe_Item, Base_Material
+from leapday.models import Good
 
 # Constants for the Goods page. Mostly for tree generation.
 ICON_WIDTH = 47
@@ -30,36 +35,95 @@ def index(request):
     
     '''
     
-    # Grab the data. We have to do some gymnastics here since Django doesn't
-    # support select_related() on reverse foreign keys at time of writing. So,
-    # we'll manually fetch the objects we want in two queries, and stitch
-    # them together manually. It's a bit gross, but it prevents 1400+ 
-    # database hits. (Only 3 database hits)
-    goods = Good.objects.filter(num_ingredients__lte=5).exclude(key='good_other').order_by('-value').all()
-    obj_dict = dict([(obj.id, obj) for obj in goods])
-    recipes = Recipe_Item.objects.select_related('ingredient').filter(product__in=goods).all()
-    base_ingredients = Base_Material.objects.select_related('ingredient').filter(product__in=goods).all()
-    
-    recipe_relation_dict = {}
-    for r in recipes:
-        recipe_relation_dict.setdefault(r.product_id, []).append(r)
-    for r_id, related_items in recipe_relation_dict.items():
-        obj_dict[r_id].shim_recipe_ingredients = related_items
+    goods_db = Good.objects.order_by('key','level').all()
+    goods_all = {}
+    for good in goods_db:
+        if good.key == 'good_junk':
+            continue
+        # Add the good record to the goods_all hash if it doesn't yet exist.
+        if good.key not in goods_all:
+            goods_all[good.key] = {'display_name': good.display_name,
+                                   'description': good.description,
+                                   'active': {'level': good.level,
+                                              'references': {}},
+                                   'levels': {}}
+        # If this is a base ingredient, clean up after ourselves a bit. We go
+        # ahead and populate the basic information for these here.
+        if good.base_value is not None:
+            goods_all[good.key]['active']['value'] = good.base_value
+            goods_all[good.key]['active']['total_multiplier'] = 1
+            goods_all[good.key]['active']['materials'] = OrderedDict([('good_water', 0),
+                                                                      ('good_food', 0),
+                                                                      ('good_wood', 0),
+                                                                      ('good_stone', 0),
+                                                                      ('goodtype_crystal', 0)])
+            if good.key in ['good_water','good_food','good_wood','good_stone','good_crystal']:
+                material_key = good.key
+            else:
+                material_key = 'goodtype_crystal'
+            goods_all[good.key]['active']['materials'][material_key] += 1
+            del goods_all[good.key]['levels']
+            del goods_all[good.key]['active']['level']
+        else:        
+            # Now add the current level information, since this is not a base
+            goods_all[good.key]['levels'][good.level] = {'multiplier': good.multiplier,
+                                                         'ingredients': filter(lambda x: x is not None, [good.ingredient_0,
+                                                                                                         good.ingredient_1,
+                                                                                                         good.ingredient_2,
+                                                                                                         good.ingredient_3,
+                                                                                                         good.ingredient_4]),
+                                                         }
+            
+    # We have to iterate through our goods list and update all of the ingredients lists, as
+    # well as populating the active ingredients item. We will add the display name properties
+    # to them, since these are needed for tooltips.
+    for key, good in goods_all.iteritems():
+        if 'levels' in good:
+            for level in good['levels'].iterkeys():
+                good['levels'][level]['ingredients'] = map(lambda x: {'key': x, 'display_name': goods_all[x]['display_name']}, good['levels'][level]['ingredients'])
+            good['active']['ingredients'] = good['levels'][good['active']['level']]['ingredients']
+                
         
-    base_relation_dict = {}
-    for b in base_ingredients:
-        base_relation_dict.setdefault(b.product_id, []).append(b)
-    for b_id, related_items in base_relation_dict.items():
-        obj_dict[b_id].shim_base_ingredients = related_items
-
-    # Create the list of basic goods by filtering the appropriate stuff from
-    # the goods object. Note that we would normally trim the "Other" good from
-    # the beginning of this list, but it was excluded in the original query 
-    # to Goods.
-    basic_goods = sorted(filter(lambda x: x.good_type == 'goodtype_basic' or x.key=='goodtype_crystal', goods), key=lambda x: x.value)
+    # Now we will add to our goods_all a hash for each item containing keys
+    # for all of the other active items that reference it. This can be updated
+    # on the fly on the web side of things
+    for key, good in goods_all.iteritems():
+        if 'levels' in good:        
+            for i in good['levels'][good['active']['level']]['ingredients']:
+                goods_all[i['key']]['active']['references'][key] = True
+            
+    # Now we loop through all the goods and calculate the VALUE, TOTAL MULT,
+    # and BASE MATERIALS information. Value and base materials are calculated
+    # recursively, while total mult is just a function of these two.
+    #
+    # NB: Value appears to be ceilinged to the next integer PER ITEM.
+    #     This needs to be confirmed, though.
+    def calc_good(g):
+        value = 0
+        materials = OrderedDict([('good_water', 0),
+                                 ('good_food', 0),
+                                 ('good_wood', 0),
+                                 ('good_stone', 0),
+                                 ('goodtype_crystal', 0)])
+        materials_value = 0
+        for i in g['levels'][g['active']['level']]['ingredients']:
+            if 'value' not in goods_all[i['key']]['active']:
+                calc_good(goods_all[i['key']])
+            value += goods_all[i['key']]['active']['value']
+            materials_value += float(goods_all[i['key']]['active']['value']) / float(goods_all[i['key']]['active']['total_multiplier'])
+            for k in materials.iterkeys():
+                materials[k] += goods_all[i['key']]['active']['materials'][k]
+        value = int(ceil(value * g['levels'][g['active']['level']]['multiplier']))
+        g['active']['value'] = value
+        g['active']['total_multiplier'] = float(value) / float(materials_value)
+        g['active']['materials'] = materials
     
-    # All done. Pass it off to the templating engine.
-    return render_to_response('leapday/index.html', {'goods': goods, 'basic_goods': basic_goods}, context_instance = RequestContext(request))
+    for good in goods_all.itervalues():
+        if 'value' not in good['active']:
+            calc_good(good)
+    
+    # All done, pass it off to the templating engine.
+    return render_to_response('leapday/index.html', {'goods_all': goods_all, 'goods_all_json': json.dumps(goods_all)}, context_instance = RequestContext(request))
 
 def good(request, key):
     '''
@@ -72,6 +136,8 @@ def good(request, key):
     key -> String. The unique identifier for the good.
     
     '''
+    
+    return render_to_response('leapday/nyi.html', context_instance = RequestContext(request))
     
     good_tree_cache = {}
     def get_recipe_tree(g, g_depth=0):

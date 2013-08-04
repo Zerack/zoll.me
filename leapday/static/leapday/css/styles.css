@@ -96,6 +96,10 @@ table td.no-border-left, table th.no-border-left {
 	}	
 }
 
+#mult-colgroup, .mult-column {
+	display: table-cell
+}
+
 #recipe-colgroup, .recipe-column {
 	display: table-cell;
 }
@@ -141,6 +145,10 @@ table#recipeTable a.good-detail-link h4 {
 }
 
 table#recipeTable .value-column {
+	width:75px;
+}
+
+table#recipeTable .mult-column {
 	width:75px;
 }
 
@@ -200,6 +208,24 @@ table#recipeTable th.sorting-asc span.caret-after:after {
 
 table#recipeTable th.hand {
 	cursor: pointer;
+}
+
+/*
+ * Styles for the level changing buttons
+ */
+.recipelevel-button {
+	font-weight: bold;
+	font-size: 16px;
+	opacity: 0;
+	cursor: pointer;
+}
+
+tr:hover .recipelevel-button {
+	opacity: 0.25;
+}
+
+tr:hover .recipelevel-button:hover {
+	opacity: 0.8;
 }
  
 /*

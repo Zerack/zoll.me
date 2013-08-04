@@ -12,7 +12,7 @@ from django import template
 register = template.Library()
 
 @register.filter()
-def good_css_name(value):
+def css_name(value):
     ''' 
     Returns the lower-case hyphen-replaced display name,
     which used as the css class for the good.
@@ -22,27 +22,24 @@ def good_css_name(value):
     
     '''
     
-    return value.display_name.lower().replace(' ','-')
+    return value.lower().replace(' ','-')
 
 @register.filter()
-def base_goods_ordered_set(value):
+def desc_value_sort(value):
     '''
-    Returns a set of the base goods required for an object's creation,
-    ordered by the desired order. In this case, that order is value low 
-    to high, with the "Other" good on the end instead of the front.
+    Designed to sort the results of .iteritems() on a dict of goods
+    for the index.
     
-    Additionally, this attempts first to load goods from the
-    shim_base_ingredients attribute, which is present in some situations
-    where the attribute has been preloaded to prevent excessive DB IO.
-    
-    Keyword Arguments:
-    value -> Good. The good for which to return the list of ingredients.
-    
+    value -> List of tuples.
     '''
     
-    try:
-        base_goods = value.shim_base_ingredients
-    except:
-        base_goods = value.base_ingredients.all()
-    ret = sorted(base_goods, key=lambda x: x.ingredient.value)
-    return ret
+    return sorted(value, key=lambda x: x[1]['active']['value'], reverse=True)
+
+@register.filter()
+def base_good_display_name(value):
+    BASE_GOODS = {'good_water': 'Water',
+                  'good_food': 'Food',
+                  'good_wood': 'Wood',
+                  'good_stone': 'Stone',
+                  'goodtype_crystal': 'Crystal'}
+    return BASE_GOODS[value]
