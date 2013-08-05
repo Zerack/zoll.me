@@ -14,6 +14,8 @@ from django.conf.urls import patterns, url
 
 # Setup the list views and generic views.
 urlpatterns = patterns('leapday.views',
-                       url(r'^$', 'index'),               
-                       url(r'^(?P<key>[a-zA-Z_]+)$', 'good'),
+                       url(r'^$', 'index', {'hash': ''}),             
+                       url(r'^(?P<hash>([a-zA-Z0-9]{2}[1-9a-u])+)/$', 'index'), # Hash counting is 0-9, then a-z, then A-Z. So, a is 10, 30 is u
+                       url(r'^(?P<key>((good)|(goodtype))_[a-z]+)$', 'good', {'hash': ''}),                       
+                       url(r'^(?P<hash>([a-zA-Z0-9]{2}[1-9a-u])+)/(?P<key>((good)|(goodtype))_[a-z]+)$', 'good'),
                        )

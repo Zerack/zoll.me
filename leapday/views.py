@@ -28,13 +28,43 @@ BOTTOM_ATTACH_YBUFFER = 3
 TOP_ATTACH_YBUFFER = -10
 SIDE_ATTACH_XBUFFER = ICON_WIDTH * 0.2
 
-def index(request):    
+def index(request, hash):    
     '''
     Returns the index page of the application, which shows the interactive
     list of recipes.
     
     '''
     
+    # Parse out the hash, determining the numeric keys and 
+    # levels to activate. Anything not present is assumed level 0.
+    # Levels passed for harvestable goods are just ignored silently.
+    i = 0
+    recipe_levels = {}
+    while i < len(hash):
+        nk = hash[i:i+2]
+        l = int(hash[i+2], 36) # This only goes up to 30 (u), but we can use the builtin base 36 conversion.
+        
+        # The least significant digit of the numeric key hash. Convert from base 36 (0-9a-z) and then
+        # add an additional 26 if the value is > 9 and the letter is uppercase.
+        nklsd = int(nk[1], 36)
+        if nklsd > 9 and nk[1].lower() != nk[1]:
+            nklsd += 26
+        
+        # Most significant digit follows the same path.
+        nkmsd = int(nk[0], 36)
+        if nkmsd > 9 and nk[1].lower() != nk[1]:
+            nkmsd += 26
+            
+        # Multiply together. Total hash base is 10 + 26 + 26 = 62
+        nk = (nkmsd * 62) + nklsd
+        
+        # Add to our dict of non-zero recipes.
+        recipe_levels[nk] = l
+        
+        i += 3        
+    
+    # Grab the goods list and construct our object, being sure to
+    # activate the appropriate level for each good.
     goods_db = Good.objects.order_by('key','level').all()
     goods_all = {}
     for good in goods_db:
@@ -44,7 +74,8 @@ def index(request):
         if good.key not in goods_all:
             goods_all[good.key] = {'display_name': good.display_name,
                                    'description': good.description,
-                                   'active': {'level': good.level,
+                                   'numeric_key': good.numeric_key,
+                                   'active': {'level': good.level if good.numeric_key not in recipe_levels else recipe_levels[good.numeric_key],
                                               'references': {}},
                                    'levels': {}}
         # If this is a base ingredient, clean up after ourselves a bit. We go
@@ -73,7 +104,7 @@ def index(request):
                                                                                                          good.ingredient_3,
                                                                                                          good.ingredient_4]),
                                                          }
-            
+    
     # We have to iterate through our goods list and update all of the ingredients lists, as
     # well as populating the active ingredients item. We will add the display name properties
     # to them, since these are needed for tooltips.
@@ -123,9 +154,9 @@ def index(request):
             calc_good(good)
     
     # All done, pass it off to the templating engine.
-    return render_to_response('leapday/index.html', {'goods_all': goods_all, 'goods_all_json': json.dumps(goods_all)}, context_instance = RequestContext(request))
+    return render_to_response('leapday/index.html', {'goods_all': goods_all, 'goods_all_json': json.dumps(goods_all), 'hash': hash, 'recipe_levels_json': json.dumps(recipe_levels)}, context_instance = RequestContext(request))
 
-def good(request, key):
+def good(request, key, hash):
     '''
     Returns a page detailing information about the selected good. This includes
     icon, cost, flavor text, and production information. The majority of code

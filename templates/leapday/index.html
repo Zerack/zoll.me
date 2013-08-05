@@ -46,12 +46,12 @@
     <tbody>
       {% for key, good in goods_all.iteritems|desc_value_sort %}
         <tr data-good-key="{{ key }}">
-          <td class="item-column" data-sort-value="{{ good.display_name }}"><a class="good-detail-link" href="{% url 'leapday.views.good' key=key %}"><i data-toggle="tooltip" title="{{ good.display_name }}" class="tooltip-icon leapday-goods-icon leapday-goods-icon-{{ good.display_name|css_name }}"></i></a>&nbsp;<div style="display: inline-block;"><a class="good-detail-link" href="{% url 'leapday.views.good' key=key %}"><h4 style="margin: 0px; padding: 0px;">{{ good.display_name }}</h4></a><p style="margin: 0px; padding: 0px;">{% if good.levels %}Level <span class="good-level">{{ good.active.level }}</span>&nbsp;<span class="recipelevel-button recipelevel-button-decr">&#x25c0;</span>&nbsp;<span class="recipelevel-button recipelevel-button-incr">&#x25b6;</span>{% else %}Harvestable{% endif %}</p></div></td>
+          <td class="item-column" data-sort-value="{{ good.display_name }}"><a class="good-detail-link" href="{{ key }}"><i data-toggle="tooltip" title="{{ good.display_name }}" class="tooltip-icon leapday-goods-icon leapday-goods-icon-{{ good.display_name|css_name }}"></i></a>&nbsp;<div style="display: inline-block;"><a class="good-detail-link" href="{{ key }}"><h4 style="margin: 0px; padding: 0px;">{{ good.display_name }}</h4></a><p style="margin: 0px; padding: 0px;">{% if good.levels %}Level <span class="good-level">{{ good.active.level }}</span>&nbsp;<span class="recipelevel-button recipelevel-button-decr">&#x25c0;</span>&nbsp;<span class="recipelevel-button recipelevel-button-incr">&#x25b6;</span>{% else %}Harvestable{% endif %}</p></div></td>
           <td class="value-column" data-sort-value="{{ good.active.value }}"><span class="good-value">{{ good.active.value|intcomma }}</span></td>
           <td class="mult-column" data-sort-value="{{ good.active.total_multiplier }}"><span class="good-mult">{{ good.active.total_multiplier|floatformat:"2" }}</span></td>
-          <td class="recipe-column">{% if good.levels %}{% for i in good.active.ingredients %}<a href="{% url 'leapday.views.good' key=i.key %}"><i data-toggle="tooltip" title="{{ i.display_name }}" class="tooltip-icon leapday-goods-icon leapday-goods-icon-{{ i.display_name|css_name }}"></i></a>{% endfor %}{% else  %}<span class="muted">None</span>{% endif %}</td>
+          <td class="recipe-column">{% if good.levels %}{% for i in good.active.ingredients %}<a href="{{ i.key }}"><i data-toggle="tooltip" title="{{ i.display_name }}" class="tooltip-icon leapday-goods-icon leapday-goods-icon-{{ i.display_name|css_name }}"></i></a>{% endfor %}{% else  %}<span class="muted">None</span>{% endif %}</td>
           {% for material, quantity in good.active.materials.iteritems %}
-            <td class="base-material-column{% if forloop.counter0 == 0 %} first-base-material-column{% endif %}" data-sort-value="{{ quantity }}" data-filter="{% if quantity > 0 %}{{ material }}{% endif %}">{% if quantity != 0 %}<a href="{% url 'leapday.views.good' key=material %}">{% endif %}<i {% if quantity != 0 %}data-toggle="tooltip" title="{{ material|base_good_display_name }}" class="tooltip-icon {% else %}class="leapday-goods-icon-translucent {% endif %}leapday-goods-icon leapday-goods-icon-{{ material|base_good_display_name|css_name }}"></i>{% if base_good.quantity != 0 %}</a>{% endif %}<span class="base-materials-count{% if quantity == 0 %} base-materials-count-translucent{% endif %}"><span class="mult-indicator">x</span>{{ quantity }}</span></td>
+            <td class="base-material-column{% if forloop.counter0 == 0 %} first-base-material-column{% endif %}" data-sort-value="{{ quantity }}" data-filter="{% if quantity > 0 %}{{ material }}{% endif %}">{% if quantity != 0 %}<a href="{{ material }}">{% endif %}<i {% if quantity != 0 %}data-toggle="tooltip" title="{{ material|base_good_display_name }}" class="tooltip-icon {% else %}class="leapday-goods-icon-translucent {% endif %}leapday-goods-icon leapday-goods-icon-{{ material|base_good_display_name|css_name }}"></i>{% if base_good.quantity != 0 %}</a>{% endif %}<span class="base-materials-count{% if quantity == 0 %} base-materials-count-translucent{% endif %}"><span class="mult-indicator">x</span>{{ quantity }}</span></td>
           {% endfor %}
         </tr>
       {% endfor %}
@@ -239,7 +239,9 @@
 	  // NB: We use a cache of TR nodes for each element, which we then only fetch
 	  //     the first time as required. Note that fetch needs to check both shown
 	  //	 and hidden sections.
-	  var recipeData = {{ goods_all_json|safe }} // BIG TEMPLATED JSON THINGY HERE
+	  var recipeData = {{ goods_all_json|safe }}; // BIG TEMPLATED JSON THINGY HERE
+	  var recipeHashData = {{ recipe_levels_json|safe }}; // Initial recipe levels state. Maintained separately for ease of access.
+	  console.log(recipeHashData);
 	  var maxLevel = 30;
 	  $('#recipeTable').click(function(e) {
 		  
@@ -274,6 +276,9 @@
 			  return;
 		  }
 		  
+		  // Update the recipeHashData object with our new level.
+		  recipeHashData[recipeData[targetRecipeKey].numeric_key] = newLevel;
+		  
 		  // Alright, now substitute in the ingredient and active level information into
 		  // the target Recipe. This will later be used in recalculation. We also need to
 		  // update the obj.active.references object by removing items no longer used
@@ -306,6 +311,9 @@
 		  //
 		  // Once we have updated all of its direct parents, we move on to anything added to the queue by
 		  // those parents, and filter up the production chain, making changes as we go.
+		  //
+		  // NB: Come back to this and make it on the fly topological sort if you can, right now stuff
+		  // gets repeated. Build the queue entirely before processing?
 		  var updateQueue = [targetRecipeKey];
 		  var tempValue;
 		  var tempMaterials;
@@ -315,44 +323,42 @@
 		  var ingredient;
 		  while (updateQueue.length > 0) {
 			  updateKey = updateQueue.splice(0,1);			  
-			  if (updatedCache[updateKey] === undefined) {
 				  
-				  tempValue = 0;
-				  tempMaterials = {
-				      good_water: 0,
-				      good_food: 0,
-				      good_wood: 0,
-				      good_stone: 0,
-				      goodtype_crystal: 0
-				  };
-				  tempMaterialsValue = 0;
+			  tempValue = 0;
+			  tempMaterials = {
+			      good_water: 0,
+			      good_food: 0,
+			      good_wood: 0,
+			      good_stone: 0,
+			      goodtype_crystal: 0
+			  };
+			  tempMaterialsValue = 0;
+			  
+			  l = recipeData[updateKey].active.ingredients.length;
+			  for (var i = 0; i < l; i++) {
+				  ingredient = recipeData[updateKey].active.ingredients[i];
+				  tempValue += recipeData[ingredient.key].active.value;
+				  tempMaterialsValue += recipeData[ingredient.key].active.value / recipeData[ingredient.key].active.total_multiplier
 				  
-				  l = recipeData[updateKey].active.ingredients.length;
-				  for (var i = 0; i < l; i++) {
-					  ingredient = recipeData[updateKey].active.ingredients[i];
-					  tempValue += recipeData[ingredient.key].active.value;
-					  tempMaterialsValue += recipeData[ingredient.key].active.value / recipeData[ingredient.key].active.total_multiplier
-					  
-					  for (baseMaterialKey in tempMaterials) {
-						  if (tempMaterials.hasOwnProperty(baseMaterialKey)) {
-							  tempMaterials[baseMaterialKey] += recipeData[ingredient.key].active.materials[baseMaterialKey];
-						  }
-					  }
-					  
-				  }
-				  
-				  tempValue = Math.ceil(tempValue * recipeData[updateKey].levels[recipeData[updateKey].active.level].multiplier);
-				  recipeData[updateKey].active.value = tempValue;
-				  recipeData[updateKey].active.total_multiplier = tempValue / tempMaterialsValue;
-				  recipeData[updateKey].active.materials = tempMaterials;
-				  
-				  for (referencedKey in recipeData[updateKey].active.references) {
-					  if (recipeData[updateKey].active.references.hasOwnProperty(referencedKey) && recipeData[updateKey].active.references[referencedKey] === true) {
-						  updateQueue.push(referencedKey);
+				  for (baseMaterialKey in tempMaterials) {
+					  if (tempMaterials.hasOwnProperty(baseMaterialKey)) {
+						  tempMaterials[baseMaterialKey] += recipeData[ingredient.key].active.materials[baseMaterialKey];
 					  }
 				  }
-				  updatedCache[updateKey] = true;
+				  
 			  }
+			  
+			  tempValue = Math.ceil(tempValue * recipeData[updateKey].levels[recipeData[updateKey].active.level].multiplier);
+			  recipeData[updateKey].active.value = tempValue;
+			  recipeData[updateKey].active.total_multiplier = tempValue / tempMaterialsValue;
+			  recipeData[updateKey].active.materials = tempMaterials;
+			  
+			  for (referencedKey in recipeData[updateKey].active.references) {
+				  if (recipeData[updateKey].active.references.hasOwnProperty(referencedKey) && recipeData[updateKey].active.references[referencedKey] === true) {
+					  updateQueue.push(referencedKey);
+				  }
+			  }
+			  updatedCache[updateKey] = true;
 			  
 			  
 		  }
@@ -413,7 +419,7 @@
 				  recipeCol.empty();
 				  l = recipeData[goodKey].active.ingredients.length;
 				  for (i = 0; i < l; i++) {
-					  recipeCol.append('<a href="' + window.location.pathname + recipeData[goodKey].active.ingredients[i].key + '"><i data-toggle="tooltip" data-title="' + recipeData[recipeData[goodKey].active.ingredients[i].key].display_name + '" class="tooltip-icon leapday-goods-icon leapday-goods-icon-' + getIconCssName(recipeData[recipeData[goodKey].active.ingredients[i].key].display_name) + '"></i></a>');
+					  recipeCol.append('<a href="' + recipeData[goodKey].active.ingredients[i].key + '"><i data-toggle="tooltip" data-title="' + recipeData[recipeData[goodKey].active.ingredients[i].key].display_name + '" class="tooltip-icon leapday-goods-icon leapday-goods-icon-' + getIconCssName(recipeData[recipeData[goodKey].active.ingredients[i].key].display_name) + '"></i></a>');
 				  }
 				  $('.tooltip-icon', recipeCol).tooltip({placement: 'top'});
 				  
@@ -427,7 +433,7 @@
 						  curCol.data('sort-value',recipeData[goodKey].active.materials[baseMaterialKey]);
 						  curCol.data('filter',recipeData[goodKey].active.materials[baseMaterialKey] > 0 ? baseMaterialKey : '');
 						  if (recipeData[goodKey].active.materials[baseMaterialKey] !== 0) {
-							  curCol.append('<a href="' + window.location.pathname + baseMaterialKey + '"><i data-toggle="tooltip" data-title="' + recipeData[baseMaterialKey].display_name + '" class="tooltip-icon leapday-goods-icon leapday-goods-icon-' + getIconCssName(recipeData[baseMaterialKey].display_name) + '"></i></a><span class="base-materials-count"><span class="mult-indicator">x</span>' + recipeData[goodKey].active.materials[baseMaterialKey] + '</span>');
+							  curCol.append('<a href="' + baseMaterialKey + '"><i data-toggle="tooltip" data-title="' + recipeData[baseMaterialKey].display_name + '" class="tooltip-icon leapday-goods-icon leapday-goods-icon-' + getIconCssName(recipeData[baseMaterialKey].display_name) + '"></i></a><span class="base-materials-count"><span class="mult-indicator">x</span>' + recipeData[goodKey].active.materials[baseMaterialKey] + '</span>');
 							  $('.tooltip-icon', curCol).tooltip({placement: 'top'});
 						  } else {
 							  curCol.append('<i class="leapday-goods-icon-translucent leapday-goods-icon leapday-goods-icon-' + getIconCssName(recipeData[baseMaterialKey].display_name) + '"></i><span class="base-materials-count base-materials-count-translucent"><span class="mult-indicator">x</span>0</span>');
@@ -435,6 +441,46 @@
 					  }
 				  }
 			  }
+		  }
+		  
+		  // Finally, we use history.replaceState just to update the hash as required.
+		  var hashArray = [];
+		  for (numericKey in recipeHashData) {
+			  if (recipeHashData.hasOwnProperty(numericKey) && recipeHashData[numericKey] !== 0) {
+				  var msd = Math.floor(numericKey / 62);
+				  var lsd = numericKey - (msd * 62);
+				  
+				  var u;
+				  if (msd >= 36) {
+					  u = true;
+					  msd -= 26;
+				  }
+				  var msdString = msd.toString(36);
+				  if (u) {
+					  msdString = msdString.toUpperCase();
+				  }
+				  
+				  if (lsd >= 36) {
+					  u = true;
+					  lsd -= 26;
+				  }
+				  var lsdString = lsd.toString(36);
+				  if (u) {
+					  lsdString = lsdString.toUpperCase();
+				  }
+				  
+				  var levelString = recipeHashData[numericKey].toString(36);
+				  
+				  hashArray.push(msdString + lsdString + levelString);
+				  
+			  }
+		  }
+		  
+		  var hashString = hashArray.join('');
+		  if (hashString === '') {  
+			  history.replaceState(null, null, '..');
+		  } else {
+			  history.replaceState(null, null, hashString + '/');
 		  }
 	  });
 	  

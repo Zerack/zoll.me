@@ -15,6 +15,7 @@ from django.db import models
 # Note that this is pretty heavily denormalized for better query performance.
 # Updates are done by a timed job, and can afford to be slow.
 class Good(models.Model):
+    numeric_key = models.IntegerField()
     key = models.CharField(max_length=100)
     level = models.IntegerField(null=True)
     display_name = models.CharField(max_length=100)    
