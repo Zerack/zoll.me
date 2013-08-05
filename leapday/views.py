@@ -97,7 +97,7 @@ def index(request, hash):
     for key, good in goods_all.iteritems():
         if 'levels' in good:
             for level in good['levels'].iterkeys():
-                good['levels'][level]['ingredients'] = map(lambda x: {'key': x, 'display_name': goods_all[x]['display_name']}, good['levels'][level]['ingredients'])
+                good['levels'][level]['ingredients'] = map(lambda x: {'key': x, 'display_name': goods_all[x]['display_name'], 'level': None if 'level' not in goods_all[x]['active'] else goods_all[x]['active']['level']}, good['levels'][level]['ingredients'])
             good['active']['ingredients'] = good['levels'][good['active']['level']]['ingredients']
                 
         
@@ -183,8 +183,9 @@ def good(request, key, hash):
     # flavor text, etc. etc.
     td = {}
     td['display_name'] = goods[key].display_name
+    td['level'] = goods[key].level
     td['description'] = goods[key].description
-    td['ingredients'] = map(lambda x: {'key':x, 'display_name': goods[x].display_name},filter(lambda x: x is not None, [goods[key].ingredient_0,
+    td['ingredients'] = map(lambda x: {'key':x, 'display_name': goods[x].display_name, 'level': goods[x].level},filter(lambda x: x is not None, [goods[key].ingredient_0,
                                                                                                                         goods[key].ingredient_1,
                                                                                                                         goods[key].ingredient_2,
                                                                                                                         goods[key].ingredient_3,
@@ -255,7 +256,7 @@ def good(request, key, hash):
                                                                              cur_good.ingredient_2,
                                                                              cur_good.ingredient_3,
                                                                              cur_good.ingredient_4]))) > 0:
-            td['used_to_craft'].append({'key': cur_good.key, 'display_name': cur_good.display_name})
+            td['used_to_craft'].append({'key': cur_good.key, 'display_name': cur_good.display_name, 'level': cur_good.level})
     td['used_to_craft'].sort(key=lambda x: x['display_name'])
     
     good_tree_cache = {}
