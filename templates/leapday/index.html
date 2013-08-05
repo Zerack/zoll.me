@@ -241,8 +241,8 @@
 	  //	 and hidden sections.
 	  var recipeData = {{ goods_all_json|safe }}; // BIG TEMPLATED JSON THINGY HERE
 	  var recipeHashData = {{ recipe_levels_json|safe }}; // Initial recipe levels state. Maintained separately for ease of access.
-	  console.log(recipeHashData);
 	  var maxLevel = 30;
+	  var lastHash = '{{ hash|safe }}';
 	  $('#recipeTable').click(function(e) {
 		  
 		  // Cancel out if we didn't click a recipeleve-button.
@@ -447,31 +447,13 @@
 		  var hashArray = [];
 		  for (numericKey in recipeHashData) {
 			  if (recipeHashData.hasOwnProperty(numericKey) && recipeHashData[numericKey] !== 0) {
-				  var msd = Math.floor(numericKey / 62);
-				  var lsd = numericKey - (msd * 62);
-				  
-				  var u;
-				  if (msd >= 36) {
-					  u = true;
-					  msd -= 26;
-				  }
-				  var msdString = msd.toString(36);
-				  if (u) {
-					  msdString = msdString.toUpperCase();
-				  }
-				  
-				  if (lsd >= 36) {
-					  u = true;
-					  lsd -= 26;
-				  }
-				  var lsdString = lsd.toString(36);
-				  if (u) {
-					  lsdString = lsdString.toUpperCase();
-				  }
-				  
 				  var levelString = recipeHashData[numericKey].toString(36);
+				  var keyString = parseInt(numericKey,10).toString(36);
+				  if (keyString.length === 1) {
+					  keyString = '0' + keyString;
+				  }
 				  
-				  hashArray.push(msdString + lsdString + levelString);
+				  hashArray.push(keyString + levelString);
 				  
 			  }
 		  }
@@ -480,8 +462,13 @@
 		  if (hashString === '') {  
 			  history.replaceState(null, null, '..');
 		  } else {
-			  history.replaceState(null, null, hashString + '/');
+			  if (lastHash === '') {
+			  	history.replaceState(null, null, hashString + '/');
+			  } else {
+				  history.replaceState(null, null, '../' + hashString + '/');
+			  }
 		  }
+		  lastHash = hashString;
 	  });
 	  
     });

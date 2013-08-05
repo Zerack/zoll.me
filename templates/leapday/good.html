@@ -3,38 +3,38 @@
 {% load leapday_extras %}
 {% load humanize %}
 
-{% block title_leapday %} - {{ good.display_name }}{% endblock %}
-{% block meta_description_leapday %}{{ good.display_name }} is worth {{ good.value|intcomma }} gold.{% if ingredients|length > 0 %} It is crafted by combining {% for i in ingredients %}{% if forloop.counter0 != 0 %}, {% endif %}{% if forloop.revcounter0 == 0 %}and {% endif %}{{ i.display_name }}{% endfor %}.{% endif %}{% endblock %}
+{% block title_leapday %} - {{ display_name }}{% endblock %}
+{% block meta_description_leapday %}{{ display_name }} is worth {{ value|intcomma }} gold.{% if ingredients|length > 0 %} It is crafted by combining {% for i in ingredients %}{% if forloop.counter0 != 0 %}, {% endif %}{% if forloop.revcounter0 == 0 %}and {% endif %}{{ i.display_name }}{% endfor %}.{% endif %}{% endblock %}
 
 {% block container_leapday %}
   <div class="row">
     <div class="span12" style="position: relative;">
-      <i class="leapday-goods-icon leapday-goods-icon-{{ good|good_css_name }}"></i>&nbsp;<h4 class="item-title">{{ good.display_name }}</h4>
-      <p class="recipe-index-link">&nbsp;<a href="{% url 'leapday.views.index' %}">&laquo; Recipe Index</a>
+      <i class="leapday-goods-icon leapday-goods-icon-{{ display_name|css_name }}"></i>&nbsp;<h4 class="item-title">{{ display_name }}</h4>
+      <p class="recipe-index-link">&nbsp;<a href="{% if hash != '' %}{% url 'leapday.views.index' hash=hash %}{% else %}{% url 'leapday.views.index' %}{% endif %}">&laquo; Recipe Index</a>
     </div>
   </div>
   <div class="row">
     <div class="span12">
       <div style="margin-left: 45px;">
-        <p>&nbsp;<em>{{ good.description }}</em></p>
+        <p>&nbsp;<em>{{ description }}</em></p>
         {% if ingredients|length > 0 %}
-          <p>{% for i in ingredients %}<a href="{% url 'leapday.views.good' key=i.key %}"><i data-toggle="tooltip" title="{{ i.display_name }}" class="tooltip-icon leapday-goods-icon leapday-goods-icon-{{ i|good_css_name }}"></i></a>{% endfor %}</p>
+          <p>{% for i in ingredients %}<a href="{% if hash != '' %}{% url 'leapday.views.good' key=i.key hash=hash %}{% else %}{% url 'leapday.views.good' key=i.key %}{% endif %}"><i data-toggle="tooltip" title="{{ i.display_name }}" class="tooltip-icon leapday-goods-icon leapday-goods-icon-{{ i.display_name|css_name }}"></i></a>{% endfor %}</p>
         {% endif %}
         <p class="muted margin-bottom-0">&nbsp;Value</p>
-        <p>&nbsp;{{ good.value|intcomma }} Gold</p>
-        {% if good.recipe_value_multiplier > 0 %}
+        <p>&nbsp;{{ value|intcomma }} Gold</p>
+        {% if recipe_multiplier > 0 %}
           <p class="muted margin-bottom-0">&nbsp;Recipe Multiplier</p>
-          <p>&nbsp;<span class="mult-indicator">x</span>{{ good.recipe_value_multiplier|floatformat:1 }}</p>
+          <p>&nbsp;<span class="mult-indicator">x</span>{{ recipe_multiplier|floatformat:2 }}</p>
           <p class="muted margin-bottom-0">&nbsp;Total Multiplier</p>
-          <p>&nbsp;<span class="mult-indicator">x</span>{{ good.total_value_multiplier|floatformat:1 }}</p>
+          <p>&nbsp;<span class="mult-indicator">x</span>{{ total_multiplier|floatformat:2 }}</p>
         {% endif %}
         <div class="base-materials-container">
-          <p class="base-materials-icons">{% for base_good in base_ingredients %}{% if base_good.quantity != 0 %}<a href="{% url 'leapday.views.good' key=base_good.ingredient.key %}">{% endif %}<i {% if base_good.quantity != 0 %}data-toggle="tooltip" title="{{ base_good.ingredient.display_name }}" class="tooltip-icon {% else %}class="leapday-goods-icon-translucent {% endif %}leapday-goods-icon leapday-goods-icon-{{ base_good.ingredient|good_css_name }}"></i>{% if base_good.quantity != 0 %}</a>{% endif %}<span class="base-materials-count{% if base_good.quantity == 0 %} base-materials-count-translucent{% endif %}"><span class="mult-indicator">x</span>{{ base_good.quantity }}</span>{% endfor %}</p>
+          <p class="base-materials-icons">{% for material, quantity in base_materials.iteritems %}{% if quantity != 0 %}<a href="{% if hash != '' %}{% url 'leapday.views.good' key=material hash=hash %}{% else %}{% url 'leapday.views.good' key=material %}{% endif %}">{% endif %}<i {% if quantity != 0 %}data-toggle="tooltip" title="{{ material|base_good_display_name }}" class="tooltip-icon {% else %}class="leapday-goods-icon-translucent {% endif %}leapday-goods-icon leapday-goods-icon-{{ material|base_good_display_name|css_name }}"></i>{% if base_good.quantity != 0 %}</a>{% endif %}<span class="base-materials-count{% if quantity == 0 %} base-materials-count-translucent{% endif %}"><span class="mult-indicator">x</span>{{ quantity }}</span>{% endfor %}</p>
           <p class="base-materials-label muted">&nbsp;Base Materials</p>
         </div>
         <p class="muted margin-bottom-0">&nbsp;Used To Craft</p>
         {% if used_to_craft|length > 0 %}
-          <p>{% for p in used_to_craft %}<a href="{% url 'leapday.views.good' key=p.key %}"><i data-toggle="tooltip" title="{{ p.display_name }}" class="tooltip-icon leapday-goods-icon leapday-goods-icon-{{ p|good_css_name }}"></i></a>{% endfor %}</p>
+          <p>{% for p in used_to_craft %}<a href="{% if hash != '' %}{% url 'leapday.views.good' key=p.key hash=hash %}{% else %}{% url 'leapday.views.good' key=p.key %}{% endif %}"><i data-toggle="tooltip" title="{{ p.display_name }}" class="tooltip-icon leapday-goods-icon leapday-goods-icon-{{ p.display_name|css_name }}"></i></a>{% endfor %}</p>
         {% else %}
           <p><em>&nbsp;None</em></p>
         {% endif %}
@@ -44,7 +44,7 @@
             {% for r in recipe_list %}
               {% for e in r %}
                 {% if e.good %}
-                  <i style="position:absolute; left: {{ e.left }}px; top: {{ e.top }}px" class="leapday-goods-icon leapday-goods-icon-{{ e.good|good_css_name }}"></i>
+                  <i style="position:absolute; left: {{ e.left }}px; top: {{ e.top }}px" class="leapday-goods-icon leapday-goods-icon-{{ e.good.display_name|css_name }}"></i>
                 {% endif %}
               {% endfor %}
             {% endfor %}
@@ -61,7 +61,7 @@
             {% for r in recipe_list %}
               {% for e in r %}
                 {% if e.good %}
-                  <a href="{% url 'leapday.views.good' key=e.good.key %}"><i style="position:absolute; left: {{ e.left }}px; top: {{ e.top }}px" data-toggle="tooltip" title="{{ e.good.display_name }}" class="tooltip-icon leapday-goods-icon leapday-goods-icon-placeholder"></i></a>
+                  <a href="{% if hash != '' %}{% url 'leapday.views.good' key=e.good.key hash=hash %}{% else %}{% url 'leapday.views.good' key=e.good.key %}{% endif %}"><i style="position:absolute; left: {{ e.left }}px; top: {{ e.top }}px" data-toggle="tooltip" title="{{ e.good.display_name }}" class="tooltip-icon leapday-goods-icon leapday-goods-icon-placeholder"></i></a>
                 {% endif %}
               {% endfor %}
             {% endfor %}

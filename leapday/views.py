@@ -41,26 +41,12 @@ def index(request, hash):
     i = 0
     recipe_levels = {}
     while i < len(hash):
-        nk = hash[i:i+2]
+        nk = int(hash[i:i+2], 36)
         l = int(hash[i+2], 36) # This only goes up to 30 (u), but we can use the builtin base 36 conversion.
-        
-        # The least significant digit of the numeric key hash. Convert from base 36 (0-9a-z) and then
-        # add an additional 26 if the value is > 9 and the letter is uppercase.
-        nklsd = int(nk[1], 36)
-        if nklsd > 9 and nk[1].lower() != nk[1]:
-            nklsd += 26
-        
-        # Most significant digit follows the same path.
-        nkmsd = int(nk[0], 36)
-        if nkmsd > 9 and nk[1].lower() != nk[1]:
-            nkmsd += 26
-            
-        # Multiply together. Total hash base is 10 + 26 + 26 = 62
-        nk = (nkmsd * 62) + nklsd
         
         # Add to our dict of non-zero recipes.
         recipe_levels[nk] = l
-        
+                
         i += 3        
     
     # Grab the goods list and construct our object, being sure to
@@ -168,7 +154,109 @@ def good(request, key, hash):
     
     '''
     
-    return render_to_response('leapday/nyi.html', context_instance = RequestContext(request))
+    # First things first. We need to decode the given hash and make a dictionary of keys and levels.
+    i = 0
+    recipe_levels = {}
+    while i < len(hash):
+        nk = int(hash[i:i+2], 36)
+        l = int(hash[i+2], 36) # This only goes up to 30 (u), but we can use the builtin base 36 conversion.
+        
+        # Add to our dict of non-zero recipes.
+        recipe_levels[nk] = l
+                
+        i += 3  
+    
+    # Next, we need to fetch all of the data. Since we can't determine what we need for the tree view
+    # without looking at the data itself, we go ahead and pull everything.
+    goods_db = Good.objects.all()
+    
+    # Now we filter these objects a bit. We keep base goods, goods at level 0 that aren't in
+    # our recipe_levels object, and recipes of matching level if they are.
+    goods_db_filtered = filter(lambda x: x.level is None or (x.level == 0 and x.numeric_key not in recipe_levels) or (x.numeric_key in recipe_levels and x.level == recipe_levels[x.numeric_key]), goods_db)
+    
+    # We need to be able to reference things by key, so we'll set that up here with what's left.
+    goods = {}
+    for cur_good in goods_db_filtered:
+        goods[cur_good.key] = cur_good
+    
+    # Logic to build the simple information on the page. This includes things like icon,
+    # flavor text, etc. etc.
+    td = {}
+    td['display_name'] = goods[key].display_name
+    td['description'] = goods[key].description
+    td['ingredients'] = map(lambda x: {'key':x, 'display_name': goods[x].display_name},filter(lambda x: x is not None, [goods[key].ingredient_0,
+                                                                                                                        goods[key].ingredient_1,
+                                                                                                                        goods[key].ingredient_2,
+                                                                                                                        goods[key].ingredient_3,
+                                                                                                                        goods[key].ingredient_4]))
+    td['recipe_multiplier'] = goods[key].multiplier
+    
+    # Calculating value, total multiplier, and base materials has to be done recursively.
+    # We will calculate the value of each of my ingredients (with a cache for duplicates)
+    # and then finally arrive at values for me. We don't need to be able to recall this
+    # information later, so we won't worry too much about it.
+    stats_cache = {}
+    def calc_good(g):
+        if g.key in stats_cache:
+            return 
+        
+        if g.level is None:
+            # This is a base good, so a little special handling.
+            stats_cache[g.key] = {'value': g.base_value,
+                                  'total_multiplier': 1.0,
+                                  'materials': OrderedDict([('good_water', 0),
+                                                             ('good_food', 0),
+                                                             ('good_wood', 0),
+                                                             ('good_stone', 0),
+                                                             ('goodtype_crystal', 0)])}
+            stats_cache[g.key]['materials'][g.key] += 1
+            return
+        
+        value = 0
+        materials = OrderedDict([('good_water', 0),
+                                 ('good_food', 0),
+                                 ('good_wood', 0),
+                                 ('good_stone', 0),
+                                 ('goodtype_crystal', 0)])
+        materials_value = 0
+        for i in filter(lambda x: x is not None, [g.ingredient_0,
+                                                  g.ingredient_1,
+                                                  g.ingredient_2,
+                                                  g.ingredient_3,
+                                                  g.ingredient_4]):
+            if i not in stats_cache:
+                calc_good(goods[i])
+            value += stats_cache[i]['value']
+            materials_value += float(stats_cache[i]['value']) / float(stats_cache[i]['total_multiplier'])
+            for k in materials.iterkeys():
+                materials[k] += stats_cache[i]['materials'][k]
+        value = int(ceil(value * g.multiplier))
+        total_multiplier = float(value) / float(materials_value)
+        stats_cache[g.key] = {'value': value,
+                              'total_multiplier': total_multiplier,
+                              'materials': materials}
+                
+    calc_good(goods[key])
+    
+    td['value'] = stats_cache[key]['value']
+    td['total_multiplier'] = stats_cache[key]['total_multiplier']
+    td['base_materials'] = stats_cache[key]['materials']
+    
+    # To determine what this item is used to craft, we have to actively check all ingredients lists
+    # for all goods in the current set. This is a pain, but there's no way to precalculate this
+    # information short of just caching it. We'll end up doing this alphabetically, since
+    # that way we don't have to calculate values for all items (which is a pain, and slow)
+    td['used_to_craft'] = []
+    for cur_good in goods.itervalues():
+        if cur_good.key == key:
+            continue
+        elif len(filter(lambda x: x == key, filter(lambda x: x is not None, [cur_good.ingredient_0,
+                                                                             cur_good.ingredient_1,
+                                                                             cur_good.ingredient_2,
+                                                                             cur_good.ingredient_3,
+                                                                             cur_good.ingredient_4]))) > 0:
+            td['used_to_craft'].append({'key': cur_good.key, 'display_name': cur_good.display_name})
+    td['used_to_craft'].sort(key=lambda x: x['display_name'])
     
     good_tree_cache = {}
     def get_recipe_tree(g, g_depth=0):
@@ -193,12 +281,15 @@ def good(request, key, hash):
         # the query for 'recipe ingredients' to execute normally without a prefetch, but
         # we'll make sure to prefetch the ingredient information to reduce database hits.
         r = {'good': g}
-        #r_i = [x.ingredient for x in Recipe_Item.objects.filter(product=g).prefe_selected('ingredient').all()]
-        r_i = [x.ingredient for x in g.recipe_ingredients.select_related('ingredient').all()]
+        r_i = [goods[x] for x in filter(lambda x: x is not None, [g.ingredient_0, 
+                                                                  g.ingredient_1, 
+                                                                  g.ingredient_2, 
+                                                                  g.ingredient_3, 
+                                                                  g.ingredient_4])]
         num_children = len(r_i)
         num_unique_children = len(set(r_i))
         
-        # Depending on the relationship between the number of chidldren and
+        # Depending on the relationship between the number of children and
         # the number of unique children, we manipulate the 'children', 'leaves',
         # 'depth', and 'children_mult' dictionary attributes. These attributes
         # are all part of the setup for turning this tree structure into a list
@@ -323,15 +414,8 @@ def good(request, key, hash):
             line = (line[0], line[1], line[0], (line[3] + line[1]) / 2, line[2], (line[3] + line[1]) / 2, line[2], line[3])            
         return line
     
-    # Initial database queries. We prefetch what we can to reduce overall database IO. 
-    good = get_object_or_404(Good.objects.filter(key=key))
-    ingredients = [x.ingredient for x in Recipe_Item.objects.select_related('ingredient').filter(product=good).all()]
-    base_ingredients = sorted(Base_Material.objects.select_related('ingredient').filter(product=good).all(), key=lambda x: x.ingredient.value)
-    base_ingredients = base_ingredients[1:] + [base_ingredients[0]]
-    used_to_craft = sorted(list(set([x.product for x in Recipe_Item.objects.select_related('product').filter(ingredient=good).all()])), key=lambda x: x.value)
-    
-    # Fetch the recipe tree and store some information.
-    recipe_tree = get_recipe_tree(good)
+    # Recipe tree building starts here.
+    recipe_tree = get_recipe_tree(goods[key])  
     
     max_depth = recipe_tree['depth']
     leaves = recipe_tree['leaves']
@@ -394,17 +478,12 @@ def good(request, key, hash):
                 recipe_beziers.append(build_bezier((entry['top_attach_point'][0], entry['top_attach_point'][1], parent['bottom_attach_points'][0][0],parent['bottom_attach_points'][0][1])))
                 parent['bottom_attach_points'] = parent['bottom_attach_points'][1:]
             filled_row_leaves += entry['size']
-            
-    # Everything has been prepared, so fill the template context object
-    # and render the template.
-    td = {'good': good,
-          'ingredients': ingredients,
-          'base_ingredients': base_ingredients,
-          'used_to_craft': used_to_craft,
-          'recipe_list': recipe_list,
-          'recipe_height': tree_height,
-          'recipe_width': tree_width,
-          'recipe_beziers': recipe_beziers,
-          'recipe_mults': recipe_mults}
-
+    
+    td['recipe_list'] = recipe_list
+    td['recipe_height'] = tree_height
+    td['recipe_width'] = tree_width
+    td['recipe_beziers'] = recipe_beziers
+    td['recipe_mults'] = recipe_mults
+    td['hash'] = hash
+    
     return render_to_response('leapday/good.html', td, context_instance = RequestContext(request))
